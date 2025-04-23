@@ -2,26 +2,80 @@
   "name": "conges",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "description": "Application de gestion des congés",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/votre-compte/conges.git"
+  },
+  "author": "Votre Nom",
+  "license": "MIT",
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:affected": "vitest related $(git diff --staged --name-only)",
+    "test:cov": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "typecheck": "tsc --noEmit",
+    "clean": "rimraf .next node_modules/.cache",
+    "prepublishOnly": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
+    "prepare": "husky",
+    "prerelease": "pnpm run prepublishOnly",
+    "release": "changeset publish",
+    "reset": "rimraf node_modules .next *.log && pnpm install",
+    "knip": "knip",
+    "knip:prod": "knip --production"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.1"
+    "@heroui/theme": "^2.4.13",
+    "@tanstack/react-query": "^5.74.4",
+    "@tanstack/react-query-devtools": "^5.74.6",
+    "next": "15.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "x-react": "github:AbdelLyon/x-react",
+    "zod": "^3.24.3"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.25.1",
+    "@tailwindcss/postcss": "^4.1.4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/node": "^20.17.30",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@vitejs/plugin-react": "^4.4.1",
+    "@vitest/coverage-v8": "^2.1.9",
+    "@vitest/ui": "^3.1.2",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.25.1",
     "eslint-config-next": "15.3.1",
-    "@eslint/eslintrc": "^3"
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
+    "knip": "^5.50.5",
+    "lint-staged": "^15.5.1",
+    "postcss": "^8.5.3",
+    "prettier": "^3.5.3",
+    "publint": "^0.3.12",
+    "rimraf": "^6.0.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.31.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.1.2"
   }
 }
