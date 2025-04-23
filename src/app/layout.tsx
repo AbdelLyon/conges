@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Lato } from "next/font/google";
 import "x-react/style.css";
 import "./globals.css";
 import { CongesLayout } from "@/layout/CongesLayout";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const lato = Lato({
+  weight: ["400", "700"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-lato",
 });
 
 export const metadata: Metadata = {
@@ -27,7 +24,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${lato.className} antialiased`}
+        cz-shortcut-listen="true"
       >
         <CongesLayout>{children}</CongesLayout>
       </body>

@@ -34,7 +34,7 @@ const items = (pathname: string): Item[] => {
     {
       key: "conges",
       label: "Mes congés & absences",
-      href: "/conges",
+      href: "/leaves",
       startContent: <IconCalendarTime className="text-large" />,
       isActive: pathname === "/conges",
     },

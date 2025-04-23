@@ -11,6 +11,9 @@ importers:
       '@heroui/theme':
         specifier: ^2.4.13
         version: 2.4.13(tailwindcss@3.4.17)
+      '@react-stately/data':
+        specifier: ^3.12.3
+        version: 3.12.3(react@19.1.0)
       '@tanstack/react-query':
         specifier: ^5.74.4
         version: 5.74.4(react@19.1.0)
@@ -28,7 +31,7 @@ importers:
         version: 19.1.0(react@19.1.0)
       x-react:
         specifier: github:AbdelLyon/x-react
-        version: https://codeload.github.com/AbdelLyon/x-react/tar.gz/ab9bb646e7c4f7b559e19f37ca203e3e510df802(@tabler/icons-react@3.31.0(react@19.1.0))(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)
+        version: https://codeload.github.com/AbdelLyon/x-react/tar.gz/240c0afce8f57fcf7fbb688208ffb1457fc24f42(@tabler/icons-react@3.31.0(react@19.1.0))(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)
       zod:
         specifier: ^3.24.3
         version: 3.24.3
@@ -1581,6 +1584,11 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
 
+  '@react-stately/data@3.12.3':
+    resolution: {integrity: sha512-JYPNV1gd9OZm8xPay0exx5okFNgiwESNvdBHsfDC+f8BifRyFLdrvoaUGF0enKIeSQMB1oReFAxTAXtDZd27rA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0-rc.1 || ^18.0.0 || ^19.0.0-rc.1
+
   '@react-stately/datepicker@3.13.0':
     resolution: {integrity: sha512-I0Y/aQraQyRLMWnh5tBZMiZ0xlmvPjFErXnQaeD7SdOYUHNtQS4BAQsMByQrMfg8uhOqUTKlIh7xEZusuqYWOA==}
     peerDependencies:
@@ -3105,8 +3113,8 @@ packages:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
     hasBin: true
 
-  glob@11.0.1:
-    resolution: {integrity: sha512-zrQDm8XPnYEKawJScsnM0QzobJxlT/kHOOlRTio8IH/GrmxRE5fjllkzdaHclIuNjUQTJYH2xHNIGfdpJkDJUw==}
+  glob@11.0.2:
+    resolution: {integrity: sha512-YT7U7Vye+t5fZ/QMkBFrTJ7ZQxInIUjwyAjVj84CYXqgBdv30MFUPGnBR6sQaVq6Is15wYJUsnzTuWaGRBhBAQ==}
     engines: {node: 20 || >=22}
     hasBin: true
 
@@ -3921,6 +3929,15 @@ packages:
     peerDependencies:
       react: ^19.1.0
 
+  react-intersection-observer@9.16.0:
+    resolution: {integrity: sha512-w9nJSEp+DrW9KmQmeWHQyfaP6b03v+TdXynaoA964Wxt7mdR3An11z4NNCQgL4gKSK7y1ver2Fq+JKH6CWEzUA==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
@@ -4576,8 +4593,8 @@ packages:
       utf-8-validate:
         optional: true
 
-  x-react@https://codeload.github.com/AbdelLyon/x-react/tar.gz/ab9bb646e7c4f7b559e19f37ca203e3e510df802:
-    resolution: {tarball: https://codeload.github.com/AbdelLyon/x-react/tar.gz/ab9bb646e7c4f7b559e19f37ca203e3e510df802}
+  x-react@https://codeload.github.com/AbdelLyon/x-react/tar.gz/240c0afce8f57fcf7fbb688208ffb1457fc24f42:
+    resolution: {tarball: https://codeload.github.com/AbdelLyon/x-react/tar.gz/240c0afce8f57fcf7fbb688208ffb1457fc24f42}
     version: 0.0.1
     peerDependencies:
       '@tabler/icons-react': ^3.26.0
@@ -6876,6 +6893,12 @@ snapshots:
       '@swc/helpers': 0.5.17
       react: 19.1.0
 
+  '@react-stately/data@3.12.3(react@19.1.0)':
+    dependencies:
+      '@react-types/shared': 3.29.0(react@19.1.0)
+      '@swc/helpers': 0.5.17
+      react: 19.1.0
+
   '@react-stately/datepicker@3.13.0(react@19.1.0)':
     dependencies:
       '@internationalized/date': 3.8.0
@@ -8660,7 +8683,7 @@ snapshots:
       package-json-from-dist: 1.0.1
       path-scurry: 1.11.1
 
-  glob@11.0.1:
+  glob@11.0.2:
     dependencies:
       foreground-child: 3.3.1
       jackspeak: 4.1.0
@@ -9456,6 +9479,12 @@ snapshots:
       react: 19.1.0
       scheduler: 0.26.0
 
+  react-intersection-observer@9.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+    dependencies:
+      react: 19.1.0
+    optionalDependencies:
+      react-dom: 19.1.0(react@19.1.0)
+
   react-is@16.13.1: {}
 
   react-is@17.0.2: {}
@@ -9535,7 +9564,7 @@ snapshots:
 
   rimraf@6.0.1:
     dependencies:
-      glob: 11.0.1
+      glob: 11.0.2
       package-json-from-dist: 1.0.1
 
   rollup@4.40.0:
@@ -10250,7 +10279,7 @@ snapshots:
 
   ws@8.18.1: {}
 
-  x-react@https://codeload.github.com/AbdelLyon/x-react/tar.gz/ab9bb646e7c4f7b559e19f37ca203e3e510df802(@tabler/icons-react@3.31.0(react@19.1.0))(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17):
+  x-react@https://codeload.github.com/AbdelLyon/x-react/tar.gz/240c0afce8f57fcf7fbb688208ffb1457fc24f42(@tabler/icons-react@3.31.0(react@19.1.0))(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17):
     dependencies:
       '@heroui/react': 2.7.6(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)
       '@tabler/icons-react': 3.31.0(react@19.1.0)
@@ -10259,6 +10288,7 @@ snapshots:
       next-themes: 0.4.6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
+      react-intersection-observer: 9.16.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       tailwind-merge: 2.6.0
     optionalDependencies:
       '@internationalized/date': 3.8.0
