@@ -17,7 +17,7 @@ export const lightTheme: Colors = {
    },
 
    outline: {
-      DEFAULT: "#0e8bdf70",
+      DEFAULT: "#0e8bdf2a",
       foreground: "#000000",
    },
 

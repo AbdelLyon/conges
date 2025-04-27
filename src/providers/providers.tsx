@@ -1,7 +1,8 @@
 "use client";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { PropsWithChildren } from "react";
 import { NextUIProvider, ThemeProvider } from "x-react/providers";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
 import { QueryProvider } from "./QueryProvider";
 
 export function Providers({ children }: PropsWithChildren) {

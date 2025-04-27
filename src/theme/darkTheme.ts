@@ -3,18 +3,18 @@ import { Colors } from "./types";
 export const darkTheme: Colors = {
 
    background: {
-      DEFAULT: "#282a2a",
+      DEFAULT: "#262829",
       foreground: "#ffffff",
-      50: "#1f2121",
-      100: "#1f2121",
-      200: "#232525",
-      300: "#282a2a",
-      400: "#383b3b",
-      500: "#4d5050",
-      600: "#636767",
-      700: "#7c8080",
-      800: "#a6a8a8",
-      900: "#d1d2d2",
+      50: "#1a1c1c",
+      100: "#1e2020",
+      200: "#222424",
+      300: "#262829",
+      400: "#2e3030",
+      500: "#383a3a",
+      600: "#4d5050",
+      700: "#666969",
+      800: "#8a8c8c",
+      900: "#c5c6c6",
    },
 
    primary: {
@@ -63,7 +63,7 @@ export const darkTheme: Colors = {
    },
 
    outline: {
-      DEFAULT: "#1a90df55",
+      DEFAULT: "#1a90df38",
       foreground: "#ffffff",
    },
 

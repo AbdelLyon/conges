@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import { Lato } from "next/font/google";
+
 import "x-react/style.css";
 import "./globals.css";
 import { CongesLayout } from "@/layout/CongesLayout";

@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
+import { ReactNode } from "react";
+
 import { getQueryClient } from "@/utils/getQueryClient";
 
 export interface ServerQueryProviderProps {

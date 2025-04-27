@@ -1,7 +1,7 @@
 import {
-  isServer,
   QueryClient,
   defaultShouldDehydrateQuery,
+  isServer,
 } from "@tanstack/react-query";
 import { cache } from "react";
 

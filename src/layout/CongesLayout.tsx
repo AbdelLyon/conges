@@ -1,24 +1,26 @@
 "use client";
-import { Layout, useLayoutConfig } from "x-react/layout";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { Chip } from "x-react/chip";
 import {
-  IconHome,
+  IconBrandGithub,
   IconCalendar,
   IconCalendarTime,
-  IconSend,
-  IconInfoCircle,
-  IconSettings,
   IconDeviceMobile,
-  IconBrandGithub,
+  IconHome,
+  IconInfoCircle,
+  IconSend,
+  IconSettings,
 } from "x-react/icons";
-import { usePathname, useRouter } from "next/navigation";
+import { Layout, useLayoutConfig } from "x-react/layout";
 import { ToggleTheme } from "x-react/theme";
+
+import { Providers } from "@/providers/providers";
+
+import { UserProfile } from "./UserProfile";
+
 import type { Item, NavbarProps } from "x-react/navbar";
 import type { SidebarProps } from "x-react/sidebar";
-import { Chip } from "x-react/chip";
-
-import { useState } from "react";
-import { Providers } from "@/providers/providers";
-import { UserProfile } from "./UserProfile";
 
 type LayoutComponentProps = NavbarProps & SidebarProps;
 
@@ -115,6 +117,7 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
       },
 
       actionLabel: "Nouvelle demande",
+      classNames: { action: "rounded-none" },
       actionClick: () => {
         console.log("mlk");
       },
