@@ -133,9 +133,7 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Providers>
-      <Layout {...layoutConfig}>
-        <div className="mx-auto xl:w-10/12">{children}</div>
-      </Layout>
+      <Layout {...layoutConfig}>{children}</Layout>
     </Providers>
   );
 };

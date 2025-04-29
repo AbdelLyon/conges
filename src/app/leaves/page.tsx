@@ -1,6 +1,8 @@
 "use client";
 import { TabItem, Tabs } from "x-react/tabs";
 
+import { PageContainer } from "@/components/PageContainer";
+
 import Leaves from "./_components/Leaves";
 
 export default function LeavesPage() {
@@ -25,7 +27,7 @@ export default function LeavesPage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <PageContainer title="Mes congés & absences">
       <Tabs
         items={tabs}
         defaultActiveTab="profile"
@@ -37,6 +39,6 @@ export default function LeavesPage() {
           panel: "p-0",
         }}
       />
-    </div>
+    </PageContainer>
   );
 }

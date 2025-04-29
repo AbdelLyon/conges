@@ -18,10 +18,10 @@ importers:
         specifier: ^3.12.3
         version: 3.12.3(react@19.1.0)
       '@tanstack/react-query':
-        specifier: ^5.74.9
+        specifier: ^5.74.11
         version: 5.74.11(react@19.1.0)
       '@tanstack/react-query-devtools':
-        specifier: ^5.74.9
+        specifier: ^5.74.11
         version: 5.74.11(@tanstack/react-query@5.74.11(react@19.1.0))(react@19.1.0)
       '@types/js-cookie':
         specifier: ^3.0.6
@@ -46,7 +46,7 @@ importers:
         version: 19.1.0(react@19.1.0)
       x-react:
         specifier: github:AbdelLyon/x-react
-        version: https://codeload.github.com/AbdelLyon/x-react/tar.gz/74d7421eee6c306cea9e8158555d9a472cadb03d(@tabler/icons-react@3.31.0(react@19.1.0))(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)
+        version: https://codeload.github.com/AbdelLyon/x-react/tar.gz/bbe591ccd3fd6ab1fd5f6c5fcdc5c3efa38e7bb9(@tabler/icons-react@3.31.0(react@19.1.0))(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)
       zod:
         specifier: ^3.24.3
         version: 3.24.3
@@ -4452,8 +4452,8 @@ packages:
       utf-8-validate:
         optional: true
 
-  x-react@https://codeload.github.com/AbdelLyon/x-react/tar.gz/74d7421eee6c306cea9e8158555d9a472cadb03d:
-    resolution: {tarball: https://codeload.github.com/AbdelLyon/x-react/tar.gz/74d7421eee6c306cea9e8158555d9a472cadb03d}
+  x-react@https://codeload.github.com/AbdelLyon/x-react/tar.gz/bbe591ccd3fd6ab1fd5f6c5fcdc5c3efa38e7bb9:
+    resolution: {tarball: https://codeload.github.com/AbdelLyon/x-react/tar.gz/bbe591ccd3fd6ab1fd5f6c5fcdc5c3efa38e7bb9}
     version: 0.0.1
     peerDependencies:
       '@tabler/icons-react': ^3.26.0
@@ -9871,7 +9871,7 @@ snapshots:
 
   ws@8.18.1: {}
 
-  x-react@https://codeload.github.com/AbdelLyon/x-react/tar.gz/74d7421eee6c306cea9e8158555d9a472cadb03d(@tabler/icons-react@3.31.0(react@19.1.0))(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17):
+  x-react@https://codeload.github.com/AbdelLyon/x-react/tar.gz/bbe591ccd3fd6ab1fd5f6c5fcdc5c3efa38e7bb9(@tabler/icons-react@3.31.0(react@19.1.0))(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17):
     dependencies:
       '@heroui/react': 2.7.8(@types/react@19.1.2)(framer-motion@11.18.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(tailwindcss@3.4.17)
       '@tabler/icons-react': 3.31.0(react@19.1.0)

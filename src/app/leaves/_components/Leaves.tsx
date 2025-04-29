@@ -6,6 +6,8 @@ import { useLeaveColumns } from "../_hooks/useColumns";
 import { useUsers } from "../_hooks/useUsers";
 import { User } from "../typesTest";
 
+import { FilterToolbar } from "./Filters";
+
 export default function Leaves() {
   const {
     fetchNextPage,
@@ -15,6 +17,7 @@ export default function Leaves() {
     isError,
     error,
     users,
+    isFetching,
   } = useUsers();
 
   const { columns } = useLeaveColumns();
@@ -38,6 +41,7 @@ export default function Leaves() {
       columns={columns}
       isLoading={isLoading}
       isLoadingMore={isFetchingNextPage}
+      isFetching={isFetching}
       hasMoreData={hasNextPage}
       fetchNextPage={handleLoadMore}
       onSortChange={handleSortChange}
@@ -48,26 +52,10 @@ export default function Leaves() {
       selectionMode="multiple"
       isCompact
       skeletonRowsCount={14}
-      // topContent={<FilterToolbar />}
+      topContent={<FilterToolbar />}
       classNames={{
-        base: "h-[80vh]",
+        base: "h-[76vh]",
       }}
-      infiniteScrollOptions={{
-        enabled: true,
-        threshold: 0.1,
-        rootMargin: "0px 0px 300px 0px",
-        debounceTime: 100,
-      }}
-      loadingMoreContent={
-        <div className="flex items-center justify-center gap-2 p-3">
-          <span>Loading users...</span>
-        </div>
-      }
-      noMoreDataContent={
-        <div className="p-3 text-center text-gray-500">
-          All users have been loaded
-        </div>
-      }
     />
   );
 }

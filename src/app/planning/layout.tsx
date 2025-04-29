@@ -1,3 +1,5 @@
+import { PageContainer } from "@/components/PageContainer";
+
 type Props = {
   children: React.ReactNode;
   planningBody: React.ReactNode;
@@ -10,13 +12,11 @@ export default function Layout({
   planningBody,
   planningHeader,
   planningSidebar,
-  planningToolbar,
 }: Props) {
   return (
-    <>
-      {children}
+    <PageContainer title="Planning">
       <div className="flex w-full flex-col bg-background text-foreground">
-        {planningToolbar}
+        {children}
 
         <div className="flex gap-2">
           {planningSidebar}
@@ -27,6 +27,6 @@ export default function Layout({
           </div>
         </div>
       </div>
-    </>
+    </PageContainer>
   );
 }

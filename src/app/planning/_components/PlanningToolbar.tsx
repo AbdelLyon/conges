@@ -84,9 +84,7 @@ export const PlanningToolbar = ({}) => {
 
   return (
     <div className="sticky top-0 size-full bg-background">
-      <div className="flex items-center justify-between py-2">
-        <h1 className="text-lg font-semibold">Planning</h1>
-
+      <div className="flex items-center justify-end py-2">
         <div className="flex items-center gap-2">
           <Buttons
             buttons={[
