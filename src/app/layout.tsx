@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${lato.className} antialiased`}
+        className={`${lato.className} overflow-hidden antialiased`}
         cz-shortcut-listen="true"
       >
         <CongesLayout>{children}</CongesLayout>

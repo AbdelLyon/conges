@@ -3,7 +3,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Chip } from "x-react/chip";
 import {
-  IconBrandGithub,
   IconCalendar,
   IconCalendarTime,
   IconDeviceMobile,
@@ -85,14 +84,19 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const layoutConfig = useLayoutConfig<LayoutComponentProps>({
     navbar: {
-      appName: <span className="font-bold text-foreground">Congés</span>,
-      appLogo: <IconBrandGithub />,
+      appName: (
+        <p className="w-[200px] text-center text-2xl font-bold tracking-widest text-foreground">
+          <span className="text-primary">D</span>
+          AILYAPPS
+        </p>
+      ),
+      appLogo: <p className="text-lg font-bold">Congés</p>,
 
       onItemClick: (item) => {
         if (item.href) router.push(item.href);
       },
       profile: <UserProfile />,
-      className: "border-b border-border shadow-md dark:shadow-none",
+      className: "border-b border-border/70 shadow-md dark:shadow-none",
       isMenuOpen,
       onMenuOpenChange(isOpen) {
         setIsMenuOpen(isOpen);
@@ -130,7 +134,7 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Providers>
       <Layout {...layoutConfig}>
-        <div className="mx-auto w-10/12">{children}</div>
+        <div className="mx-auto xl:w-10/12">{children}</div>
       </Layout>
     </Providers>
   );

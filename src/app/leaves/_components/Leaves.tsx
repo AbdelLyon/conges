@@ -6,8 +6,6 @@ import { useLeaveColumns } from "../_hooks/useColumns";
 import { useUsers } from "../_hooks/useUsers";
 import { User } from "../typesTest";
 
-import { FilterToolbar } from "./Filters";
-
 export default function Leaves() {
   const {
     fetchNextPage,
@@ -38,9 +36,9 @@ export default function Leaves() {
     <DataGrid
       rows={users}
       columns={columns}
-      isLoading={isLoading}
+      isLoading={!isLoading}
       isLoadingMore={isFetchingNextPage}
-      hasMoreData={!!hasNextPage}
+      hasMoreData={hasNextPage}
       fetchNextPage={handleLoadMore}
       onSortChange={handleSortChange}
       isHeaderSticky
@@ -49,7 +47,8 @@ export default function Leaves() {
       showSelectionCheckboxes
       selectionMode="multiple"
       isCompact
-      topContent={<FilterToolbar />}
+      skeletonRowsCount={9}
+      // topContent={<FilterToolbar />}
       infiniteScrollOptions={{
         enabled: true,
         threshold: 0.1,
@@ -68,8 +67,6 @@ export default function Leaves() {
       }
       classNames={{
         base: "max-h-[720px]",
-        wrapper: "border border-border p-0  dark:bg-background",
-        th: "h-16 bg-content1",
       }}
     />
   );

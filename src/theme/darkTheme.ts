@@ -48,7 +48,7 @@ export const darkTheme: Colors = {
    },
 
    content1: {
-      DEFAULT: "#323434",
+      DEFAULT: "#292b2b",
       foreground: "#ffffff",
       50: "#292b2b",
       100: "#292b2b",
@@ -113,14 +113,14 @@ export const darkTheme: Colors = {
    },
 
    default: {
-      DEFAULT: "#6c7275",
+      DEFAULT: "#37393a",
       foreground: "#ffffff",
       50: "#37393a",
       100: "#37393a",
       200: "#494c4e",
       300: "#5a5f61",
       400: "#6c7275",
-      500: "#798287",
+      500: "#494c4e",
       600: "#9aa1a5",
       700: "#bcc1c3",
       800: "#dde0e1",
@@ -277,3 +277,5 @@ export const darkTheme: Colors = {
       900: "#a1a3a3"
    },
 };
+
+

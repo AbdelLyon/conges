@@ -39,7 +39,7 @@ export const FilterToolbar = () => {
         selectionMode="multiple"
         classNames={{
           trigger:
-            "border border-border bg-transparant data-[focus-visible=true]:outline-0 data-[focus=true]:border-outline data-[hover=true]:bg-transparant data-[hover=true]:border-outline",
+            "border border-border/70   bg-transparant data-[focus-visible=true]:outline-0 data-[focus=true]:border-outline data-[hover=true]:bg-transparant data-[hover=true]:border-outline",
           listbox: "data-[focus=true]:outline-0",
         }}
         onSelectionChange={(keys) =>
@@ -57,7 +57,7 @@ export const FilterToolbar = () => {
         radius="sm"
         classNames={{
           inputWrapper:
-            "border border-border bg-transparant focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
+            "border border-border/70   bg-transparant focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
         }}
         fullWidth
         visibleMonths={2}
@@ -86,7 +86,7 @@ export const FilterToolbar = () => {
         radius="sm"
         classNames={{
           trigger:
-            "border border-border bg-transparant data-[focus-visible=true]:outline-0 data-[focus=true]:border-outline data-[hover=true]:bg-transparant data-[hover=true]:border-outline",
+            "border border-border/70   bg-transparant data-[focus-visible=true]:outline-0 data-[focus=true]:border-outline data-[hover=true]:bg-transparant data-[hover=true]:border-outline",
           listbox: "data-[focus=true]:outline-0",
         }}
         shouldFlip

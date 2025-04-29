@@ -1,9 +1,11 @@
-import { HttpClient } from "@/services/http";
+
+import { HttpClient } from "../http/HttpClient";
 
 import type { IAuth } from "./types";
 import type { HttpRequest } from "@/services/http/Request/HttpRequest";
 import type { RequestConfig } from "@/services/http/types";
 import type { z } from "zod";
+
 
 
 export abstract class Auth<TUser, TCredentials, TRegisterData, TTokens>

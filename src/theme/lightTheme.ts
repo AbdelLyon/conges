@@ -52,18 +52,18 @@ export const lightTheme: Colors = {
    },
 
    content1: {
-      DEFAULT: "#ffffff",
+      DEFAULT: "#fffff",
       foreground: "#000000",
       50: "#fafafa",
       100: "#fafafa",
       200: "#f5f5f5",
       300: "#e6e6e6",
       400: "#d6d6d6",
-      500: "#cccccc",
-      600: "#a6a6a6",
-      700: "#808080",
-      800: "#5a5a5a",
-      900: "#333333",
+      500: "#c7c7c7",
+      600: "#a8a8a8",
+      700: "#8a8a8a",
+      800: "#6c6c6c",
+      900: "#4d4d4d",
    },
 
    default: {
@@ -232,11 +232,11 @@ export const lightTheme: Colors = {
    },
 
    border: {
-      DEFAULT: "#e0e4e9",
+      DEFAULT: "#d8dce2",
       foreground: "#000000",
       50: "#f0f2f5",
       100: "#f0f2f5",
-      200: "#e0e4e9",
+      200: "#d8dce2",
       300: "#c9d0d8",
       400: "#95a1b0",
       500: "#677485",

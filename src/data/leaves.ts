@@ -1,636 +1,414 @@
-// Définition du type TypeScript pour les données de congés
+
+// Types
 export interface Leave {
    id: number;
-   employeeId: number;
-   employeeName: string;
-   leaveType: 'sick' | 'vacation' | 'personal' | 'maternity' | 'paternity';
-   startDate: string; // format YYYY-MM-DD
-   endDate: string; // format YYYY-MM-DD
-   duration: number; // en jours
-   status: 'pending' | 'approved' | 'rejected';
-   approvedBy?: string;
-   requestDate: string; // format YYYY-MM-DD
-   comments?: string;
+   userId: number;
+   startDate: string;
+   endDate: string;
+   status: {
+      tag: string;
+      color: string;
+   };
+   leaveType: {
+      color: string;
+      name: string;
+   };
+   createdAt: string;
+   validatedAt: string | null;
+   comment: string | null;
+   outOfBalance: number;
 }
-// Tableau de fausses données
-export const leavesData: Leave[] = [
+
+export interface User {
+   id: number;
+   name: string;
+   firstName?: string;
+   lastName?: string;
+   email: string;
+   avatar?: string;
+   badgeCount?: number;
+   hoursPerWeek?: number;
+}
+
+export interface Site {
+   id: string;
+   name: string;
+   users: User[];
+}
+
+export interface PublicHoliday {
+   date: string;
+   name: string;
+   clients_exists: boolean;
+}
+
+export interface HolidayZone {
+   label: string;
+   color: string;
+}
+
+export type ViewMode = "week" | "month" | "twomonths";
+
+
+// Sites et utilisateurs (données statiques pour l'exemple)
+export const sites: Site[] = [
+   {
+      id: "XEFI LYON",
+      name: "XEFI LYON",
+      users: [
+         {
+            id: 1,
+            firstName: "Nathan",
+            lastName: "AOUSSOARES",
+            name: "AOUSSOARES Nathan",
+            email: "n.aoussoares@xefi.fr",
+            badgeCount: 1,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 2,
+            firstName: "Damien",
+            lastName: "BOUDIER",
+            name: "BOUDIER Damien",
+            email: "d.boudier@xefi.fr",
+            badgeCount: 3,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 3,
+            firstName: "Charles",
+            lastName: "BELABARE",
+            name: "BELABARE Charles",
+            email: "c.belabare@xefi.fr",
+            badgeCount: 7,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 4,
+            firstName: "Angélique",
+            lastName: "CABRIAI",
+            name: "CABRIAI Angélique",
+            email: "a.cabriai@xefi.fr",
+            badgeCount: 7,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 5,
+            firstName: "Boris",
+            lastName: "CANALES",
+            name: "CANALES Boris",
+            email: "b.canales@xefi.fr",
+            badgeCount: 7,
+            hoursPerWeek: 35,
+         },
+      ],
+   },
+   {
+      id: "XEFI SOFTWARE",
+      name: "XEFI SOFTWARE",
+      users: [
+         {
+            id: 6,
+            firstName: "Laura",
+            lastName: "IDAI",
+            name: "IDAI Laura",
+            email: "l.idai@xefi.fr",
+            badgeCount: 9,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 7,
+            firstName: "Evelyne",
+            lastName: "IRIEZ",
+            name: "IRIEZ Evelyne",
+            email: "e.iriez@xefi.fr",
+            badgeCount: 9,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 8,
+            firstName: "Damien",
+            lastName: "BOUVARD",
+            name: "BOUVARD Damien",
+            email: "d.bouvard@xefi.fr",
+            badgeCount: 7,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 9,
+            firstName: "Dominic",
+            lastName: "BOUVARD",
+            name: "BOUVARD Dominic",
+            email: "d.bouvard@xefi.fr",
+            badgeCount: 8,
+            hoursPerWeek: 35,
+         },
+      ],
+   },
+   {
+      id: "DailyBiz",
+      name: "DailyBiz",
+      users: [
+         {
+            id: 14,
+            firstName: "Sophie",
+            lastName: "MARTIN",
+            name: "MARTIN Sophie",
+            email: "s.martin@xefi.fr",
+            badgeCount: 5,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 15,
+            firstName: "Thomas",
+            lastName: "DUBOIS",
+            name: "DUBOIS Thomas",
+            email: "t.dubois@xefi.fr",
+            badgeCount: 4,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 16,
+            firstName: "Julie",
+            lastName: "MOREAU",
+            name: "MOREAU Julie",
+            email: "j.moreau@xefi.fr",
+            badgeCount: 6,
+            hoursPerWeek: 32,
+         },
+         {
+            id: 17,
+            firstName: "Lucas",
+            lastName: "PETIT",
+            name: "PETIT Lucas",
+            email: "l.petit@xefi.fr",
+            badgeCount: 3,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 18,
+            firstName: "Chloe",
+            lastName: "BERNARD",
+            name: "BERNARD Chloe",
+            email: "c.bernard@xefi.fr",
+            badgeCount: 8,
+            hoursPerWeek: 28,
+         },
+      ],
+   },
+   {
+      id: "Bureau Virtuel",
+      name: "Bureau Virtuel",
+      users: [
+         {
+            id: 10,
+            firstName: "Laura",
+            lastName: "IDAI",
+            name: "IDAI Laura",
+            email: "l.idai@xefi.fr",
+            badgeCount: 9,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 11,
+            firstName: "Evelyne",
+            lastName: "IRIEZ",
+            name: "IRIEZ Evelyne",
+            email: "e.iriez@xefi.fr",
+            badgeCount: 9,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 12,
+            firstName: "Damien",
+            lastName: "BOUVARD",
+            name: "BOUVARD Damien",
+            email: "d.bouvard@xefi.fr",
+            badgeCount: 7,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 13,
+            firstName: "Dominic",
+            lastName: "BOUVARD",
+            name: "BOUVARD Dominic",
+            email: "d.bouvard@xefi.fr",
+            badgeCount: 8,
+            hoursPerWeek: 35,
+         },
+      ],
+   },
+   {
+      id: "XEFI PARIS",
+      name: "XEFI PARIS",
+      users: [
+         {
+            id: 19,
+            firstName: "Mathieu",
+            lastName: "LEROY",
+            name: "LEROY Mathieu",
+            email: "m.leroy@xefi.fr",
+            badgeCount: 2,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 20,
+            firstName: "Camille",
+            lastName: "FOURNIER",
+            name: "FOURNIER Camille",
+            email: "c.fournier@xefi.fr",
+            badgeCount: 5,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 21,
+            firstName: "Nicolas",
+            lastName: "GIRARD",
+            name: "GIRARD Nicolas",
+            email: "n.girard@xefi.fr",
+            badgeCount: 7,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 22,
+            firstName: "Emma",
+            lastName: "BONNET",
+            name: "BONNET Emma",
+            email: "e.bonnet@xefi.fr",
+            badgeCount: 6,
+            hoursPerWeek: 32,
+         },
+      ],
+   },
+   {
+      id: "XEFI BORDEAUX",
+      name: "XEFI BORDEAUX",
+      users: [
+         {
+            id: 23,
+            firstName: "Antoine",
+            lastName: "DUPONT",
+            name: "DUPONT Antoine",
+            email: "a.dupont@xefi.fr",
+            badgeCount: 4,
+            hoursPerWeek: 35,
+         },
+         {
+            id: 24,
+            firstName: "Sarah",
+            lastName: "LAMBERT",
+            name: "LAMBERT Sarah",
+            email: "s.lambert@xefi.fr",
+            badgeCount: 8,
+            hoursPerWeek: 32,
+         },
+         {
+            id: 25,
+            firstName: "Paul",
+            lastName: "MERCIER",
+            name: "MERCIER Paul",
+            email: "p.mercier@xefi.fr",
+            badgeCount: 3,
+            hoursPerWeek: 35,
+         },
+      ],
+   }
+];
+export const leaves: Leave[] = [
    {
       id: 1,
-      employeeId: 101,
-      employeeName: "Sophie Martin",
-      leaveType: "vacation",
-      startDate: "2025-05-12",
-      endDate: "2025-05-23",
-      duration: 10,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-02",
-      comments: "Congés d'été anticipés"
+      userId: 3,
+      startDate: "2022-11-23",
+      endDate: "2022-11-25",
+      status: { tag: "APPROVED", color: "#00AA55" },
+      leaveType: { color: "#2fb344", name: "Congés payés" },
+      createdAt: "2022-11-01",
+      validatedAt: "2022-11-02",
+      comment: "Vacances de novembre",
+      outOfBalance: 0
    },
    {
       id: 2,
-      employeeId: 203,
-      employeeName: "Lucas Bernard",
-      leaveType: "sick",
-      startDate: "2025-04-28",
-      endDate: "2025-04-30",
-      duration: 3,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-28"
+      userId: 4,
+      startDate: "2022-12-05",
+      endDate: "2022-12-09",
+      status: { tag: "APPROVED", color: "#00AA55" },
+      leaveType: { color: "#FFAA00", name: "RTT" },
+      createdAt: "2022-11-20",
+      validatedAt: "2022-11-21",
+      comment: "RTT de fin d'année",
+      outOfBalance: 0
    },
    {
       id: 3,
-      employeeId: 156,
-      employeeName: "Emma Petit",
-      leaveType: "personal",
-      startDate: "2025-05-02",
-      endDate: "2025-05-02",
-      duration: 1,
-      status: "pending",
-      requestDate: "2025-04-15",
-      comments: "Rendez-vous administratif"
+      userId: 8,
+      startDate: "2022-11-01",
+      endDate: "2022-11-30",
+      status: { tag: "APPROVED", color: "#00AA55" },
+      leaveType: { color: "#2fb344", name: "Congés payés" },
+      createdAt: "2022-10-15",
+      validatedAt: "2022-10-18",
+      comment: "Congé longue durée",
+      outOfBalance: 0
    },
    {
       id: 4,
-      employeeId: 189,
-      employeeName: "Antoine Leroy",
-      leaveType: "vacation",
-      startDate: "2025-06-14",
-      endDate: "2025-06-28",
-      duration: 15,
-      status: "rejected",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-10",
-      comments: "Période de forte activité, à reporter"
+      userId: 9,
+      startDate: "2022-11-28",
+      endDate: "2022-11-28",
+      status: { tag: "APPROVED", color: "#00AA55" },
+      leaveType: { color: "#2fb344", name: "Congés payés" },
+      createdAt: "2022-11-10",
+      validatedAt: "2022-11-15",
+      comment: null,
+      outOfBalance: 0
    },
    {
       id: 5,
-      employeeId: 221,
-      employeeName: "Julie Moreau",
-      leaveType: "maternity",
-      startDate: "2025-05-15",
-      endDate: "2025-09-14",
-      duration: 123,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-03-20"
+      userId: 1,
+      startDate: "2025-05-02",
+      endDate: "2025-05-15",
+      status: { tag: "SUBMITTED", color: "#2D88FF" },
+      leaveType: { color: "#2fb344", name: "Congés payés" },
+      createdAt: "2025-04-10",
+      validatedAt: null,
+      comment: "Vacances de printemps",
+      outOfBalance: 0
    },
    {
       id: 6,
-      employeeId: 101,
-      employeeName: "Sophie Martin",
-      leaveType: "sick",
-      startDate: "2025-04-15",
-      endDate: "2025-04-16",
-      duration: 2,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-15"
+      userId: 5,
+      startDate: "2025-06-01",
+      endDate: "2025-06-05",
+      status: { tag: "VALIDATED", color: "#00AA55" },
+      leaveType: { color: "#FFAA00", name: "RTT" },
+      createdAt: "2025-04-15",
+      validatedAt: "2025-04-20",
+      comment: null,
+      outOfBalance: 0
    },
    {
       id: 7,
-      employeeId: 178,
-      employeeName: "Nicolas Fournier",
-      leaveType: "paternity",
-      startDate: "2025-05-20",
-      endDate: "2025-06-10",
-      duration: 22,
-      status: "pending",
-      requestDate: "2025-04-20"
+      userId: 7,
+      startDate: "2025-05-10",
+      endDate: "2025-05-20",
+      status: { tag: "REFUSED", color: "#FF5630" },
+      leaveType: { color: "#2fb344", name: "Congés payés" },
+      createdAt: "2025-04-01",
+      validatedAt: null,
+      comment: "Demande pour raisons familiales",
+      outOfBalance: 2
    },
    {
       id: 8,
-      employeeId: 215,
-      employeeName: "Claire Dumont",
-      leaveType: "vacation",
-      startDate: "2025-07-05",
-      endDate: "2025-07-26",
-      duration: 22,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-01"
-   },
-   {
-      id: 9,
-      employeeId: 134,
-      employeeName: "Thomas Girard",
-      leaveType: "personal",
-      startDate: "2025-05-09",
-      endDate: "2025-05-09",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-22",
-      comments: "Déménagement"
-   },
-   {
-      id: 10,
-      employeeId: 167,
-      employeeName: "Camille Roux",
-      leaveType: "sick",
-      startDate: "2025-04-10",
-      endDate: "2025-04-14",
-      duration: 5,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-10"
-   },
-   {
-      id: 11,
-      employeeId: 255,
-      employeeName: "Paul Mercier",
-      leaveType: "vacation",
-      startDate: "2025-08-01",
-      endDate: "2025-08-15",
-      duration: 15,
-      status: "pending",
-      requestDate: "2025-04-17",
-      comments: "Congés d'été"
-   },
-   {
-      id: 12,
-      employeeId: 198,
-      employeeName: "Léa Robert",
-      leaveType: "personal",
-      startDate: "2025-05-28",
-      endDate: "2025-05-28",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-15",
-      comments: "Formation professionnelle"
-   },
-   {
-      id: 13,
-      employeeId: 221,
-      employeeName: "Julie Moreau",
-      leaveType: "personal",
-      startDate: "2025-05-05",
-      endDate: "2025-05-05",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-20",
-      comments: "Rendez-vous médical"
-   },
-   {
-      id: 14,
-      employeeId: 109,
-      employeeName: "Maxime Blanc",
-      leaveType: "paternity",
-      startDate: "2025-06-01",
-      endDate: "2025-06-21",
-      duration: 21,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-03-15"
-   },
-   {
-      id: 15,
-      employeeId: 187,
-      employeeName: "Chloé Vincent",
-      leaveType: "vacation",
+      userId: 2,
       startDate: "2025-07-15",
-      endDate: "2025-08-05",
-      duration: 22,
-      status: "rejected",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-05",
-      comments: "Période critique pour le projet Alpha"
-   },
-   {
-      id: 16,
-      employeeId: 144,
-      employeeName: "David Dupont",
-      leaveType: "sick",
-      startDate: "2025-04-22",
-      endDate: "2025-04-23",
-      duration: 2,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-22"
-   },
-   {
-      id: 17,
-      employeeId: 215,
-      employeeName: "Claire Dumont",
-      leaveType: "personal",
-      startDate: "2025-05-16",
-      endDate: "2025-05-16",
-      duration: 1,
-      status: "pending",
-      requestDate: "2025-04-29",
-      comments: "Événement familial"
-   },
-   {
-      id: 18,
-      employeeId: 178,
-      employeeName: "Nicolas Fournier",
-      leaveType: "vacation",
-      startDate: "2025-09-15",
-      endDate: "2025-09-26",
-      duration: 12,
-      status: "pending",
-      requestDate: "2025-04-12",
-      comments: "Voyage à l'étranger"
-   },
-   {
-      id: 19,
-      employeeId: 156,
-      employeeName: "Emma Petit",
-      leaveType: "sick",
-      startDate: "2025-04-05",
-      endDate: "2025-04-09",
-      duration: 5,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-05"
-   },
-   {
-      id: 20,
-      employeeId: 203,
-      employeeName: "Lucas Bernard",
-      leaveType: "vacation",
-      startDate: "2025-08-11",
-      endDate: "2025-08-22",
-      duration: 12,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-11",
-      comments: "Congés d'été"
-   },
-   {
-      id: 21,
-      employeeId: 189,
-      employeeName: "Antoine Leroy",
-      leaveType: "personal",
-      startDate: "2025-05-06",
-      endDate: "2025-05-06",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-23",
-      comments: "Événement professionnel externe"
-   },
-   {
-      id: 22,
-      employeeId: 134,
-      employeeName: "Thomas Girard",
-      leaveType: "vacation",
-      startDate: "2025-07-01",
-      endDate: "2025-07-12",
-      duration: 12,
-      status: "pending",
-      requestDate: "2025-04-15",
-      comments: "Vacances en famille"
-   },
-   {
-      id: 23,
-      employeeId: 167,
-      employeeName: "Camille Roux",
-      leaveType: "maternity",
-      startDate: "2025-06-15",
-      endDate: "2025-10-14",
-      duration: 122,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-03-10"
-   },
-   {
-      id: 24,
-      employeeId: 255,
-      employeeName: "Paul Mercier",
-      leaveType: "personal",
-      startDate: "2025-05-07",
-      endDate: "2025-05-08",
-      duration: 2,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-20",
-      comments: "Formation obligatoire"
-   },
-   {
-      id: 25,
-      employeeId: 198,
-      employeeName: "Léa Robert",
-      leaveType: "sick",
-      startDate: "2025-04-17",
-      endDate: "2025-04-21",
-      duration: 5,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-17"
-   },
-   {
-      id: 26,
-      employeeId: 109,
-      employeeName: "Maxime Blanc",
-      leaveType: "vacation",
-      startDate: "2025-09-01",
-      endDate: "2025-09-12",
-      duration: 12,
-      status: "rejected",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-02",
-      comments: "Lancement de produit planifié, présence requise"
-   },
-   {
-      id: 27,
-      employeeId: 187,
-      employeeName: "Chloé Vincent",
-      leaveType: "personal",
-      startDate: "2025-05-23",
-      endDate: "2025-05-23",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-23",
-      comments: "Rendez-vous administratif"
-   },
-   {
-      id: 28,
-      employeeId: 144,
-      employeeName: "David Dupont",
-      leaveType: "vacation",
-      startDate: "2025-06-30",
-      endDate: "2025-07-11",
-      duration: 12,
-      status: "pending",
-      requestDate: "2025-04-10",
-      comments: "Vacances d'été"
-   },
-   {
-      id: 29,
-      employeeId: 101,
-      employeeName: "Sophie Martin",
-      leaveType: "personal",
-      startDate: "2025-05-26",
-      endDate: "2025-05-26",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-26",
-      comments: "Journée de bénévolat"
-   },
-   {
-      id: 30,
-      employeeId: 178,
-      employeeName: "Nicolas Fournier",
-      leaveType: "sick",
-      startDate: "2025-04-01",
-      endDate: "2025-04-03",
-      duration: 3,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-01"
-   },
-   {
-      id: 31,
-      employeeId: 156,
-      employeeName: "Emma Petit",
-      leaveType: "vacation",
-      startDate: "2025-08-04",
-      endDate: "2025-08-22",
-      duration: 19,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-04",
-      comments: "Congés d'été"
-   },
-   {
-      id: 32,
-      employeeId: 221,
-      employeeName: "Julie Moreau",
-      leaveType: "sick",
-      startDate: "2025-04-08",
-      endDate: "2025-04-09",
-      duration: 2,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-08"
-   },
-   {
-      id: 33,
-      employeeId: 203,
-      employeeName: "Lucas Bernard",
-      leaveType: "personal",
-      startDate: "2025-05-30",
-      endDate: "2025-05-30",
-      duration: 1,
-      status: "pending",
-      requestDate: "2025-04-29",
-      comments: "Examen médical"
-   },
-   {
-      id: 34,
-      employeeId: 189,
-      employeeName: "Antoine Leroy",
-      leaveType: "vacation",
-      startDate: "2025-10-13",
-      endDate: "2025-10-24",
-      duration: 12,
-      status: "pending",
-      requestDate: "2025-04-13",
-      comments: "Vacances d'automne"
-   },
-   {
-      id: 35,
-      employeeId: 134,
-      employeeName: "Thomas Girard",
-      leaveType: "sick",
-      startDate: "2025-04-24",
-      endDate: "2025-04-25",
-      duration: 2,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-24"
-   },
-   {
-      id: 36,
-      employeeId: 167,
-      employeeName: "Camille Roux",
-      leaveType: "personal",
-      startDate: "2025-05-19",
-      endDate: "2025-05-19",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-19",
-      comments: "Réunion d'association"
-   },
-   {
-      id: 37,
-      employeeId: 255,
-      employeeName: "Paul Mercier",
-      leaveType: "vacation",
-      startDate: "2025-07-21",
-      endDate: "2025-08-01",
-      duration: 12,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-03-21",
-      comments: "Vacances d'été"
-   },
-   {
-      id: 38,
-      employeeId: 198,
-      employeeName: "Léa Robert",
-      leaveType: "paternity",
-      startDate: "2025-07-07",
-      endDate: "2025-07-28",
-      duration: 22,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-07"
-   },
-   {
-      id: 39,
-      employeeId: 109,
-      employeeName: "Maxime Blanc",
-      leaveType: "sick",
-      startDate: "2025-04-18",
-      endDate: "2025-04-18",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-18"
-   },
-   {
-      id: 40,
-      employeeId: 187,
-      employeeName: "Chloé Vincent",
-      leaveType: "vacation",
-      startDate: "2025-06-02",
-      endDate: "2025-06-13",
-      duration: 12,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-02",
-      comments: "Vacances de printemps"
-   },
-   {
-      id: 41,
-      employeeId: 144,
-      employeeName: "David Dupont",
-      leaveType: "personal",
-      startDate: "2025-05-14",
-      endDate: "2025-05-14",
-      duration: 1,
-      status: "rejected",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-14",
-      comments: "Réunion critique le même jour"
-   },
-   {
-      id: 42,
-      employeeId: 215,
-      employeeName: "Claire Dumont",
-      leaveType: "sick",
-      startDate: "2025-04-03",
-      endDate: "2025-04-07",
-      duration: 5,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-03"
-   },
-   {
-      id: 43,
-      employeeId: 101,
-      employeeName: "Sophie Martin",
-      leaveType: "vacation",
-      startDate: "2025-09-08",
-      endDate: "2025-09-19",
-      duration: 12,
-      status: "pending",
-      requestDate: "2025-04-08",
-      comments: "Vacances d'automne"
-   },
-   {
-      id: 44,
-      employeeId: 178,
-      employeeName: "Nicolas Fournier",
-      leaveType: "personal",
-      startDate: "2025-05-21",
-      endDate: "2025-05-21",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-21",
-      comments: "Visite médicale"
-   },
-   {
-      id: 45,
-      employeeId: 156,
-      employeeName: "Emma Petit",
-      leaveType: "sick",
-      startDate: "2025-04-11",
-      endDate: "2025-04-14",
-      duration: 4,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-11"
-   },
-   {
-      id: 46,
-      employeeId: 203,
-      employeeName: "Lucas Bernard",
-      leaveType: "vacation",
-      startDate: "2025-05-26",
-      endDate: "2025-06-06",
-      duration: 12,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-03-26",
-      comments: "Vacances de printemps"
-   },
-   {
-      id: 47,
-      employeeId: 189,
-      employeeName: "Antoine Leroy",
-      leaveType: "sick",
-      startDate: "2025-04-29",
-      endDate: "2025-05-02",
-      duration: 4,
-      status: "approved",
-      approvedBy: "Marie Lambert",
-      requestDate: "2025-04-29"
-   },
-   {
-      id: 48,
-      employeeId: 134,
-      employeeName: "Thomas Girard",
-      leaveType: "vacation",
-      startDate: "2025-08-25",
-      endDate: "2025-09-05",
-      duration: 12,
-      status: "pending",
-      requestDate: "2025-04-25",
-      comments: "Vacances de fin d'été"
-   },
-   {
-      id: 49,
-      employeeId: 167,
-      employeeName: "Camille Roux",
-      leaveType: "personal",
-      startDate: "2025-05-12",
-      endDate: "2025-05-12",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Thomas Dubois",
-      requestDate: "2025-04-12",
-      comments: "Formation continue"
-   },
-   {
-      id: 50,
-      employeeId: 255,
-      employeeName: "Paul Mercier",
-      leaveType: "sick",
-      startDate: "2025-04-04",
-      endDate: "2025-04-04",
-      duration: 1,
-      status: "approved",
-      approvedBy: "Philippe Legrand",
-      requestDate: "2025-04-04"
+      endDate: "2025-08-15",
+      status: { tag: "WAITING_VALIDATION", color: "#FFAB00" },
+      leaveType: { color: "#2fb344", name: "Congés payés" },
+      createdAt: "2025-04-25",
+      validatedAt: null,
+      comment: "Congés d'été",
+      outOfBalance: 0
    }
 ];

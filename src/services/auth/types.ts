@@ -1,6 +1,7 @@
-import type { RequestConfig } from "@/http/types";
 
 // ==================== Interfaces ====================
+
+import { RequestConfig } from "../http/types";
 
 export interface IAuth<TUser, TCredentials, TRegisterData, TToken> {
   register: (
