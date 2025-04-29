@@ -36,7 +36,7 @@ export default function Leaves() {
     <DataGrid
       rows={users}
       columns={columns}
-      isLoading={!isLoading}
+      isLoading={isLoading}
       isLoadingMore={isFetchingNextPage}
       hasMoreData={hasNextPage}
       fetchNextPage={handleLoadMore}
@@ -47,8 +47,11 @@ export default function Leaves() {
       showSelectionCheckboxes
       selectionMode="multiple"
       isCompact
-      skeletonRowsCount={9}
+      skeletonRowsCount={14}
       // topContent={<FilterToolbar />}
+      classNames={{
+        base: "h-[80vh]",
+      }}
       infiniteScrollOptions={{
         enabled: true,
         threshold: 0.1,
@@ -65,9 +68,6 @@ export default function Leaves() {
           All users have been loaded
         </div>
       }
-      classNames={{
-        base: "max-h-[720px]",
-      }}
     />
   );
 }

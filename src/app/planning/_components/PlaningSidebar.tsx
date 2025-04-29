@@ -1,35 +1,36 @@
+"use client";
+
 import { IconChevronDown } from "x-react/icons";
 import { TabItem, Tabs } from "x-react/tabs";
 
-import { Site } from "@/data/leaves";
+import { sites } from "@/data/leaves";
+import { usePlanningStore } from "@/store/usePlanningStore";
 
-interface PlanningSidebarProps {
-  selectedTab: "sites" | "équipes";
-  setSelectedTab: (tab: "sites" | "équipes") => void;
-  expandedSites: Record<string, boolean>;
-  setExpandedSites: React.Dispatch<
-    React.SetStateAction<Record<string, boolean>>
-  >;
-  sites: Site[];
-  searchQuery: string;
-  setSearchQuery: (query: string) => void;
-  setHoveredUser: (userId: number | null) => void;
-}
-
-export const PlanningSidebar: React.FC<PlanningSidebarProps> = ({
-  selectedTab,
-  setSelectedTab,
-  expandedSites,
-  setExpandedSites,
-  sites,
-  setHoveredUser,
-}) => {
+export const PlanningSidebar = () => {
+  const {
+    expandedSites,
+    setExpandedSites,
+    selectedTab,
+    setSelectedTab,
+    setHoveredUser,
+    searchQuery,
+  } = usePlanningStore();
   const toggleSiteExpand = (siteId: string) => {
-    setExpandedSites((prev) => ({
-      ...prev,
-      [siteId]: !prev[siteId],
-    }));
+    setExpandedSites({
+      ...expandedSites,
+      [siteId]: !expandedSites[siteId],
+    });
   };
+
+  const filteredSites = sites.map((site) => ({
+    ...site,
+    users: site.users.filter(
+      (user) =>
+        searchQuery === "" ||
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()),
+    ),
+  }));
 
   // Configuration des onglets
   const tabs: TabItem[] = [
@@ -67,7 +68,7 @@ export const PlanningSidebar: React.FC<PlanningSidebarProps> = ({
           <div className="text-xs">CP(N)</div>
           <div className="text-xs">Pris</div>
         </div>
-        {sites.map((site) => (
+        {filteredSites.map((site) => (
           <div key={site.id}>
             <div
               className="mb-1 flex cursor-pointer items-center justify-between rounded-md border border-border/70 bg-content1-200 p-1 transition-colors duration-200 hover:opacity-80"

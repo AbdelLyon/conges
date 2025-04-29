@@ -47,8 +47,6 @@ export interface HolidayZone {
    color: string;
 }
 
-export type ViewMode = "week" | "month" | "twomonths";
-
 
 // Sites et utilisateurs (données statiques pour l'exemple)
 export const sites: Site[] = [

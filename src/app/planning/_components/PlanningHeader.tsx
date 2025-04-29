@@ -1,20 +1,12 @@
+"use client";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { Chip } from "x-react/chip";
 import { IconChevronLeft, IconChevronRight } from "x-react/icons";
 import { mergeTailwindClasses } from "x-react/utils";
 
-import { ViewMode } from "@/data/leaves";
+import { usePlanningStore } from "@/store/usePlanningStore";
 
-interface PlanningHeaderProps {
-  viewMode: ViewMode;
-  currentDate: dayjs.Dayjs;
-  changePeriod: (increment: number) => void;
-  periodDays: dayjs.Dayjs[];
-  setHoveredDay: (date: string | null) => void;
-}
-
-// Types pour les jours fériés et vacances
 interface PublicHoliday {
   date: string;
   name: string;
@@ -32,13 +24,8 @@ interface Holiday {
   zones: string;
 }
 
-export const PlanningHeader: React.FC<PlanningHeaderProps> = ({
-  viewMode,
-  currentDate,
-  changePeriod,
-  periodDays,
-  setHoveredDay,
-}) => {
+export const PlanningHeader = () => {
+  const { viewMode, currentDate, setHoveredDay } = usePlanningStore();
   // États pour les jours fériés et vacances
   const [publicHolidays, setPublicHolidays] = useState<PublicHoliday[]>([]);
   const [holidays, setHolidays] = useState<Holiday[]>([]);
@@ -76,9 +63,6 @@ export const PlanningHeader: React.FC<PlanningHeaderProps> = ({
     ]);
   }, [currentDate]);
 
-  if (periodDays.length === 0) return null;
-
-  // Ajuste la taille des cellules selon le mode de vue
   const getCellMinWidth = () => {
     switch (viewMode) {
       case "week":
@@ -93,6 +77,33 @@ export const PlanningHeader: React.FC<PlanningHeaderProps> = ({
   };
 
   const cellMinWidth = getCellMinWidth();
+  const getPeriodDays = () => {
+    let startDate, endDate;
+
+    if (viewMode === "week") {
+      startDate = currentDate.startOf("week");
+      endDate = currentDate.endOf("week");
+    } else if (viewMode === "month") {
+      startDate = currentDate.startOf("month");
+      endDate = currentDate.endOf("month");
+    } else if (viewMode === "twomonths") {
+      // Two months view
+      startDate = currentDate.startOf("month");
+      endDate = currentDate.add(1, "month").endOf("month");
+    }
+
+    const days = [];
+    let day = startDate;
+    while (day?.isSame(endDate) || day?.isBefore(endDate)) {
+      days.push(day);
+      day = day.add(1, "day");
+    }
+
+    return days;
+  };
+
+  const periodDays = getPeriodDays();
+  if (periodDays.length === 0) return null;
 
   // Groupe les jours par mois pour faciliter l'affichage
   const daysByMonth = periodDays.reduce(
@@ -148,6 +159,16 @@ export const PlanningHeader: React.FC<PlanningHeaderProps> = ({
       }
     }
     return holiday;
+  };
+
+  const changePeriod = (increment: number) => {
+    const setCurrentDate = usePlanningStore.getState().setCurrentDate;
+
+    if (viewMode === "week") {
+      setCurrentDate(currentDate.add(increment * 7, "day"));
+    } else {
+      setCurrentDate(currentDate.add(increment, "month"));
+    }
   };
 
   return (

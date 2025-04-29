@@ -177,6 +177,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
   return (
     <Modal
       className="mx-4 max-h-[86vh] overflow-auto rounded-lg bg-background shadow-xl"
+      aria-labelledby="planning-details"
       trigger={trigger}
       size="4xl"
       title={

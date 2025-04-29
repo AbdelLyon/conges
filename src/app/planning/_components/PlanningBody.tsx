@@ -1,36 +1,78 @@
+"use client";
 import dayjs from "dayjs";
+import React, { JSX } from "react";
 import { mergeTailwindClasses } from "x-react/utils";
 
-import { Leave, PublicHoliday, Site, ViewMode } from "@/data/leaves";
+import { Leave, PublicHoliday, Site, User } from "@/data/leaves";
+import { leaves, sites } from "@/data/leaves";
+
+import { usePlanningStore } from "../../../store/usePlanningStore";
 
 import { PlanningDetails } from "./PlanningDetails";
 
-interface PlanningBodyProps {
-  expandedSites: Record<string, boolean>;
-  sites: Site[];
-  periodDays: dayjs.Dayjs[];
-  leaves: Leave[];
-  hoveredDay: string | null;
-  hoveredUser: number | null;
-  setHoveredUser: (userId: number | null) => void;
-  viewMode: ViewMode;
-  publicHolidays?: PublicHoliday[];
-  reversePrimary?: boolean;
-}
+type CellSize = {
+  height: string;
+  width: string;
+};
 
-export const PlanningBody: React.FC<PlanningBodyProps> = ({
-  expandedSites,
-  sites,
-  periodDays,
-  leaves,
-  hoveredDay,
-  hoveredUser,
-  setHoveredUser,
-  viewMode,
-  publicHolidays = [],
-  reversePrimary = false,
-}) => {
-  const getLeaveForDateAndUser = (userId: number, date: dayjs.Dayjs) => {
+export const PlanningBody: React.FC = () => {
+  const {
+    expandedSites,
+    currentDate,
+    hoveredDay,
+    hoveredUser,
+    viewMode,
+    publicHolidays,
+    reversePrimary,
+    setHoveredUser,
+    searchQuery,
+  } = usePlanningStore();
+
+  // Fonction pour obtenir les jours de la période en cours
+  const getPeriodDays = (): dayjs.Dayjs[] => {
+    let startDate: dayjs.Dayjs;
+    let endDate: dayjs.Dayjs;
+
+    if (viewMode === "week") {
+      startDate = currentDate.startOf("week");
+      endDate = currentDate.endOf("week");
+    } else if (viewMode === "month") {
+      startDate = currentDate.startOf("month");
+      endDate = currentDate.endOf("month");
+    } else {
+      // twomonths
+      startDate = currentDate.startOf("month");
+      endDate = currentDate.add(1, "month").endOf("month");
+    }
+
+    const days: dayjs.Dayjs[] = [];
+    let day = startDate;
+    while (day?.isSame(endDate) || day?.isBefore(endDate)) {
+      days.push(day);
+      day = day.add(1, "day");
+    }
+
+    return days;
+  };
+
+  const periodDays = getPeriodDays();
+
+  // Filtrer les sites en fonction de la recherche
+  const filteredSites: Site[] = sites.map((site) => ({
+    ...site,
+    users: site.users.filter(
+      (user) =>
+        searchQuery === "" ||
+        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()),
+    ),
+  }));
+
+  // Obtenir les congés pour un utilisateur et une date donnés
+  const getLeaveForDateAndUser = (
+    userId: number,
+    date: dayjs.Dayjs,
+  ): Leave | null => {
     const userLeaves = leaves.filter(
       (leave) =>
         leave.userId === userId &&
@@ -46,25 +88,25 @@ export const PlanningBody: React.FC<PlanningBodyProps> = ({
   };
 
   // Vérifier si c'est un week-end
-  const isWeekend = (date: dayjs.Dayjs) => {
+  const isWeekend = (date: dayjs.Dayjs): boolean => {
     return date.day() === 0 || date.day() === 6;
   };
 
   // Vérifier si c'est un jour férié
-  const isPublicHoliday = (date: dayjs.Dayjs) => {
+  const isPublicHoliday = (date: dayjs.Dayjs): boolean => {
     return publicHolidays.some(
-      (holiday) =>
+      (holiday: PublicHoliday) =>
         dayjs(holiday.date).isSame(date, "day") && holiday.clients_exists,
     );
   };
 
   // Vérifier si c'est le jour actuel
-  const isToday = (date: dayjs.Dayjs) => {
+  const isToday = (date: dayjs.Dayjs): boolean => {
     return dayjs().isSame(date, "day");
   };
 
   // Ajuste la taille des cellules selon le mode de vue
-  const getCellSize = () => {
+  const getCellSize = (): CellSize => {
     switch (viewMode) {
       case "week":
         return {
@@ -91,120 +133,169 @@ export const PlanningBody: React.FC<PlanningBodyProps> = ({
 
   const cellSize = getCellSize();
 
-  return (
-    <>
-      {sites.map((site, i) => {
-        return (
+  // Composant pour le séparateur entre sites
+  const SiteSeparator = ({ siteId }: { siteId: string }): JSX.Element => (
+    <div key={`separator-${siteId}`} className="mb-1 h-[30px]" />
+  );
+
+  // Rendu de la cellule
+  const renderCell = (
+    user: User,
+    day: dayjs.Dayjs,
+    dayIndex: number,
+  ): JSX.Element => {
+    const leave = getLeaveForDateAndUser(user.id, day);
+    const isStartDate = leave && dayjs(leave.startDate).isSame(day, "day");
+    const isEndDate = leave && dayjs(leave.endDate).isSame(day, "day");
+    const isHighlighted = hoveredDay === day.format("YYYY-MM-DD");
+    const isPublicHolidayDay = isPublicHoliday(day);
+    const isTodayDay = isToday(day);
+    const isFirstDayOfMonth = day.date() === 1;
+
+    // Créer des descriptions pour les attributs d'accessibilité
+    const cellDate = day.format("DD/MM/YYYY");
+    const userName =
+      user.name || `${user.firstName || ""} ${user.lastName || ""}`;
+    const cellStatus = leave
+      ? `${leave.leaveType.name || "Congé"}`
+      : isPublicHolidayDay
+        ? "Jour férié"
+        : isWeekend(day)
+          ? "Week-end"
+          : "Disponible";
+
+    return (
+      <div
+        key={`cell-${user.id}-${dayIndex}`}
+        className={mergeTailwindClasses(
+          "relative",
+          cellSize.width,
+          "flex-1 border-b border-border/70",
+          isFirstDayOfMonth ? "border-l-2" : "border-r",
+          isPublicHolidayDay
+            ? "bg-content1-300/50 dark:bg-content1-300/40"
+            : isWeekend(day)
+              ? "bg-content1-200/70 dark:bg-content1-200/40"
+              : "",
+          isHighlighted ? "bg-default dark:bg-default/40" : "",
+          "transition-colors duration-150",
+        )}
+        aria-label={`${userName} - ${cellDate} - ${cellStatus}`}
+      >
+        {isTodayDay && (
           <div
-            key={site.id}
-            className="mb-0 w-full overflow-hidden transition-all duration-300 ease-in-out"
-            style={{
-              maxHeight: expandedSites[site.id] ? "2000px" : "0",
-              opacity: expandedSites[site.id] ? 1 : 0,
-            }}
-          >
-            {i ? <div className="mb-1 h-[30px]"></div> : null}
+            className="absolute inset-y-0 left-1/2 w-px bg-primary opacity-70"
+            aria-hidden="true"
+          />
+        )}
 
-            <div className="relative">
-              {site.users.map((user) => (
+        {leave && (
+          <PlanningDetails
+            trigger={
+              <div
+                className="absolute inset-0 flex size-full cursor-pointer flex-col transition-opacity duration-200"
+                aria-label={`Détails du congé: ${leave.leaveType.name || "Congé"}`}
+              >
                 <div
-                  key={user.id}
-                  className={mergeTailwindClasses(
-                    "flex h-8 transition-colors duration-200",
-                    hoveredUser === user.id ? "bg-primary/10" : "",
-                  )}
-                  onMouseEnter={() => setHoveredUser(user.id)}
-                  onMouseLeave={() => setHoveredUser(null)}
-                >
-                  <div
-                    className={mergeTailwindClasses("flex flex-1 flex-nowrap")}
-                  >
-                    {periodDays.map((day, dayIndex) => {
-                      const leave = getLeaveForDateAndUser(user.id, day);
-                      const isStartDate =
-                        leave && dayjs(leave.startDate).isSame(day, "day");
-                      const isEndDate =
-                        leave && dayjs(leave.endDate).isSame(day, "day");
-                      const isHighlighted =
-                        hoveredDay === day.format("YYYY-MM-DD");
-                      const isPublicHolidayDay = isPublicHoliday(day);
-                      const isTodayDay = isToday(day);
+                  className="flex-1 transition-all duration-200"
+                  style={{
+                    backgroundColor: reversePrimary
+                      ? "#007700"
+                      : leave.leaveType.color,
+                    borderTopLeftRadius: isStartDate ? "4px" : "0",
+                    borderTopRightRadius: isEndDate ? "4px" : "0",
+                  }}
+                  aria-hidden="true"
+                />
+                <div
+                  className="h-1/5 min-h-[3px] transition-all duration-200"
+                  style={{
+                    backgroundColor: reversePrimary
+                      ? leave.leaveType.color
+                      : "#007700",
+                    borderBottomLeftRadius: isStartDate ? "4px" : "0",
+                    borderBottomRightRadius: isEndDate ? "4px" : "0",
+                  }}
+                  aria-hidden="true"
+                />
+              </div>
+            }
+            leave={leave}
+            user={sites
+              .flatMap((s) => s.users)
+              .find((u) => u.id === leave.userId)}
+          />
+        )}
+      </div>
+    );
+  };
 
-                      const isFirstDayOfMonth = day.date() === 1;
+  // Rendu de la ligne pour un utilisateur
+  const renderUserRow = (user: User): JSX.Element => {
+    return (
+      <div
+        key={user.id}
+        className={mergeTailwindClasses(
+          "flex h-8 transition-colors duration-200",
+          hoveredUser === user.id ? "bg-primary/10" : "",
+        )}
+        onMouseEnter={() => setHoveredUser(user.id)}
+        onMouseLeave={() => setHoveredUser(null)}
+        aria-label={`Ligne pour ${user.name || `${user.firstName || ""} ${user.lastName || ""}`}`}
+        role="row"
+      >
+        <div
+          className={mergeTailwindClasses("flex flex-1 flex-nowrap")}
+          role="rowgroup"
+        >
+          {periodDays.map((day, dayIndex) => renderCell(user, day, dayIndex))}
+        </div>
+      </div>
+    );
+  };
+  // Rendu du contenu d'un site
+  const renderSiteContent = (site: Site): JSX.Element => {
+    return (
+      <div
+        className="relative"
+        role="grid"
+        aria-label={`Planning pour ${site.name}`}
+      >
+        {site.users.map((user) => renderUserRow(user))}
+      </div>
+    );
+  };
 
-                      return (
-                        <div
-                          key={`cell-${user.id}-${dayIndex}`}
-                          className={mergeTailwindClasses(
-                            "relative",
-                            cellSize.width,
-                            "flex-1 border-b border-border/70",
-                            isFirstDayOfMonth ? "border-l-2" : "border-r",
-                            isPublicHolidayDay
-                              ? "bg-content1-300/50 dark:bg-content1-300/40"
-                              : isWeekend(day)
-                                ? "bg-content1-200/70 dark:bg-content1-200/40"
-                                : "",
-                            isHighlighted
-                              ? "bg-default dark:bg-default/40"
-                              : "",
-                            "transition-colors duration-150",
-                          )}
-                        >
-                          {isTodayDay && (
-                            <div className="absolute inset-y-0 left-1/2 w-px bg-primary opacity-70"></div>
-                          )}
+  return (
+    <div role="region" aria-label="Planning des congés">
+      {filteredSites.map((site, i) => {
+        // Traitement spécial pour le premier site
+        if (i === 0) {
+          if (expandedSites[site.id]) {
+            return (
+              <div key={site.id} className="w-full">
+                {renderSiteContent(site)}
+              </div>
+            );
+          }
+          return null;
+        }
 
-                          {leave && (
-                            <PlanningDetails
-                              trigger={
-                                <div className="absolute inset-0 flex size-full cursor-pointer flex-col transition-opacity duration-200">
-                                  <div
-                                    className="flex-1 transition-all duration-200"
-                                    style={{
-                                      backgroundColor: reversePrimary
-                                        ? "#007700"
-                                        : leave.leaveType.color,
-                                      borderTopLeftRadius: isStartDate
-                                        ? "4px"
-                                        : "0",
-                                      borderTopRightRadius: isEndDate
-                                        ? "4px"
-                                        : "0",
-                                    }}
-                                  />
-                                  <div
-                                    className="h-1/5 min-h-[3px] transition-all duration-200"
-                                    style={{
-                                      backgroundColor: reversePrimary
-                                        ? leave.leaveType.color
-                                        : "#007700",
-                                      borderBottomLeftRadius: isStartDate
-                                        ? "4px"
-                                        : "0",
-                                      borderBottomRightRadius: isEndDate
-                                        ? "4px"
-                                        : "0",
-                                    }}
-                                  />
-                                </div>
-                              }
-                              leave={leave}
-                              user={sites
-                                .flatMap((s) => s.users)
-                                .find((u) => u.id === leave.userId)}
-                            />
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        // Pour tous les autres sites (non-premiers)
+        if (!expandedSites[site.id]) {
+          return (
+            <SiteSeparator key={`separator-${site.id}`} siteId={site.id} />
+          );
+        }
+
+        // Si le site est étendu, on rend le séparateur + contenu
+        return (
+          <React.Fragment key={site.id}>
+            <SiteSeparator siteId={site.id} />
+            <div className="w-full">{renderSiteContent(site)}</div>
+          </React.Fragment>
         );
       })}
-    </>
+    </div>
   );
 };

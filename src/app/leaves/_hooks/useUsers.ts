@@ -4,9 +4,8 @@ import { ApiResponse } from "../typesTest";
 
 
 export const fetchUsers = async (pageParam = 0): Promise<ApiResponse> => {
-   console.log(`Loading users: skip=${pageParam}, limit=10`);
    const response = await fetch(
-      `https://dummyjson.com/users?limit=10&skip=${pageParam}`,
+      `https://dummyjson.com/users?limit=14&skip=${pageParam}`,
    );
 
    if (!response.ok) {

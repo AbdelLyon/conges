@@ -1,5 +1,7 @@
+"use client";
+
 import { CalendarDate, DateValue } from "@internationalized/date";
-import { Dispatch, useState } from "react";
+import { useState } from "react";
 import { Button } from "x-react/button";
 import { Buttons } from "x-react/buttons";
 import { DateRangePicker } from "x-react/datepicker";
@@ -15,7 +17,8 @@ import {
   IconUsers,
 } from "x-react/icons";
 
-import { ViewMode, sites } from "@/data/leaves";
+import { sites } from "@/data/leaves";
+import { usePlanningStore } from "@/store/usePlanningStore";
 
 const teams = [
   { id: "dev", name: "Développement" },
@@ -61,21 +64,10 @@ const dropdownSections: DropdownSectionConfig[] = [
 // Récupérer tous les utilisateurs de tous les sites
 const allUsers = sites.flatMap((site) => site.users);
 
-interface PlanningToolbarProps {
-  viewMode: ViewMode;
-  setViewMode: (mode: ViewMode) => void;
-  showFilters: boolean;
-  setShowFilters: (show: boolean) => void;
-  reversePrimary: boolean;
-  setReversePrimary: Dispatch<React.SetStateAction<boolean>>;
-}
+export const PlanningToolbar = ({}) => {
+  const { viewMode, setViewMode, reversePrimary, setReversePrimary } =
+    usePlanningStore();
 
-export const PlanningToolbar: React.FC<PlanningToolbarProps> = ({
-  viewMode,
-  setViewMode,
-  reversePrimary,
-  setReversePrimary,
-}) => {
   const [dateRange, setDateRange] = useState<{
     start: DateValue;
     end: DateValue;
@@ -185,6 +177,7 @@ export const PlanningToolbar: React.FC<PlanningToolbarProps> = ({
           <DateRangePicker
             className="h-10 w-60"
             color="secondary"
+            aria-labelledby="planning-date"
             radius="sm"
             classNames={{
               inputWrapper:
