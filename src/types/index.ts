@@ -1,0 +1,33 @@
+export interface LeaveType {
+   id: number;
+   client_id: number;
+   last_update_id: number | null;
+   name: string;
+   default_leave_value: number | null;
+   is_active: boolean;
+   is_monthly: boolean;
+   is_pay: boolean;
+   is_deletable: boolean;
+   is_half_day: boolean;
+   is_attachment_required: boolean;
+   can_exceed: boolean;
+   leave_code: string;
+   start_date: string | null;
+   end_date: string | null;
+   color: string;
+   needs_count: boolean;
+   order_appearance: number;
+   deleted_at: string | null;
+   created_at: string;
+   updated_at: string;
+   new_leave_type_id: number | null;
+   absence_reason: string | null;
+   is_ignore_by_export: boolean;
+   can_justify_later: boolean;
+   is_only_visible_by_admin: boolean;
+   is_auto_increment_active: boolean;
+   increment_days_number: number | null;
+   site_id: number | null;
+   leave_type_category_id: number;
+   is_take_leave: boolean;
+}

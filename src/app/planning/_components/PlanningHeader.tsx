@@ -208,7 +208,7 @@ export const PlanningHeader = () => {
         </button>
       </div>
 
-      <div className="from-content1-200 to-content1-50 dark:bg-gradient-to-b">
+      <div className="h-[88px] from-content1-200 to-content1-50 dark:bg-gradient-to-b">
         <div
           className="grid"
           style={{

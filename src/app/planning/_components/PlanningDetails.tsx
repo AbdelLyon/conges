@@ -202,7 +202,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
             {user && (
               <div className="mb-4">
                 <div className="mb-4 text-lg font-medium">
-                  {user.firstName} {user.lastName}
+                  {user.firstname} {user.lastname}
                 </div>
 
                 <div className="mb-2 grid grid-cols-3">
@@ -269,7 +269,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
                   <div className="text-sm">il y a 4 mois (20/12/2024)</div>
                   <div className="font-medium">
                     Soumis par <br />
-                    {user?.firstName} {user?.lastName}
+                    {user?.firstname} {user?.lastname}
                   </div>
                 </div>
               </div>

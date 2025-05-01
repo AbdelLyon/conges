@@ -52,7 +52,7 @@ export const lightTheme: Colors = {
    },
 
    content1: {
-      DEFAULT: "#fffff",
+      DEFAULT: "#ffffff",
       foreground: "#000000",
       50: "#fafafa",
       100: "#fafafa",

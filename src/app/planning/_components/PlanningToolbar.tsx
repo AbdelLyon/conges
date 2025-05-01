@@ -38,7 +38,6 @@ const dropdownSections: DropdownSectionConfig[] = [
         label: "Accueil",
         startContent: <IconHome className="text-large" />,
       },
-
       {
         href: "/form",
         key: "form",
@@ -64,7 +63,70 @@ const dropdownSections: DropdownSectionConfig[] = [
 // Récupérer tous les utilisateurs de tous les sites
 const allUsers = sites.flatMap((site) => site.users);
 
-export const PlanningToolbar = ({}) => {
+// Interface pour les options de select
+interface SelectOption {
+  key: string;
+  label: string;
+}
+
+// Composant Select réutilisable avec sélection multiple
+interface MultiSelectProps {
+  placeholder: string;
+  options: SelectOption[];
+  className?: string;
+}
+
+const MultiSelect = ({ placeholder, options, className }: MultiSelectProps) => {
+  const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set([]));
+
+  const commonSelectClassNames = {
+    trigger:
+      "border border-border/70 bg-transparant data-[focus-visible=true]:outline-0 data-[focus=true]:border-outline data-[hover=true]:bg-transparant data-[hover=true]:border-outline",
+    listbox: "data-[focus=true]:outline-0",
+  };
+
+  return (
+    <Select
+      placeholder={placeholder}
+      aria-label={placeholder}
+      classNames={commonSelectClassNames}
+      radius="sm"
+      size="md"
+      className={className}
+      options={options}
+      selectedKeys={selectedKeys}
+      selectionMode="multiple"
+      onSelectionChange={(keys) =>
+        setSelectedKeys(new Set(Array.from(keys).map(String)))
+      }
+      renderValue={(items) => (
+        <div className="flex items-center gap-1 overflow-hidden">
+          {items.length > 0 ? (
+            <>
+              {items.slice(0, 2).map((item) => (
+                <div
+                  key={item.key}
+                  className="flex shrink-0 items-center gap-1 rounded-md bg-default-100 px-2 py-0.5 text-xs"
+                >
+                  <span className="max-w-24 truncate">{item.textValue}</span>
+                </div>
+              ))}
+              {items.length > 2 && (
+                <span className="shrink-0 text-xs text-gray-500">
+                  +{items.length - 2}
+                </span>
+              )}
+            </>
+          ) : (
+            <span className="truncate text-gray-500">{placeholder}</span>
+          )}
+        </div>
+      )}
+    />
+  );
+};
+
+export const PlanningToolbar = () => {
   const { viewMode, setViewMode, reversePrimary, setReversePrimary } =
     usePlanningStore();
 
@@ -76,11 +138,23 @@ export const PlanningToolbar = ({}) => {
     end: new CalendarDate(2025, 4, 15),
   });
 
-  const commonSelectClassNames = {
-    trigger:
-      "border border-border/70 bg-transparant data-[focus-visible=true]:outline-0 data-[focus=true]:border-outline data-[hover=true]:bg-transparant data-[hover=true]:border-outline",
-    listbox: "data-[focus=true]:outline-0",
-  };
+  // Préparation des options pour les selects
+  const teamOptions = teams.map((team) => ({
+    key: team.id,
+    label: team.name,
+  }));
+
+  // Options utilisateurs avec le nouveau format
+  const userOptions = allUsers.map((user) => ({
+    key: user.id.toString(),
+    label: `${user.firstname} ${user.lastname}`,
+  }));
+
+  // Options sites
+  const siteOptions = sites.map((site) => ({
+    key: site.id,
+    label: site.name,
+  }));
 
   return (
     <div className="sticky top-0 size-full bg-background">
@@ -133,43 +207,20 @@ export const PlanningToolbar = ({}) => {
 
       <div className="flex flex-wrap items-center justify-between gap-2 py-2">
         <div className="flex flex-1 flex-wrap items-center gap-2 ">
-          <Select
+          <MultiSelect
             placeholder="Équipes"
-            aria-label="Équipes"
-            classNames={commonSelectClassNames}
-            radius="sm"
-            size="md"
-            className="w-64"
-            options={teams.map((team) => ({
-              key: team.id,
-              label: team.name,
-            }))}
+            className="w-[270px]"
+            options={teamOptions}
           />
-
-          <Select
+          <MultiSelect
             placeholder="Collaborateurs"
-            aria-label="Collaborateurs"
-            classNames={commonSelectClassNames}
-            radius="sm"
-            size="md"
-            className="w-64"
-            options={allUsers.map((user) => ({
-              key: user.id.toString(),
-              label: user.name,
-            }))}
+            className="w-[300px]"
+            options={userOptions}
           />
-
-          <Select
+          <MultiSelect
             placeholder="Sites"
-            aria-label="Sites"
-            classNames={commonSelectClassNames}
-            radius="sm"
-            size="md"
-            className="w-64"
-            options={sites.map((site) => ({
-              key: site.id,
-              label: site.name,
-            }))}
+            className="w-[300px]"
+            options={siteOptions}
           />
 
           <DateRangePicker

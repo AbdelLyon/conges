@@ -63,7 +63,7 @@ export const PlanningBody: React.FC = () => {
     users: site.users.filter(
       (user) =>
         searchQuery === "" ||
-        user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email.toLowerCase().includes(searchQuery.toLowerCase()),
     ),
   }));
@@ -154,8 +154,7 @@ export const PlanningBody: React.FC = () => {
 
     // Créer des descriptions pour les attributs d'accessibilité
     const cellDate = day.format("DD/MM/YYYY");
-    const userName =
-      user.name || `${user.firstName || ""} ${user.lastName || ""}`;
+    const userName = `${user.firstname || ""} ${user.lastname || ""}`;
     const cellStatus = leave
       ? `${leave.leaveType.name || "Congé"}`
       : isPublicHolidayDay
@@ -193,11 +192,11 @@ export const PlanningBody: React.FC = () => {
           <PlanningDetails
             trigger={
               <div
-                className="absolute inset-0 flex size-full cursor-pointer flex-col transition-opacity duration-200"
+                className="absolute inset-0 flex size-full cursor-pointer flex-col transition-opacity duration-300"
                 aria-label={`Détails du congé: ${leave.leaveType.name || "Congé"}`}
               >
                 <div
-                  className="flex-1 transition-all duration-200"
+                  className="flex-1 transition-all duration-300"
                   style={{
                     backgroundColor: reversePrimary
                       ? "#007700"
@@ -208,7 +207,7 @@ export const PlanningBody: React.FC = () => {
                   aria-hidden="true"
                 />
                 <div
-                  className="h-1/5 min-h-[3px] transition-all duration-200"
+                  className="h-1/5 min-h-[3px] transition-all duration-300"
                   style={{
                     backgroundColor: reversePrimary
                       ? leave.leaveType.color
@@ -236,12 +235,12 @@ export const PlanningBody: React.FC = () => {
       <div
         key={user.id}
         className={mergeTailwindClasses(
-          "flex h-8 transition-colors duration-200",
+          "flex h-8 transition-colors duration-300",
           hoveredUser === user.id ? "bg-primary/10" : "",
         )}
         onMouseEnter={() => setHoveredUser(user.id)}
         onMouseLeave={() => setHoveredUser(null)}
-        aria-label={`Ligne pour ${user.name || `${user.firstName || ""} ${user.lastName || ""}`}`}
+        aria-label={`Ligne pour ${`${user.firstname || ""} ${user.lastname || ""}`}`}
         role="row"
       >
         <div
