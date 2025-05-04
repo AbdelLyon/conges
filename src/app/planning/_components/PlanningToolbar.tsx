@@ -258,7 +258,7 @@ export const PlanningToolbar = () => {
             className={`rounded-md p-1.5 ${
               reversePrimary
                 ? "bg-primary-100 text-primary"
-                : "text-foreground-500 hover:bg-content1-200"
+                : "text-foreground-500 hover:bg-content1-100"
             } border border-border/70   transition-colors`}
             onClick={() => setReversePrimary(!reversePrimary)}
             title="Inverser couleurs type/statut"

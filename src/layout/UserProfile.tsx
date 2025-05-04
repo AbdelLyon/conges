@@ -50,7 +50,7 @@ export const UserProfile = () => {
             src: "https://avatars.githubusercontent.com/u/30373425?v=4",
           }}
           name="Majax abdel"
-          className="cursor-pointer border border-border/70   px-3 py-1 transition-all duration-200 hover:bg-content1-200 dark:bg-content1"
+          className="cursor-pointer border border-border/70 bg-content1-100 px-3 py-1 transition-all duration-200 hover:bg-content1-100"
         />
       }
       onItemPress={(item) => {

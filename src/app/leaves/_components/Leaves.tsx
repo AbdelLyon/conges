@@ -51,6 +51,7 @@ export default function Leaves() {
       showSelectionCheckboxes
       selectionMode="multiple"
       isCompact
+      shadow="none"
       skeletonRowsCount={14}
       topContent={<FilterToolbar />}
       classNames={{

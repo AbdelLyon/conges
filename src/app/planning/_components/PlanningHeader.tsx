@@ -174,16 +174,16 @@ export const PlanningHeader = () => {
   return (
     <>
       {/* Navigation des mois - Design modernisé */}
-      <div className="flex w-full items-center justify-between border-b border-border/70 bg-gradient-to-b from-content1-50 to-content1-200 p-3">
+      <div className="flex w-full items-center justify-between border-b border-border/70 bg-gradient-to-b from-content1-50 to-content1-100 p-3">
         <button
-          className="flex size-9 items-center justify-center rounded-full text-foreground-500 transition-colors duration-200 hover:bg-content1-200"
+          className="flex size-9 items-center justify-center rounded-full text-foreground-500 transition-colors duration-200 hover:bg-content1-100"
           onClick={() => changePeriod(-1)}
         >
           <IconChevronLeft size={18} />
         </button>
 
         <div className="relative flex flex-1 justify-center">
-          <div className="flex items-center space-x-6 rounded-lg border border-border/70 bg-content1 px-6 py-1.5 dark:bg-content1">
+          <div className="flex items-center space-x-6 rounded-lg border border-border/70 bg-content1-100 px-6 py-1.5">
             {months.map((monthKey, index) => (
               <div
                 key={monthKey}
@@ -201,14 +201,14 @@ export const PlanningHeader = () => {
         </div>
 
         <button
-          className="flex size-9 items-center justify-center rounded-full text-foreground-500 transition-colors duration-200 hover:bg-content1-200"
+          className="flex size-9 items-center justify-center rounded-full text-foreground-500 transition-colors duration-200 hover:bg-content1-100"
           onClick={() => changePeriod(1)}
         >
           <IconChevronRight size={18} />
         </button>
       </div>
 
-      <div className="h-[88px] from-content1-200 to-content1-50 dark:bg-gradient-to-b">
+      <div className="h-[88px] from-content1-100 to-content1-50 dark:bg-gradient-to-b">
         <div
           className="grid"
           style={{
@@ -229,7 +229,7 @@ export const PlanningHeader = () => {
                     isToday
                       ? "bg-primary text-white"
                       : isWeekend
-                        ? "bg-content1-100/50"
+                        ? "bg-content1-100"
                         : "",
                     "transition-colors duration-200",
                   )}
@@ -270,7 +270,7 @@ export const PlanningHeader = () => {
                     isToday
                       ? "bg-primary text-white"
                       : isWeekend
-                        ? "bg-content1-100/50"
+                        ? "bg-content1-100"
                         : "",
                     "transition-colors duration-200",
                   )}
@@ -344,7 +344,7 @@ export const PlanningHeader = () => {
                   {publicHoliday && (
                     <Chip
                       size="sm"
-                      className="flex items-center justify-center rounded-full bg-content1-300 text-[10px] font-bold shadow-sm backdrop-blur-sm transition-shadow duration-200 hover:shadow dark:bg-background"
+                      className="flex items-center justify-center rounded-full bg-content1-100 text-[10px] font-bold shadow-sm backdrop-blur-sm transition-shadow duration-200 hover:shadow"
                       title={publicHoliday.name}
                     >
                       F

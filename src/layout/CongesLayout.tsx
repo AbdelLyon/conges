@@ -64,7 +64,7 @@ const items = (pathname: string): Item[] => {
     {
       key: "parametrage",
       label: "Paramétrage",
-      href: "/parametrage",
+      href: "/settings",
       startContent: <IconSettings className="text-large" />,
       isActive: pathname === "/parametrage",
     },

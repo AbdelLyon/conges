@@ -121,11 +121,11 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
       content: (
         <div className="py-4">
           <div className="mb-4 flex items-center justify-between">
-            <button className="flex size-8 items-center justify-center rounded-full bg-content1">
+            <button className="flex size-8 items-center justify-center rounded-full bg-content1-100">
               <IconChevronDown className="-rotate-90" size={16} />
             </button>
             <div className="font-medium">Avril 2025</div>
-            <button className="flex size-8 items-center justify-center rounded-full bg-content1">
+            <button className="flex size-8 items-center justify-center rounded-full bg-content1-100">
               <IconChevronDown className="rotate-90" size={16} />
             </button>
           </div>
@@ -140,7 +140,9 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
                 <div
                   key={day}
                   className={`m-1 flex size-8 items-center justify-center text-sm ${
-                    isCurrentLeaveDay ? "bg-primary text-white" : "bg-content1"
+                    isCurrentLeaveDay
+                      ? "bg-primary text-white"
+                      : "bg-content1-100"
                   }`}
                 >
                   {day}
@@ -246,7 +248,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
               Justificatif
             </h3>
 
-            <div className="mb-8 flex h-32 items-center justify-center rounded-md border border-border/70 bg-content1 p-4">
+            <div className="mb-8 flex h-32 items-center justify-center rounded-md border border-border/70 bg-content1-100 p-4">
               <div className="flex flex-col items-center">
                 <IconFolder size={40} className="mb-2" />
                 <div>Pas de justificatif</div>

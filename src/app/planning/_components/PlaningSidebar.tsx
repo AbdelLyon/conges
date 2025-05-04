@@ -82,7 +82,7 @@ export const PlanningSidebar = () => {
           defaultActiveTab={selectedTab}
           onTabChange={(key) => setSelectedTab(key as "sites" | "équipes")}
           variant="bordered"
-          className="w-full border-b border-border/70 bg-gradient-to-b from-content1-50 to-content1-200/80 px-2 py-3"
+          className="w-full border-b border-border/70 bg-gradient-to-b from-content1-50 to-content1-100/80 px-2 py-3"
           size="sm"
           radius="sm"
           color="primary"
@@ -124,7 +124,7 @@ export const PlanningSidebar = () => {
         {filteredSites.map((site) => (
           <div key={site.id}>
             <div
-              className="mb-1 flex cursor-pointer items-center justify-between rounded-md border border-border/70 bg-content1-200 p-1 transition-colors duration-300 hover:opacity-80"
+              className="mb-1 flex cursor-pointer items-center justify-between rounded-md border border-border/70 bg-content1-100 p-1 transition-colors duration-300 hover:opacity-80"
               onClick={() => toggleSiteExpand(site.id)}
             >
               <div className="flex items-center">
@@ -161,7 +161,7 @@ export const PlanningSidebar = () => {
                 return (
                   <div
                     key={user.id}
-                    className="group flex h-8 items-center justify-between p-2 transition-colors duration-150 hover:bg-content1-200"
+                    className="group flex h-8 items-center justify-between p-2 transition-colors duration-150 hover:bg-content1-100"
                     onMouseEnter={() => setHoveredUser(user.id)}
                     onMouseLeave={() => setHoveredUser(null)}
                   >

@@ -172,9 +172,9 @@ export const PlanningBody: React.FC = () => {
           "flex-1 border-b border-border/70",
           isFirstDayOfMonth ? "border-l-2" : "border-r",
           isPublicHolidayDay
-            ? "bg-content1-300/50 dark:bg-content1-300/40"
+            ? "bg-content1-100"
             : isWeekend(day)
-              ? "bg-content1-200/70 dark:bg-content1-200/40"
+              ? "bg-content1-100"
               : "",
           isHighlighted ? "bg-default dark:bg-default/40" : "",
           "transition-colors duration-150",

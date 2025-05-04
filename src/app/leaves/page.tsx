@@ -37,6 +37,7 @@ export default function LeavesPage() {
         classNames={{
           tabList: "gap-4 border-1 mb-4 border-border/70   shadow-none",
           panel: "p-0",
+          tabContent: "text-forground",
         }}
       />
     </PageContainer>

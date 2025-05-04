@@ -105,7 +105,7 @@ export const FilterToolbar = () => {
   return (
     <div className="flex items-center gap-2">
       <MultiSelect
-        className="w-[350px]"
+        className="w-[350px] bg-white dark:bg-background"
         placeholder="Type de congé"
         selectedKeys={selectedLeaveTypes}
         onSelectionChange={setSelectedLeaveTypes}
@@ -118,7 +118,7 @@ export const FilterToolbar = () => {
         radius="sm"
         classNames={{
           inputWrapper:
-            "border border-border/70 bg-transparant focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
+            "border border-border/70 bg-white dark:bg-background focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
           input: "truncate",
           base: "max-w-[300px]",
         }}
