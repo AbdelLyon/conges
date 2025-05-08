@@ -1,4 +1,6 @@
 import { heroui } from "@heroui/theme";
+import tailwindScrollbar from "tailwind-scrollbar";
+
 import { darkTheme } from "./src/theme/darkTheme";
 import { lightTheme } from "./src/theme/lightTheme";
 
@@ -8,7 +10,6 @@ const config = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   darkMode: "class",
-
   plugins: [
     heroui({
       themes: {
@@ -20,6 +21,7 @@ const config = {
         },
       },
     }),
+    tailwindScrollbar,
   ],
 };
 

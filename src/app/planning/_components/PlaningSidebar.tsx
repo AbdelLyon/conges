@@ -25,7 +25,6 @@ export const PlanningSidebar = () => {
     });
   };
 
-  // Filtrer les sites en fonction de la recherche
   const filteredSites = sites.map((site) => ({
     ...site,
     users: site.users.filter(
@@ -38,7 +37,6 @@ export const PlanningSidebar = () => {
     ),
   }));
 
-  // Configuration des onglets
   const tabs: TabItem[] = [
     {
       key: "sites",
@@ -52,7 +50,6 @@ export const PlanningSidebar = () => {
     },
   ];
 
-  // Fonction pour obtenir le solde congés pour un utilisateur
   const getLeaveBalance = (
     userId: number,
     leaveTypeId: number,
@@ -149,7 +146,6 @@ export const PlanningSidebar = () => {
               }`}
             >
               {site.users.map((user) => {
-                // Calculer les soldes de congés pour cet utilisateur (CP = leave_type_id 17)
                 const cpLastYear = getLeaveBalance(user.id, 17, true);
                 const cpCurrentYear = getLeaveBalance(user.id, 17, false);
                 const cpTaken =

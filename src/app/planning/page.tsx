@@ -6,7 +6,7 @@ import { PlanningToolbar } from "./_components/PlanningToolbar";
 
 dayjs.extend(isBetween);
 
-const PlanningComponent: React.FC = () => {
+const PlanningComponent = () => {
   return <PlanningToolbar />;
 };
 

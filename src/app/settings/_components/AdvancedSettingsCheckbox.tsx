@@ -1,10 +1,10 @@
 // components/leaves/AdvancedSettingsCheckbox.tsx
-import { JSX, ReactNode } from "react";
+import { ReactNode } from "react";
 import { Checkbox } from "x-react/form";
 import { IconInfoCircle } from "x-react/icons";
 import { Tooltip } from "x-react/tooltip";
 
-export interface AdvancedSettingsCheckboxProps {
+export interface Props {
   isSelected: boolean;
   onValueChange: () => void;
   label: string;
@@ -18,7 +18,7 @@ export const AdvancedSettingsCheckbox = ({
   label,
   tooltip,
   input,
-}: AdvancedSettingsCheckboxProps): JSX.Element => (
+}: Props) => (
   <div
     className={`flex ${input ? "flex-col gap-3 sm:flex-row sm:items-start" : "items-center gap-3"}`}
   >

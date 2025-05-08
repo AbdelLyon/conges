@@ -36,27 +36,30 @@ export default function Leaves() {
   }
 
   return (
-    <DataGrid
-      rows={users}
-      columns={columns}
-      isLoading={isLoading}
-      isLoadingMore={isFetchingNextPage}
-      isFetching={isFetching}
-      hasMoreData={hasNextPage}
-      fetchNextPage={handleLoadMore}
-      onSortChange={handleSortChange}
-      isHeaderSticky
-      className="overflow-hidden"
-      topContentPlacement="outside"
-      showSelectionCheckboxes
-      selectionMode="multiple"
-      isCompact
-      shadow="none"
-      skeletonRowsCount={14}
-      topContent={<FilterToolbar />}
-      classNames={{
-        base: "h-[76vh]",
-      }}
-    />
+    <div className="flex flex-col gap-3">
+      <FilterToolbar />
+      <DataGrid
+        rows={users}
+        columns={columns}
+        isLoading={isLoading}
+        isLoadingMore={isFetchingNextPage}
+        isFetching={isFetching}
+        hasMoreData={hasNextPage}
+        fetchNextPage={handleLoadMore}
+        onSortChange={handleSortChange}
+        isHeaderSticky
+        className="overflow-hidden"
+        topContentPlacement="outside"
+        showSelectionCheckboxes
+        selectionMode="multiple"
+        isCompact
+        shadow="none"
+        skeletonRowsCount={14}
+        variant="striped"
+        classNames={{
+          base: "h-[76vh]",
+        }}
+      />
+    </div>
   );
 }

@@ -7,12 +7,12 @@ type Props = {
   planningSidebar: React.ReactNode;
   planningToolbar: React.ReactNode;
 };
-export default function Layout({
+const Layout = ({
   children,
   planningBody,
   planningHeader,
   planningSidebar,
-}: Props) {
+}: Props) => {
   return (
     <PageContainer title="Planning">
       <div className="flex w-full flex-col bg-background text-foreground">
@@ -29,4 +29,6 @@ export default function Layout({
       </div>
     </PageContainer>
   );
-}
+};
+
+export default Layout;

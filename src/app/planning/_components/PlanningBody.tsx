@@ -15,7 +15,7 @@ type CellSize = {
   width: string;
 };
 
-export const PlanningBody: React.FC = () => {
+export const PlanningBody = () => {
   const {
     expandedSites,
     currentDate,
