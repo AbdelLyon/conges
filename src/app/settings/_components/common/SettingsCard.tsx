@@ -22,7 +22,7 @@ const CardHeaderWithParams = () => {
 
 export const SettingsCard = ({ children }: PropsWithChildren) => {
   const cardClassNames = {
-    body: "px-4 pt-0",
+    body: "pt-0",
   };
 
   const cardClassName =

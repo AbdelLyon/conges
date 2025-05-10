@@ -65,7 +65,7 @@ export const HolidaysContent = () => {
           className={mergeTailwindClasses(
             "flex cursor-pointer select-none items-center gap-2 rounded-md border border-border p-2 transition-all hover:border-outline/10",
             {
-              "border-outline/10 bg-outline/5": allSelected,
+              "border-outline/15 bg-outline/5": allSelected,
             },
           )}
           onClick={handleSelectAll}
@@ -86,9 +86,9 @@ export const HolidaysContent = () => {
             key={holiday.value}
             className={`flex cursor-pointer select-none items-center gap-3 rounded-md border 
               border-border p-2 transition-all 
-              hover:border-outline/10 ${
+              hover:border-outline/15 ${
                 selectedHolidays.includes(holiday.value)
-                  ? "border-outline/10 bg-outline/5"
+                  ? "border-outline/15 bg-outline/5"
                   : ""
               }`}
             onClick={() => handleHolidayChange(holiday.value)}

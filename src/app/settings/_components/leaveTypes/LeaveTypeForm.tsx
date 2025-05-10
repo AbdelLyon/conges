@@ -40,7 +40,7 @@ const LeaveTypeForm = () => {
 
   return (
     <Card
-      radius="lg"
+      radius="sm"
       shadow="none"
       className="border border-border/60"
       classNames={cardClassNames}

@@ -74,15 +74,22 @@ interface NavItemProps {
 }
 
 const NavItem = ({ route }: NavItemProps) => {
-  const itemClasses = mergeTailwindClasses(
-    "group mb-1.5 flex items-center justify-between rounded-md p-3 border border-border transition-all hover:bg-content1-100 hover:text-primary",
-    route.isActive ? "bg-content1-100 font-medium text-primary" : "",
-  );
+  const itemClassName = `
+  group mb-2 flex py-2 cursor-pointer items-center 
+  rounded-md px-4 h-11
+  transition-transform duration-100 ease-out
+  hover:text-primary 
+  active:translate-x-0 active:scale-[0.98] active:shadow-inner
+  focus:outline-none focus:ring-1 focus:ring-primary/30
+  hover:bg-content1-100 dark:hover:bg-content1-100
+  border border-border/40
+  ${route.isActive ? "bg-content1-100 text-primary" : ""}
+`;
 
   const iconClasses = route.isActive ? "text-primary" : "";
 
   return (
-    <Link href={route.href} className={itemClasses}>
+    <Link href={route.href} className={itemClassName}>
       <div className="flex items-center gap-3">
         <div className={iconClasses}>{route.icon}</div>
         <span>{route.label}</span>

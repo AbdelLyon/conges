@@ -44,7 +44,7 @@ export const LeaveTypesList = () => {
   };
 
   const cardClassNames = {
-    header: "pb-0",
+    header: "pb-0 mb-1.5",
     body: "p-0 max-h-[250px] md:max-h-[500px] overflow-y-auto",
   };
 
@@ -119,7 +119,7 @@ const LeaveTypeItemsList = ({
   activeItemId?: string;
   onItemSelect: (item: LeaveTypeSettings) => void;
 }) => (
-  <ul>
+  <ul className="py-1.5">
     {items.map((item) => (
       <LeaveTypeItem
         key={item.id}
@@ -141,21 +141,21 @@ const LeaveTypeItem = ({
   onSelect: () => void;
 }) => {
   const itemClassName = `
-  group my-1.5 mx-3 flex py-2 cursor-pointer items-center 
-  rounded-md px-4 bg-white dark:bg-background
-   transition-transform duration-100 ease-out
+  group mb-2 mx-3 flex py-2 cursor-pointer items-center 
+  rounded-md px-4 h-11
+  transition-transform duration-100 ease-out
   hover:text-primary 
   active:translate-x-0 active:scale-[0.98] active:shadow-inner
   focus:outline-none focus:ring-1 focus:ring-primary/30
   hover:bg-content1-100 dark:hover:bg-content1-100
   border border-border/40
-  ${isActive ? "bg-content1-100 dark:bg-content1-100 text-primary" : ""}
+  ${isActive ? "bg-content1-100 text-primary text-primary" : ""}
 `;
 
   return (
     <li onClick={onSelect} className={itemClassName}>
       <div
-        className="mr-3 h-10 w-0.5 "
+        className="mr-3 h-7 w-0.5 "
         style={{ backgroundColor: item.color }}
       />
       <p className="truncate font-medium">{item.name}</p>

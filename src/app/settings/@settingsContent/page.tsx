@@ -16,10 +16,6 @@ const ContentLoader = () => (
   </div>
 );
 
-const ClientContentWrapper = ({ children }: { children: React.ReactNode }) => {
-  return children;
-};
-
 function renderContentByRouteKey(routeKey?: string) {
   switch (routeKey) {
     case "holidays":
@@ -48,9 +44,7 @@ const SettingsContent = async ({
 
   return (
     <Suspense fallback={<ContentLoader />}>
-      <ClientContentWrapper>
-        {renderContentByRouteKey(route?.key)}
-      </ClientContentWrapper>
+      <>{renderContentByRouteKey(route?.key)}</>
     </Suspense>
   );
 };

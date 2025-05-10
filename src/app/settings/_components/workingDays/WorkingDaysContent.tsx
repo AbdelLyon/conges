@@ -52,7 +52,7 @@ export const WorkingDaysContent = () => {
           className={mergeTailwindClasses(
             "flex cursor-pointer select-none items-center gap-2 rounded-md border border-border p-2 transition-all hover:border-outline/10",
             {
-              "border-outline/10 bg-outline/5": allSelected,
+              "border-outline/15 bg-outline/5": allSelected,
             },
           )}
           onClick={handleSelectAll}
@@ -72,9 +72,9 @@ export const WorkingDaysContent = () => {
           <div
             key={day.value}
             className={`flex cursor-pointer select-none items-center gap-3 rounded-md border border-border 
-              p-2 transition-all hover:border-outline/10 ${
+              p-2 transition-all hover:border-outline/15 ${
                 selectedDays.includes(day.value)
-                  ? "border-outline/10 bg-outline/5"
+                  ? "border-outline/15 bg-outline/5"
                   : ""
               }`}
             onClick={() => handleDayChange(day.value)}
