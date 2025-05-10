@@ -1,28 +1,12 @@
-import { heroui } from "@heroui/theme";
 import tailwindScrollbar from "tailwind-scrollbar";
-
-import { darkTheme } from "./src/theme/darkTheme";
-import { lightTheme } from "./src/theme/lightTheme";
+import baseConfig from "x-react/tailwind.config";
 
 const config = {
-  content: [
-    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  darkMode: "class",
-  plugins: [
-    heroui({
-      themes: {
-        light: {
-          colors: lightTheme,
-        },
-        dark: {
-          colors: darkTheme,
-        },
-      },
-    }),
-    tailwindScrollbar,
-  ],
+  ...baseConfig,
+  plugins: [...baseConfig.plugins, tailwindScrollbar({ nocompatible: true })],
+  corePlugins: {
+    preflight: false,
+  },
 };
 
 export default config;

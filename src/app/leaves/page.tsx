@@ -35,7 +35,7 @@ export default function LeavesPage() {
         variant="bordered"
         color="primary"
         classNames={{
-          tabList: "gap-4 border-1 mb-4 border-border/70   shadow-none",
+          tabList: "gap-4 border-1 mb-4 border-border shadow-none",
           panel: "p-0",
           tabContent: "text-forground",
         }}

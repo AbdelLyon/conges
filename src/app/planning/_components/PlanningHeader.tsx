@@ -174,7 +174,7 @@ export const PlanningHeader = () => {
   return (
     <>
       {/* Navigation des mois - Design modernisé */}
-      <div className="flex w-full items-center justify-between border-b border-border/70 bg-gradient-to-b from-content1-50 to-content1-100 p-3">
+      <div className="flex w-full items-center justify-between border-b border-border bg-gradient-to-b from-content1-50 to-content1-100 p-3">
         <button
           className="flex size-9 items-center justify-center rounded-full text-foreground-500 transition-colors duration-200 hover:bg-content1-100"
           onClick={() => changePeriod(-1)}
@@ -183,7 +183,7 @@ export const PlanningHeader = () => {
         </button>
 
         <div className="relative flex flex-1 justify-center">
-          <div className="flex items-center space-x-6 rounded-lg border border-border/70 bg-content1-100 px-6 py-1.5">
+          <div className="flex items-center space-x-6 rounded-lg border border-border bg-content1-100 px-6 py-1.5">
             {months.map((monthKey, index) => (
               <div
                 key={monthKey}

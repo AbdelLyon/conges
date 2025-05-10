@@ -96,7 +96,7 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
         if (item.href) router.push(item.href);
       },
       profile: <UserProfile />,
-      className: "border-b border-border/70 shadow-md dark:shadow-none",
+      className: "border-b border-border shadow-md dark:shadow-none",
       isMenuOpen,
       onMenuOpenChange(isOpen) {
         setIsMenuOpen(isOpen);

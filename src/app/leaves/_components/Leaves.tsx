@@ -48,16 +48,14 @@ export default function Leaves() {
         fetchNextPage={handleLoadMore}
         onSortChange={handleSortChange}
         isHeaderSticky
-        className="overflow-hidden"
-        topContentPlacement="outside"
         showSelectionCheckboxes
         selectionMode="multiple"
         isCompact
+        radius="none"
         shadow="none"
-        skeletonRowsCount={14}
-        variant="striped"
+        variant="bordered"
         classNames={{
-          base: "h-[76vh]",
+          base: "h-[71vh]",
         }}
       />
     </div>

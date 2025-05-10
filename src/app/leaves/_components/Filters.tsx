@@ -118,7 +118,7 @@ export const FilterToolbar = () => {
         radius="sm"
         classNames={{
           inputWrapper:
-            "border border-border/70 bg-white dark:bg-background focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
+            "border border-border bg-white dark:bg-background focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
           input: "truncate",
           base: "max-w-[300px]",
         }}

@@ -15,7 +15,7 @@ export const TooltipText = ({
   <div className="flex items-center gap-2">
     {children}
     <Tooltip
-      className="border border-border/70 p-3"
+      className="border border-border p-3"
       content={content}
       placement="top"
       delay={300}

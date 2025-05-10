@@ -59,7 +59,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
 
       content: (
         <div className="grid grid-cols-1 gap-4 py-4 md:grid-cols-2">
-          <div className="rounded-md border border-border/70 bg-background p-4">
+          <div className="rounded-md border border-border bg-background p-4">
             <div className="mb-2 font-medium">Congés payés</div>
             <div className="flex flex-col items-center justify-center">
               <CircularProgress
@@ -86,7 +86,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
             </div>
           </div>
 
-          <div className="rounded-md border border-border/70 bg-background p-4">
+          <div className="rounded-md border border-border bg-background p-4">
             <div className="mb-2 font-medium">Congés payés N-1</div>
             <div className="flex flex-col items-center justify-center">
               <CircularProgress
@@ -185,7 +185,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
       title={
         <Chip
           variant="faded"
-          className="border-1 border-border/70"
+          className="border-1 border-border/60"
           style={{
             backgroundColor: `${leave.status.color}20`,
             color: leave.status.color,
@@ -248,7 +248,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
               Justificatif
             </h3>
 
-            <div className="mb-8 flex h-32 items-center justify-center rounded-md border border-border/70 bg-content1-100 p-4">
+            <div className="mb-8 flex h-32 items-center justify-center rounded-md border border-border bg-content1-100 p-4">
               <div className="flex flex-col items-center">
                 <IconFolder size={40} className="mb-2" />
                 <div>Pas de justificatif</div>

@@ -152,7 +152,6 @@ export const PlanningBody = () => {
     const isTodayDay = isToday(day);
     const isFirstDayOfMonth = day.date() === 1;
 
-    // Créer des descriptions pour les attributs d'accessibilité
     const cellDate = day.format("DD/MM/YYYY");
     const userName = `${user.firstname || ""} ${user.lastname || ""}`;
     const cellStatus = leave
@@ -169,7 +168,7 @@ export const PlanningBody = () => {
         className={mergeTailwindClasses(
           "relative",
           cellSize.width,
-          "flex-1 border-b border-border/70",
+          "flex-1 border-b border-border/60",
           isFirstDayOfMonth ? "border-l-2" : "border-r",
           isPublicHolidayDay
             ? "bg-content1-100"

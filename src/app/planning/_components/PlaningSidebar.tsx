@@ -72,19 +72,19 @@ export const PlanningSidebar = () => {
   const [showBalances, setShowBalances] = useState<boolean>(false);
 
   return (
-    <div className="flex w-[270px] flex-col rounded-t-lg border border-border/70 bg-background">
+    <div className="flex w-[270px] flex-col rounded-t-lg border border-border bg-background">
       <div className="relative">
         <Tabs
           items={tabs}
           defaultActiveTab={selectedTab}
           onTabChange={(key) => setSelectedTab(key as "sites" | "équipes")}
           variant="bordered"
-          className="w-full border-b border-border/70 bg-gradient-to-b from-content1-50 to-content1-100/80 px-2 py-3"
+          className="w-full border-b border-border bg-gradient-to-b from-content1-50 to-content1-100/80 px-2 py-3"
           size="sm"
           radius="sm"
           color="primary"
           classNames={{
-            tabList: "border-1 border-border/70 bg-white",
+            tabList: "border-1 border-border bg-white",
             tabContent: "text-primary font-bold",
           }}
         />
@@ -121,7 +121,7 @@ export const PlanningSidebar = () => {
         {filteredSites.map((site) => (
           <div key={site.id}>
             <div
-              className="mb-1 flex cursor-pointer items-center justify-between rounded-md border border-border/70 bg-content1-100 p-1 transition-colors duration-300 hover:opacity-80"
+              className="mb-1 flex cursor-pointer items-center justify-between rounded-md border border-border bg-content1-100 p-1 transition-colors duration-300 hover:opacity-80"
               onClick={() => toggleSiteExpand(site.id)}
             >
               <div className="flex items-center">

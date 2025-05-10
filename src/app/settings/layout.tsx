@@ -1,16 +1,38 @@
+"use client";
+
+import { Tabs } from "x-react/tabs";
+
 import { PageContainer } from "@/components/PageContainer";
 
-import { SettingsCard } from "./_components/SettingsCard";
-import { SettingsHeader } from "./_components/SettingsHeader";
+import { SettingsCard } from "./_components/common/SettingsCard";
 
-type Props = {
-  children: React.ReactNode;
-  settingsForm: React.ReactNode;
-  settingsLeave: React.ReactNode;
+interface LayoutProps {
+  children?: React.ReactNode;
+  settingsContent: React.ReactNode;
   settingsSide: React.ReactNode;
-};
+}
 
-const Layout = ({ settingsSide, settingsForm, settingsLeave }: Props) => {
+const Layout = ({ settingsSide, settingsContent, children }: LayoutProps) => {
+  const mainTabs = [
+    {
+      key: "leaves",
+      title: "Congés",
+      content: (
+        <LeaveSettingsTabs
+          settingsSide={settingsSide}
+          settingsContent={settingsContent}
+        >
+          {children}
+        </LeaveSettingsTabs>
+      ),
+    },
+    {
+      key: "counter",
+      title: "Compteur",
+      content: <CounterContent />,
+    },
+  ];
+
   return (
     <PageContainer
       title="Paramétrage des congés"
@@ -18,35 +40,90 @@ const Layout = ({ settingsSide, settingsForm, settingsLeave }: Props) => {
         base: "xl:w-full 2xl:w-10/12",
       }}
     >
-      <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
-        <div className="mb-2 flex items-center justify-between lg:hidden">
-          <SettingsHeader />
-        </div>
-        {settingsSide}
-
-        <div className={`md:block lg:col-span-9`}>
-          <SettingsCard
-            header={
-              <div className="flex w-full flex-col items-start justify-between rounded-t-lg border border-border/70 bg-content1-100 p-4 sm:flex-row sm:items-center">
-                <h2 className="text-xl font-medium">Type de congé</h2>
-                <div className="hidden sm:block">
-                  <SettingsHeader isHeaderButton />
-                </div>
-              </div>
-            }
-          >
-            <div className="mb-3 flex justify-end">
-              <SettingsHeader isCreateButton />
-            </div>
-            <div className="grid grid-cols-1 gap-3 xl:grid-cols-12">
-              <div className="md:col-span-5 lg:col-span-4">{settingsLeave}</div>
-              <div className="md:col-span-7 lg:col-span-8">{settingsForm}</div>
-            </div>
-          </SettingsCard>
-        </div>
-      </div>
+      <Tabs
+        defaultActiveTab="leaves"
+        defaultSelectedKey="leaves"
+        variant="underlined"
+        items={mainTabs}
+      />
     </PageContainer>
   );
 };
+
+interface LeaveSettingsTabsProps {
+  children?: React.ReactNode;
+  settingsContent: React.ReactNode;
+  settingsSide: React.ReactNode;
+}
+
+const LeaveSettingsTabs = ({
+  children,
+  settingsSide,
+  settingsContent,
+}: LeaveSettingsTabsProps) => {
+  const leaveTabs = [
+    {
+      key: "defaultSettings",
+      title: "Paramètrage par défaut",
+      content: (
+        <DefaultSettingsContent
+          settingsSide={settingsSide}
+          settingsContent={settingsContent}
+        >
+          {children}
+        </DefaultSettingsContent>
+      ),
+    },
+    {
+      key: "sitesSettings",
+      title: "Paramètrage par site",
+      content: <SiteSettingsContent>{children}</SiteSettingsContent>,
+    },
+  ];
+
+  return (
+    <Tabs
+      defaultActiveTab="defaultSettings"
+      defaultSelectedKey="defaultSettings"
+      variant="bordered"
+      items={leaveTabs}
+    />
+  );
+};
+
+interface DefaultSettingsContentProps {
+  children?: React.ReactNode;
+  settingsContent: React.ReactNode;
+  settingsSide: React.ReactNode;
+}
+
+const DefaultSettingsContent = ({
+  children,
+  settingsSide,
+  settingsContent,
+}: DefaultSettingsContentProps) => (
+  <>
+    {children}
+    <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">
+      {settingsSide}
+      <div className="md:block lg:col-span-9">
+        <SettingsCard>{settingsContent}</SettingsCard>
+      </div>
+    </div>
+  </>
+);
+
+interface SiteSettingsContentProps {
+  children?: React.ReactNode;
+}
+
+const SiteSettingsContent = ({ children }: SiteSettingsContentProps) => (
+  <>
+    {children}
+    <p>Paramètrage par site</p>
+  </>
+);
+
+const CounterContent = () => <p>Compteur</p>;
 
 export default Layout;

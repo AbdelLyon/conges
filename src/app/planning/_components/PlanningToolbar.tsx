@@ -81,7 +81,7 @@ const MultiSelect = ({ placeholder, options, className }: MultiSelectProps) => {
 
   const commonSelectClassNames = {
     trigger:
-      "border border-border/70 bg-transparant data-[focus-visible=true]:outline-0 data-[focus=true]:border-outline data-[hover=true]:bg-transparant data-[hover=true]:border-outline",
+      "border border-border bg-transparant data-[focus-visible=true]:outline-0 data-[focus=true]:border-outline data-[hover=true]:bg-transparant data-[hover=true]:border-outline",
     listbox: "data-[focus=true]:outline-0",
   };
 
@@ -230,7 +230,7 @@ export const PlanningToolbar = () => {
             radius="sm"
             classNames={{
               inputWrapper:
-                "border border-border/70 w-60 bg-transparant focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
+                "border border-border w-60 bg-transparant focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
               selectorIcon: "text-content1-600",
             }}
             value={dateRange}
@@ -259,7 +259,7 @@ export const PlanningToolbar = () => {
               reversePrimary
                 ? "bg-primary-100 text-primary"
                 : "text-foreground-500 hover:bg-content1-100"
-            } border border-border/70   transition-colors`}
+            } border border-border transition-colors`}
             onClick={() => setReversePrimary(!reversePrimary)}
             title="Inverser couleurs type/statut"
           >

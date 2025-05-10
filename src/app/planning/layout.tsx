@@ -21,7 +21,7 @@ const Layout = ({
         <div className="flex gap-2">
           {planningSidebar}
 
-          <div className="flex-1 overflow-x-auto rounded-t-lg border border-border/70">
+          <div className="flex-1 overflow-x-auto rounded-t-lg border border-border/60">
             {planningHeader}
             {planningBody}
           </div>

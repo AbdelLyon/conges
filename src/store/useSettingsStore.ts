@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 
+import { LEAVE_TYPES_SETTINGS } from '@/app/settings/data';
 import { LeaveTypeSettings } from '@/app/settings/types';
 
 export interface LeaveFormState {
@@ -42,7 +43,7 @@ type SettingsStore = {
 };
 
 export const useSettingsStore = create<SettingsStore>((set) => ({
-   activeLeaveType: null,
+   activeLeaveType: LEAVE_TYPES_SETTINGS[0],
    setActiveLeaveType: (type) => set({ activeLeaveType: type }),
 
    searchQuery: "",
