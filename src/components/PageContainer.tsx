@@ -15,7 +15,7 @@ export const PageContainer = ({ title, classNames, children }: Props) => {
     >
       <h1
         className={mergeTailwindClasses(
-          "text-lg font-bold mb-4",
+          "text-lg font-bold my-3",
           classNames?.title,
         )}
       >

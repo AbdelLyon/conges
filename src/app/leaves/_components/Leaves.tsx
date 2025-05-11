@@ -50,6 +50,7 @@ export default function Leaves() {
         isHeaderSticky
         showSelectionCheckboxes
         selectionMode="multiple"
+        skeletonRowsCount={13}
         isCompact
         radius="none"
         shadow="none"

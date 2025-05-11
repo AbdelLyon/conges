@@ -71,9 +71,9 @@ const items = (pathname: string): Item[] => {
     {
       key: "mobile",
       label: "Application mobile",
-      href: "/mobile",
+      href: "/download",
       startContent: <IconDeviceMobile className="text-large" />,
-      isActive: pathname === "/mobile",
+      isActive: pathname === "/download",
     },
   ];
 };

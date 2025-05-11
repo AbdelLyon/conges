@@ -63,7 +63,7 @@ export const HolidaysContent = () => {
 
         <div
           className={mergeTailwindClasses(
-            "flex cursor-pointer select-none items-center gap-2 rounded-md border border-border p-2 transition-all hover:border-outline/10",
+            "flex cursor-pointer select-none items-center gap-2 rounded-md border border-border p-2 transition-all hover:border-outline/15",
             {
               "border-outline/15 bg-outline/5": allSelected,
             },

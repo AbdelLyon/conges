@@ -1,6 +1,5 @@
 "use client";
 
-import { Accordion } from "x-react/accordion";
 import { Card } from "x-react/card";
 import { Input, RadioGroup, Switch } from "x-react/form";
 import { IconSettings } from "x-react/icons";
@@ -30,20 +29,14 @@ const LeaveTypeForm = () => {
     });
   };
 
-  const cardClassNames = {
-    body: "p-3 sm:p-5 space-y-4 sm:space-y-6 overflow-hidden",
-  };
-
-  const advancedCardClassNames = {
-    body: "space-y-3 p-3 sm:p-5",
-  };
-
   return (
     <Card
       radius="sm"
       shadow="none"
       className="border border-border/60"
-      classNames={cardClassNames}
+      classNames={{
+        body: "p-5 space-y-6",
+      }}
     >
       <BasicInfoSection
         label={leaveForm.label}
@@ -61,7 +54,6 @@ const LeaveTypeForm = () => {
       <AdvancedSettingsSection
         formValues={leaveForm}
         onChange={handleInputChange}
-        cardClassNames={advancedCardClassNames}
       />
     </Card>
   );
@@ -83,26 +75,26 @@ const BasicInfoSection = ({
   isLocked,
   onChange,
 }: BasicInfoSectionProps) => (
-  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-6">
-    <FormSection title="Libellé" required>
+  <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+    <FormSection title="Libellé" required className="flex-1">
       <Input
         value={label}
         onChange={(e) => onChange("label", e.target.value)}
         placeholder="Libellé du congé"
         radius="sm"
         size="sm"
-        className="h-11"
+        className="h-11 w-full"
         variant="bordered"
         isDisabled={isLocked}
       />
     </FormSection>
 
-    <FormSection title="Code congés" required>
+    <FormSection title="Code congés" required className="flex-1">
       <Input
         value={code}
         onChange={(e) => onChange("code", e.target.value)}
         placeholder="Code"
-        className="h-11"
+        className="h-11 w-full"
         radius="sm"
         size="sm"
         variant="bordered"
@@ -128,15 +120,15 @@ const ColorAndCounterSection = ({
   };
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-6">
-      <FormSection title="Couleur">
-        <div className="relative">
+    <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
+      <FormSection title="Couleur" className="flex-1">
+        <div className="relative w-full">
           <Input
             value={color}
             onChange={(e) => onChange("color", e.target.value)}
             placeholder="#RRGGBB"
             radius="sm"
-            className="h-11"
+            className="h-11 w-full"
             size="sm"
             variant="bordered"
             startContent={
@@ -159,30 +151,33 @@ const ColorAndCounterSection = ({
         </div>
       </FormSection>
 
-      <div>
-        <TooltipText content="Indique si ce type de congé utilise un compteur">
-          <label className="mb-1.5 flex items-center gap-1.5 text-sm font-medium">
+      <FormSection
+        title={
+          <TooltipText content="Indique si ce type de congé utilise un compteur">
             Compteurs
-          </label>
-        </TooltipText>
-        <div className="mt-3 flex gap-5">
-          <RadioGroup
-            items={[
-              { value: "with", label: "avec" },
-              { value: "without", label: "sans" },
-            ]}
-            defaultValue={withCounter ? "with" : "without"}
-            orientation="horizontal"
-            onValueChange={(value: string) =>
-              onChange("withCounter", value === "with")
-            }
-            itemClasses={{
-              base: "flex items-center gap-3",
-              label: "text-sm",
-            }}
-          />
-        </div>
-      </div>
+          </TooltipText>
+        }
+        className="flex-1"
+      >
+        <RadioGroup
+          className="flex h-10 justify-center"
+          size="sm"
+          label=""
+          items={[
+            { value: "with", label: "avec" },
+            { value: "without", label: "sans" },
+          ]}
+          defaultValue={withCounter ? "with" : "without"}
+          orientation="horizontal"
+          onValueChange={(value: string) =>
+            onChange("withCounter", value === "with")
+          }
+          itemClasses={{
+            base: "flex items-center",
+            label: "text-sm",
+          }}
+        />
+      </FormSection>
     </div>
   );
 };
@@ -190,71 +185,92 @@ const ColorAndCounterSection = ({
 interface AdvancedSettingsSectionProps {
   formValues: LeaveFormState;
   onChange: (key: keyof LeaveFormState, value: unknown) => void;
-  cardClassNames: Record<string, string>;
 }
 
 const AdvancedSettingsSection = ({
   formValues,
   onChange,
-  cardClassNames,
 }: AdvancedSettingsSectionProps) => (
-  <Accordion
-    title="Paramètres avancés"
-    isCompact
-    itemClasses={{
-      title: "text-sm font-medium",
+  <Card
+    radius="lg"
+    shadow="none"
+    className="overflow-hidden"
+    classNames={{
+      body: "p-1.5",
+      header: "p-0 ",
     }}
-    items={[
-      {
-        id: "advanced-settings",
-        title: (
-          <div className="flex items-center gap-1.5">
-            <IconSettings size={18} className="text-default-500" />
-            <h4>Paramètres avancés</h4>
-          </div>
-        ),
-        content: (
-          <Card
-            radius="lg"
-            shadow="none"
-            className="border border-border "
-            classNames={cardClassNames}
-          >
-            <ActivationToggle />
+    header={
+      <div className="flex items-center gap-2">
+        <IconSettings className="text-foreground/70" size={18} />
+        <h4 className="text-base font-medium">Paramètres avancés</h4>
+      </div>
+    }
+  >
+    <ActivationToggle />
 
-            <CustomDivider className="opacity-50" />
+    <CustomDivider className="my-3 opacity-50" />
 
-            <CounterSettings
-              withCounter={formValues.withCounter}
-              onChange={onChange}
-            />
+    <div className="mb-4 grid grid-cols-1 gap-2 ">
+      <CounterSettings
+        withCounter={formValues.withCounter}
+        onChange={onChange}
+      />
 
-            <ConsecutiveDaysSettings
-              maxConsecutiveDays={formValues.maxConsecutiveDays}
-              onChange={onChange}
-            />
+      <ConsecutiveDaysSettings
+        maxConsecutiveDays={formValues.maxConsecutiveDays}
+        onChange={onChange}
+      />
+    </div>
 
-            <AdvancedSettings
-              isSelected={formValues.allowExceedRights}
-              onValueChange={() =>
-                onChange("allowExceedRights", !formValues.allowExceedRights)
-              }
-              label="Le collaborateur peut saisir une période de congés supérieur à ses droits"
-              tooltip="Permet au collaborateur de dépasser son solde disponible"
-            />
+    <div className="grid grid-cols-1 gap-4">
+      <AdvancedSettings
+        isSelected={formValues.allowExceedRights}
+        onValueChange={() =>
+          onChange("allowExceedRights", !formValues.allowExceedRights)
+        }
+        label="Le collaborateur peut saisir une période de congés supérieur à ses droits"
+        tooltip="Permet au collaborateur de dépasser son solde disponible"
+      />
 
-            <CustomDivider className="opacity-50" />
+      <AdvancedSettings
+        isSelected={formValues.allowHalfDays}
+        onValueChange={() =>
+          onChange("allowHalfDays", !formValues.allowHalfDays)
+        }
+        label="Prise de demi-journées possible"
+      />
 
-            <AdditionalSettings formValues={formValues} onChange={onChange} />
-          </Card>
-        ),
-      },
-    ]}
-  />
+      <AdvancedSettings
+        isSelected={formValues.requireJustification}
+        onValueChange={() =>
+          onChange("requireJustification", !formValues.requireJustification)
+        }
+        label="Justificatif obligatoire"
+      />
+
+      <AdvancedSettings
+        isSelected={formValues.excludeFromExport}
+        onValueChange={() =>
+          onChange("excludeFromExport", !formValues.excludeFromExport)
+        }
+        label="Ne pas prendre en compte ce type de congé dans l'export"
+        tooltip="Ce type de congé ne sera pas inclus dans les exports"
+      />
+
+      <AdvancedSettings
+        isSelected={formValues.limitedPeriod}
+        onValueChange={() =>
+          onChange("limitedPeriod", !formValues.limitedPeriod)
+        }
+        label="Congé disponible sur une période limitée"
+        tooltip="Limite la disponibilité du congé à une période spécifique"
+      />
+    </div>
+  </Card>
 );
 
 const ActivationToggle = () => (
-  <div className="flex items-center justify-between">
+  <div className="flex items-center justify-between py-1">
     <TooltipText content="Activer/désactiver la possibilité de poser ce type de congé">
       <span className="font-medium">Pose du congé activé</span>
     </TooltipText>
@@ -283,7 +299,7 @@ const CounterSettings = ({ withCounter, onChange }: CounterSettingsProps) => (
         type="number"
         value="1"
         min="0"
-        className="h-10 max-w-[80px]"
+        className="ml-auto h-6 w-16"
         radius="sm"
         size="sm"
         variant="bordered"
@@ -315,55 +331,13 @@ const ConsecutiveDaysSettings = ({
           onChange("maxConsecutiveDays", parseInt(e.target.value) || 0)
         }
         min="0"
-        className="h-10 max-w-[80px]"
+        className="ml-auto h-6 w-16"
         radius="sm"
         size="sm"
         variant="bordered"
       />
     }
   />
-);
-
-interface AdditionalSettingsProps {
-  formValues: LeaveFormState;
-  onChange: (key: keyof LeaveFormState, value: unknown) => void;
-}
-
-const AdditionalSettings = ({
-  formValues,
-  onChange,
-}: AdditionalSettingsProps) => (
-  <>
-    <AdvancedSettings
-      isSelected={formValues.allowHalfDays}
-      onValueChange={() => onChange("allowHalfDays", !formValues.allowHalfDays)}
-      label="Prise de demi-journées possible"
-    />
-
-    <AdvancedSettings
-      isSelected={formValues.requireJustification}
-      onValueChange={() =>
-        onChange("requireJustification", !formValues.requireJustification)
-      }
-      label="Justificatif obligatoire"
-    />
-
-    <AdvancedSettings
-      isSelected={formValues.excludeFromExport}
-      onValueChange={() =>
-        onChange("excludeFromExport", !formValues.excludeFromExport)
-      }
-      label="Ne pas prendre en compte ce type de congé dans l'export"
-      tooltip="Ce type de congé ne sera pas inclus dans les exports"
-    />
-
-    <AdvancedSettings
-      isSelected={formValues.limitedPeriod}
-      onValueChange={() => onChange("limitedPeriod", !formValues.limitedPeriod)}
-      label="Congé disponible sur une période limitée"
-      tooltip="Limite la disponibilité du congé à une période spécifique"
-    />
-  </>
 );
 
 export default LeaveTypeForm;

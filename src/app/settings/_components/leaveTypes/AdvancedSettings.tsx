@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { Checkbox } from "x-react/form";
 import { IconInfoCircle } from "x-react/icons";
 import { Tooltip } from "x-react/tooltip";
+import { mergeTailwindClasses } from "x-react/utils";
 
 export interface Props {
   isSelected: boolean;
@@ -35,7 +36,7 @@ export const AdvancedSettings = ({
         isSelected={isSelected}
         onValueChange={onValueChange}
         color="primary"
-        className={checkboxClasses}
+        className={mergeTailwindClasses("p-0 ml-1", checkboxClasses)}
         radius="md"
         size="sm"
       />
