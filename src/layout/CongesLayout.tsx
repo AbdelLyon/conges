@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Chip } from "x-react/chip";
@@ -14,6 +15,9 @@ import {
 import { Layout, useLayoutConfig } from "x-react/layout";
 import { ToggleTheme } from "x-react/theme";
 
+import logoB from "@/assets/logoB.png";
+import logoL from "@/assets/logoL.png";
+import logoR from "@/assets/logoR.png";
 import { Providers } from "@/providers/providers";
 
 import { UserProfile } from "./UserProfile";
@@ -125,6 +129,29 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
       actionClick: () => {
         console.log("mlk");
       },
+
+      bgImage: (
+        <div className=" z-10 overflow-hidden">
+          <Image
+            src={logoR}
+            alt="logo"
+            width={40}
+            className="absolute bottom-52 right-0 "
+          />
+          <Image
+            src={logoB}
+            alt="logo"
+            width={40}
+            className="absolute bottom-16 right-0"
+          />
+          <Image
+            src={logoL}
+            alt="logo"
+            width={100}
+            className="absolute bottom-16 left-0 "
+          />
+        </div>
+      ),
 
       items: items(pathname),
       className: "bg-[#1E1E1E] text-gray-300",
