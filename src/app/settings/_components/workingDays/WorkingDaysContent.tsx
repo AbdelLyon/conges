@@ -41,7 +41,7 @@ export const WorkingDaysContent = () => {
     <Card
       radius="lg"
       shadow="none"
-      className="border border-border dark:bg-background"
+      className="border border-border dark:bg-background "
     >
       <div className="mb-4 flex items-center justify-between">
         <p className="font-medium opacity-50">

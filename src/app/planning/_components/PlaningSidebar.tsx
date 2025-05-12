@@ -79,7 +79,7 @@ export const PlanningSidebar = () => {
           defaultActiveTab={selectedTab}
           onTabChange={(key) => setSelectedTab(key as "sites" | "équipes")}
           variant="bordered"
-          className="w-full border-b border-border bg-gradient-to-b from-content1-50 to-content1-100/80 px-2 py-3"
+          className="w-full border-b border-border bg-gradient-to-b from-content1-100/40 to-content1/5 p-3 px-2 dark:from-content1-100/20 dark:to-content1-100/60"
           size="sm"
           radius="sm"
           color="primary"
@@ -121,7 +121,7 @@ export const PlanningSidebar = () => {
         {filteredSites.map((site) => (
           <div key={site.id}>
             <div
-              className="mb-1 flex cursor-pointer items-center justify-between rounded-md border border-border bg-content1-100 p-1 transition-colors duration-300 hover:opacity-80"
+              className="mb-1 flex cursor-pointer items-center justify-between rounded-md border border-border/40 bg-content1-100/50 px-2 py-1.5 transition-colors duration-300 hover:opacity-80 dark:bg-content1"
               onClick={() => toggleSiteExpand(site.id)}
             >
               <div className="flex items-center">
@@ -129,7 +129,7 @@ export const PlanningSidebar = () => {
                   className={`mr-2 transition-transform duration-300 ease-in-out ${expandedSites[site.id] ? "rotate-0" : "-rotate-90"}`}
                   size={16}
                 />
-                <span className="text-sm font-medium">{site.name}</span>
+                <span className="text-xs font-medium">{site.name}</span>
               </div>
               {site.users.length > 0 && (
                 <span className="text-xs text-foreground-500">

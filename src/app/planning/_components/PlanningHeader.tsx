@@ -174,7 +174,7 @@ export const PlanningHeader = () => {
   return (
     <>
       {/* Navigation des mois - Design modernisé */}
-      <div className="flex w-full items-center justify-between border-b border-border bg-gradient-to-b from-content1-50 to-content1-100 p-3">
+      <div className="flex w-full items-center justify-between border-b border-border bg-gradient-to-b from-content1-100/40 to-content1/5 p-3 dark:from-content1-100/20 dark:to-content1-100/60">
         <button
           className="flex size-9 items-center justify-center rounded-full text-foreground-500 transition-colors duration-200 hover:bg-content1-100"
           onClick={() => changePeriod(-1)}
@@ -183,7 +183,7 @@ export const PlanningHeader = () => {
         </button>
 
         <div className="relative flex flex-1 justify-center">
-          <div className="flex items-center space-x-6 rounded-lg border border-border bg-content1-100 px-6 py-1.5">
+          <div className="flex items-center space-x-6 rounded-lg border border-border bg-content1 px-6 py-1.5">
             {months.map((monthKey, index) => (
               <div
                 key={monthKey}
@@ -208,7 +208,7 @@ export const PlanningHeader = () => {
         </button>
       </div>
 
-      <div className="h-[88px] from-content1-100 to-content1-50 dark:bg-gradient-to-b">
+      <div className="h-[90px] bg-gradient-to-b from-content1 to-content1-100/10 dark:from-content1-100/10 dark:to-content1-100/30">
         <div
           className="grid"
           style={{
@@ -225,7 +225,7 @@ export const PlanningHeader = () => {
                 <div
                   key={`day-num-${index}`}
                   className={mergeTailwindClasses(
-                    "flex justify-center items-center rounded-t-md py-.5 m-1",
+                    "flex justify-center items-center rounded-t-md mt-1 mx-1 border border-border border-b-0 ",
                     isToday
                       ? "bg-primary text-white"
                       : isWeekend
@@ -266,7 +266,7 @@ export const PlanningHeader = () => {
                 <div
                   key={`day-name-${index}`}
                   className={mergeTailwindClasses(
-                    "flex justify-center items-center rounded-b-md py-.5 mb-1",
+                    "flex justify-center items-center rounded-b-md mb-1 mx-1 border border-border border-t-0",
                     isToday
                       ? "bg-primary text-white"
                       : isWeekend
@@ -336,7 +336,7 @@ export const PlanningHeader = () => {
                 <div
                   key={`holiday-${index}`}
                   className={mergeTailwindClasses(
-                    "flex items-center justify-center mb-1",
+                    "flex items-center justify-center",
                   )}
                   onMouseEnter={() => setHoveredDay(day.format("YYYY-MM-DD"))}
                   onMouseLeave={() => setHoveredDay(null)}
@@ -344,7 +344,7 @@ export const PlanningHeader = () => {
                   {publicHoliday && (
                     <Chip
                       size="sm"
-                      className="flex items-center justify-center rounded-full bg-content1-100 text-[10px] font-bold shadow-sm backdrop-blur-sm transition-shadow duration-200 hover:shadow"
+                      className="flex items-center justify-center rounded-full border border-border-200 bg-content1-200 text-[10px] font-bold shadow-sm backdrop-blur-sm transition-shadow duration-200 hover:shadow dark:bg-content1-300"
                       title={publicHoliday.name}
                     >
                       F
