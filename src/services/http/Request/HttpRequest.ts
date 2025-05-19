@@ -10,7 +10,7 @@ export class HttpRequest implements IHttpRequest {
   private baseURL = "";
   private defaultTimeout = 10000;
   private defaultHeaders: Record<string, string> = {};
-  private withCredentials = true;
+  private withCredentials = false;
   private maxRetries = 3;
   private handler: HttpHandler;
 
@@ -22,7 +22,7 @@ export class HttpRequest implements IHttpRequest {
     this.baseURL = HttpConfig.getFullBaseUrl(options);
     this.defaultTimeout = options.timeout ?? 10000;
     this.maxRetries = options.maxRetries ?? 3;
-    this.withCredentials = options.withCredentials ?? true;
+    this.withCredentials = options.withCredentials ?? false;
 
     this.defaultHeaders = {
       "Content-Type": "application/json",
@@ -43,11 +43,10 @@ export class HttpRequest implements IHttpRequest {
   }
 
   public async request<TResponse>(
-    config: Partial<RequestConfig> & { url: string; },
-    options: Partial<RequestConfig> = {},
+    config: RequestConfig,
   ): Promise<TResponse> {
     try {
-      const mergedConfig = this.createMergedConfig(config, options);
+      const mergedConfig = this.createMergedConfig(config);
       const url = this.buildRequestUrl(mergedConfig.url);
       const interceptedConfig = await HttpInterceptor.applyRequestInterceptors({
         ...mergedConfig,
@@ -63,23 +62,20 @@ export class HttpRequest implements IHttpRequest {
 
       return await this.handler.parseResponse<TResponse>(interceptedResponse);
     } catch (error) {
-      return this.handleReqError(error, config, options);
+      return this.handleReqError(error, config);
     }
   }
 
   private createMergedConfig(
     config: Partial<RequestConfig> & { url: string; },
-    options: Partial<RequestConfig>,
   ): RequestConfig {
     return {
       method: "GET",
       timeout: this.defaultTimeout,
       ...config,
-      ...options,
       headers: {
         ...this.defaultHeaders,
         ...(config.headers || {}),
-        ...(options.headers || {}),
       },
     };
   }
@@ -95,17 +91,12 @@ export class HttpRequest implements IHttpRequest {
 
   private async handleReqError<T>(
     error: unknown,
-    config: Partial<RequestConfig> & { url: string; },
-    options: Partial<RequestConfig>,
+    config: RequestConfig,
   ): Promise<T> {
     const apiError =
       error instanceof HttpError
         ? error
-        : new HttpError(error, {
-          ...config,
-          ...options,
-          url: config.url,
-        });
+        : new HttpError(error, config);
 
     throw await HttpInterceptor.applyResponseErrorInterceptors(apiError);
   }

@@ -88,14 +88,13 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const layoutConfig = useLayoutConfig<LayoutComponentProps>({
     navbar: {
-      appName: (
+      appName: <p className="text-lg font-bold">Congés</p>,
+      appLogo: (
         <p className="w-[200px] text-center text-2xl font-bold tracking-widest text-foreground">
           <span className="text-primary">D</span>
           AILYAPPS
         </p>
       ),
-      appLogo: <p className="text-lg font-bold">Congés</p>,
-
       onItemClick: (item) => {
         if (item.href) router.push(item.href);
       },

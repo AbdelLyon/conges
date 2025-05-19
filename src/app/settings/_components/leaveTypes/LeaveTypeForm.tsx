@@ -1,10 +1,10 @@
 "use client";
 
 import { Card } from "x-react/card";
+import { Divider } from "x-react/divider";
 import { Input, RadioGroup, Switch } from "x-react/form";
 import { IconSettings } from "x-react/icons";
 
-import { CustomDivider } from "@/shared/Divider";
 import { FormSection } from "@/shared/FormSection";
 import { TooltipText } from "@/shared/TooltipText";
 import { useSettingsStore } from "@/store/useSettingsStore";
@@ -208,7 +208,7 @@ const AdvancedSettingsSection = ({
   >
     <ActivationToggle />
 
-    <CustomDivider className="my-3 opacity-50" />
+    <Divider className="my-3 opacity-50" />
 
     <div className="mb-4 grid grid-cols-1 gap-2 ">
       <CounterSettings

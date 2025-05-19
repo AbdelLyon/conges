@@ -88,7 +88,7 @@ export interface IHttpRequest {
   configure: (options: ConfigOptions) => void;
 
   request: <TResponse>(
-    config: Partial<RequestConfig> & { url: string },
+    config: RequestConfig,
     options?: Partial<RequestConfig>,
   ) => Promise<TResponse>;
 }

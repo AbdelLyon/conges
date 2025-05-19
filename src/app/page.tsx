@@ -5,7 +5,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import "dayjs/locale/fr";
 import { Button } from "x-react/button";
 import { Card } from "x-react/card";
+import { Chart } from "x-react/chart";
 import { Chip } from "x-react/chip";
+import { Divider } from "x-react/divider";
 import {
   IconChevronRight as IconArrowRight,
   IconCalendar,
@@ -16,12 +18,11 @@ import {
   IconInfoCircle,
   IconX,
 } from "x-react/icons";
-import { CircularProgress } from "x-react/progress";
 import { Tabs } from "x-react/tabs";
+import { addToast } from "x-react/toast";
 import { mergeTailwindClasses } from "x-react/utils";
 
 import { PageContainer } from "@/components/PageContainer";
-import { CustomDivider } from "@/shared/Divider";
 
 // Types definitions
 type LeaveType = {
@@ -136,7 +137,7 @@ const fakeCounters: Counter[] = [
     id: 1,
     type: "Congés payés",
     acquired: 25,
-    balance: 20,
+    balance: 22,
     taken: 5,
     futureLeaves: 2,
     color: COLORS.paidLeave,
@@ -155,8 +156,8 @@ const fakeCounters: Counter[] = [
   {
     id: 3,
     type: "Maladie",
-    acquired: 0,
-    balance: 0,
+    acquired: 10,
+    balance: 2,
     taken: 3,
     futureLeaves: 0,
     color: COLORS.sickLeave,
@@ -490,7 +491,6 @@ const Dashboard: React.FC = () => {
           variant="bordered"
           classNames={{
             base: "flex justify-end",
-            tabList: "border-1 border-border",
             panel: "pt-0",
           }}
           items={tabItems}
@@ -878,39 +878,61 @@ const CounterCard: React.FC<CounterCardProps> = ({ counter }) => {
   const { type, acquired, balance, taken, futureLeaves, color, isLastYear } =
     counter;
 
-  const getColorClassName = () => {
-    switch (color) {
-      case "#4ade80":
-        return "text-green-500";
-      case "#3b82f6":
-        return "text-blue-500";
-      case "#f43f5e":
-        return "text-rose-500";
-      case "#8b5cf6":
-        return "text-violet-500";
-      case "#ec4899":
-        return "text-pink-500";
-      default:
-        return "text-primary";
-    }
-  };
   const percentage = acquired > 0 ? (balance / acquired) * 100 : 0;
+
+  const data = {
+    labels: ["Disponible", "Utilisé"],
+    datasets: [
+      {
+        data: [percentage, 100 - percentage],
+        backgroundColor: [color, "#2A2A2A"],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const options = {
+    cutout: "84%",
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        enabled: false,
+      },
+    },
+    rotation: 270, // Commencer à gauche
+    circumference: 180, // Demi-cercle
+    maintainAspectRatio: false,
+  };
 
   return (
     <Card
       radius="lg"
+      isHoverable
+      isPressable
       shadow="sm"
       classNames={{
-        base: "w-52 border border-border dark:bg-background p-4",
+        base: "w-64 border border-border p-4",
+      }}
+      onClick={() => {
+        addToast({
+          title: "Test",
+          color: "success",
+          variant: "flat",
+          description: "ceci est un test",
+          radius: "sm",
+          classNames: {
+            base: "border border-border",
+          },
+          timeout: 3000,
+          shouldShowTimeoutProgress: true,
+        });
       }}
     >
-      <div
-        className={mergeTailwindClasses(
-          "flex items-center ",
-          isLastYear ? "justify-between" : "justify-center",
-        )}
-      >
-        <h3 className="truncate text-sm font-semibold" style={{ color }}>
+      {/* Titre avec couleur */}
+      <div className="flex items-center justify-center">
+        <h3 className="text-base font-bold" style={{ color }}>
           {type}
         </h3>
         {isLastYear && (
@@ -918,51 +940,42 @@ const CounterCard: React.FC<CounterCardProps> = ({ counter }) => {
             color="default"
             variant="flat"
             size="sm"
-            className="px-2 py-0.5 text-xs"
+            className="ml-2 px-2 py-0.5 text-xs"
           >
             N-1
           </Chip>
         )}
       </div>
 
-      <div className="my-3 flex justify-center">
-        <div className="relative flex items-center justify-center">
-          <CircularProgress
-            size="lg"
-            value={percentage}
-            strokeWidth={3}
-            showValueLabel={false}
-            color={
-              getColorClassName() === "text-primary" ? "primary" : "default"
-            }
-            classNames={{
-              svg: "size-24",
-              indicator: `stroke-current ${getColorClassName()}`,
-            }}
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-lg font-bold">{balance}</span>
-            <span className="text-xs text-foreground/60">/ {acquired}</span>
-          </div>
-        </div>
+      <Chart
+        type="doughnut"
+        data={data}
+        options={options}
+        classNames={{
+          root: "border-none shadow-none px-4 h-40 bg-transparent dark:bg-transparent",
+        }}
+      />
+      <div className="absolute inset-0 flex items-center justify-center gap-1">
+        <span className="text-2xl font-bold ">{balance}</span>
+        <span className="mt-2 text-xl font-bold">/</span>
+        <span className="mt-4 text-sm font-medium">{acquired}</span>
       </div>
 
-      <CustomDivider className="my-2 opacity-30" />
+      <Divider className="mb-2 opacity-40" />
 
-      <div className="flex justify-between text-xs text-foreground/70">
-        <div className="flex flex-col items-center">
-          <span className="font-medium">{taken}</span>
-          <span>Pris</span>
+      <div className="flex justify-between px-6 text-sm">
+        <div className="flex flex-col items-center opacity-70">
+          <span className="text-lg font-bold">{taken}</span>
+          <span className="text-xs">Pris</span>
         </div>
-        <div className="flex flex-col items-center">
-          <span className="font-medium">{futureLeaves}</span>
-          <span>À venir</span>
+        <div className="flex flex-col items-center opacity-70">
+          <span className="text-lg font-bold">{futureLeaves}</span>
+          <span className="text-xs">À venir</span>
         </div>
       </div>
     </Card>
   );
 };
-
 const UpcomingLeaveCard: React.FC<UpcomingLeaveCardProps> = ({
   leave,
   onClick,
@@ -1269,7 +1282,7 @@ const LeaveDetailsModal: React.FC<LeaveDetailsModalProps> = ({
             </div>
           </div>
 
-          <CustomDivider className="my-4" />
+          <Divider className="my-4" />
 
           <div className="flex gap-3">
             <Button
