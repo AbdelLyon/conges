@@ -1,10 +1,9 @@
 "use client";
-
-import { CalendarDate, DateValue } from "@internationalized/date";
+import { CalendarDate } from "@internationalized/date";
 import { useState } from "react";
 import { Button } from "x-react/button";
 import { Buttons } from "x-react/buttons";
-import { DateRangePicker } from "x-react/datepicker";
+import { DateRangePicker, DateValue } from "x-react/datepicker";
 import { Dropdown, DropdownSectionConfig } from "x-react/dropdown";
 import { Select } from "x-react/form";
 import {
@@ -233,7 +232,8 @@ export const PlanningToolbar = () => {
                 "border border-border w-60 bg-transparant focus-within:hover:border-outline focus-within:border-outline hover:bg-transparant hover:border-outline",
               selectorIcon: "text-content1-600",
             }}
-            value={dateRange}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            value={dateRange as any}
             onChange={(range) => range && setDateRange(range)}
             size="md"
             visibleMonths={2}

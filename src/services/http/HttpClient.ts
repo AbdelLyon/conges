@@ -12,13 +12,17 @@ export class HttpClient {
   }): HttpRequest {
     const { httpConfig, instanceName } = config;
 
-    if (!this.instances.has(instanceName)) {
-      const instance = new HttpRequest();
-      instance.configure(httpConfig);
-      this.instances.set(instanceName, instance);
-
-      if (this.instances.size === 1) this.defaultInstanceName = instanceName;
+    // Si l'instance existe déjà, on la retourne simplement sans la reconfigurer
+    if (this.instances.has(instanceName)) {
+      return this.instances.get(instanceName)!;
     }
+
+    // Sinon, on crée et configure une nouvelle instance
+    const instance = new HttpRequest();
+    instance.configure(httpConfig);
+    this.instances.set(instanceName, instance);
+
+    if (this.instances.size === 1) this.defaultInstanceName = instanceName;
 
     return this.instances.get(instanceName)!;
   }

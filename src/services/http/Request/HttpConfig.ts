@@ -44,6 +44,6 @@ export class HttpConfig {
       message,
     };
 
-    console.error("API Request Error:", errorDetails);
+    console.log("API Request Error:", errorDetails);
   }
 }

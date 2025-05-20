@@ -158,6 +158,14 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
     },
   });
 
+  // useEffect(() => {
+  //   const testAUth = async () => {
+  //     const res = await authService.logout();
+  //     console.log(res);
+  //   };
+  //   testAUth();
+  // }, []);
+
   return (
     <Providers>
       <Layout {...layoutConfig}>{children}</Layout>

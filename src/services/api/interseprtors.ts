@@ -24,7 +24,7 @@ export const requestInterceptors: RequestInterceptor[] = [
       try {
          token = Cookies.get('access_token');
       } catch (error) {
-         console.error("Erreur lors de l'accès aux cookies:", error);
+         console.log("Erreur lors de l'accès aux cookies:", error);
       }
 
 
@@ -41,19 +41,19 @@ export const requestInterceptors: RequestInterceptor[] = [
 
 export const responseErrorInterceptors: ResponseErrorInterceptor[] = [
    (error: Error & { status?: number; config?: { url?: string; }; response?: unknown; }) => {
-      console.error('API Error:', {
+      console.log('API Error:', {
          status: error.status,
          url: error.config?.url,
          message: error.message
       });
 
       if (!error.response) {
-         console.error('Problème de connexion. Vérifiez votre réseau.');
+         console.log('Problème de connexion. Vérifiez votre réseau.');
          return Promise.reject(error);
       }
 
       if (error.status === 401) {
-         console.error('Session expirée. Veuillez vous reconnecter.');
+         console.log('Session expirée. Veuillez vous reconnecter.');
 
          Cookies.remove('access_token');
          Cookies.remove('refresh_token');
@@ -65,16 +65,16 @@ export const responseErrorInterceptors: ResponseErrorInterceptor[] = [
 
       switch (error.status) {
          case 403:
-            console.error('Accès refusé');
+            console.log('Accès refusé');
             break;
          case 404:
-            console.error('Ressource non trouvée');
+            console.log('Ressource non trouvée');
             break;
          case 500:
-            console.error('Erreur serveur. Réessayez plus tard.');
+            console.log('Erreur serveur. Réessayez plus tard.');
             break;
          default:
-            console.error('Une erreur est survenue');
+            console.log('Une erreur est survenue');
       }
 
       return Promise.reject(error);

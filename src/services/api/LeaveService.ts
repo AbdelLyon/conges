@@ -64,7 +64,7 @@ export class LeaveService extends Query<Leave> {
    };
 
    constructor () {
-      super("/v1");
+      super({ pathname: '/v1', instanceName: "api" });
    }
 
    /**

@@ -1,45 +1,23 @@
-"use client";
-import { TabItem, Tabs } from "x-react/tabs";
-
 import { PageContainer } from "@/components/PageContainer";
+import { ServerQueryProvider } from "@/providers/ServerQueryProvider";
+import { userService } from "@/services/api/UserService";
 
 import Leaves from "./_components/Leaves";
 
-export default function LeavesPage() {
-  const tabs: TabItem[] = [
-    {
-      key: "leaves",
-      title: "Conges",
-      content: <Leaves />,
-      titleValue: "Congess",
-    },
-    {
-      key: "abcence",
-      title: "Absence",
-      content: <Leaves />,
-      // à renommer "tooltype"
-      titleValue: "Absence",
-    },
-  ];
-
-  const handleTabChange = (key: string) => {
-    console.log(`Onglet actif: ${key}`);
-  };
-
+export default function ProductsPage() {
   return (
     <PageContainer title="Mes congés & absences">
-      <Tabs
-        items={tabs}
-        defaultActiveTab="profile"
-        onTabChange={handleTabChange}
-        variant="bordered"
-        color="primary"
-        classNames={{
-          tabList: "gap-4 border-1 mb-4 border-border shadow-none",
-          panel: "p-0",
-          tabContent: "text-forground",
+      <ServerQueryProvider
+        prefetchFn={async (queryClient) => {
+          await queryClient.prefetchInfiniteQuery({
+            queryKey: ["users"],
+            queryFn: (context) => userService.getUsers(context.pageParam),
+            initialPageParam: 1,
+          });
         }}
-      />
+      >
+        <Leaves />
+      </ServerQueryProvider>
     </PageContainer>
   );
 }

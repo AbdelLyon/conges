@@ -1,80 +1,41 @@
-
 import { HttpClient } from "../http/HttpClient";
+
+import { authConfig } from "./authConfig";
 
 import type { IAuth } from "./types";
 import type { HttpRequest } from "@/services/http/Request/HttpRequest";
 import type { RequestConfig } from "@/services/http/types";
 import type { z } from "zod";
 
+interface AuthConfig<TUser, TCredentials, TToken> {
+  pathname: string;
+  schemas: {
+    user: z.ZodType<TUser>;
+    credentials?: z.ZodType<TCredentials>;
+    token?: z.ZodType<TToken>;
+  };
+  httpInstanceName?: string;
+}
 
-
-export abstract class Auth<TUser, TCredentials, TRegisterData, TTokens>
-  implements IAuth<TUser, TCredentials, TRegisterData, TTokens> {
+export class Auth<TUser, TCredentials, TToken>
+  implements IAuth<TUser, TCredentials, TToken> {
   protected http: HttpRequest;
   protected pathname: string;
   protected userSchema: z.ZodType<TUser>;
   protected credentialsSchema?: z.ZodType<TCredentials>;
-  protected registerDataSchema?: z.ZodType<TRegisterData>;
-  protected tokenSchema?: z.ZodType<TTokens>;
 
-  protected httpInstanceName?: string;
+  constructor (config: AuthConfig<TUser, TCredentials, TToken>) {
+    this.pathname = config.pathname;
+    this.userSchema = config.schemas.user;
+    this.credentialsSchema = config.schemas.credentials;
 
-  constructor (
-    pathname: string,
-    schemas: {
-      user: z.ZodType<TUser>;
-      credentials?: z.ZodType<TCredentials>;
-      registerData?: z.ZodType<TRegisterData>;
-      tokens?: z.ZodType<TTokens>;
-    },
-    httpInstanceName?: string,
-  ) {
-    this.pathname = pathname;
-    this.userSchema = schemas.user;
-    this.credentialsSchema = schemas.credentials;
-    this.registerDataSchema = schemas.registerData;
-    this.tokenSchema = schemas.tokens;
-    this.httpInstanceName = httpInstanceName;
+    // Utilise "auth" comme nom d'instance par défaut si non fourni
+    const httpInstanceName = config.httpInstanceName || "auth";
 
-    this.initHttpClient();
-    this.http = HttpClient.getInstance(this.httpInstanceName);
-  }
-
-  private initHttpClient(): void {
-    this.http = HttpClient.getInstance(this.httpInstanceName);
-  }
-
-  public async register(
-    userData: TRegisterData,
-    options: Partial<RequestConfig> = {},
-  ): Promise<TUser> {
-    if (this.registerDataSchema) {
-      this.registerDataSchema.parse(userData);
-    }
-
-    try {
-      const response = await this.http.request<{
-        user: TUser;
-        tokens: TTokens;
-      }>(
-        {
-          method: "POST",
-          url: `${this.pathname}/register`,
-          data: userData,
-        },
-        options,
-      );
-
-      const user = this.userSchema.parse(response.user);
-      if (this.tokenSchema) {
-        this.tokenSchema.parse(response.tokens);
-      }
-
-      return user;
-    } catch (error) {
-      console.error("Registration error", error);
-      throw error;
-    }
+    this.http = HttpClient.init({
+      httpConfig: authConfig,
+      instanceName: httpInstanceName
+    });
   }
 
   public async login(
@@ -82,7 +43,7 @@ export abstract class Auth<TUser, TCredentials, TRegisterData, TTokens>
     options: Partial<RequestConfig> = {},
   ): Promise<{
     user: TUser;
-    tokens: TTokens;
+    token: TToken;
   }> {
     if (this.credentialsSchema) {
       this.credentialsSchema.parse(credentials);
@@ -91,22 +52,18 @@ export abstract class Auth<TUser, TCredentials, TRegisterData, TTokens>
     try {
       const response = await this.http.request<{
         user: TUser;
-        tokens: TTokens;
-      }>(
-        {
-          method: "POST",
-          url: `${this.pathname}/login`,
-          data: credentials,
-        },
-        options,
-      );
+        token: TToken;
+      }>({
+        method: "POST",
+        url: `${this.pathname}/login`,
+        data: credentials,
+        ...options
+      });
 
       const user = this.userSchema.parse(response.user);
-      const tokens = this.tokenSchema
-        ? this.tokenSchema.parse(response.tokens)
-        : response.tokens;
+      const token = response.token;
 
-      return { user, tokens };
+      return { user, token };
     } catch (error) {
       console.error("Login error", error);
       throw error;
@@ -115,13 +72,11 @@ export abstract class Auth<TUser, TCredentials, TRegisterData, TTokens>
 
   public async logout(options: Partial<RequestConfig> = {}): Promise<void> {
     try {
-      await this.http.request(
-        {
-          method: "POST",
-          url: `${this.pathname}/logout`,
-        },
-        options,
-      );
+      await this.http.request({
+        method: "POST",
+        url: `${this.pathname}/logout`,
+        ...options
+      });
     } catch (error) {
       console.error("Logout error", error);
       throw error;
@@ -131,18 +86,16 @@ export abstract class Auth<TUser, TCredentials, TRegisterData, TTokens>
   public async refreshToken(
     refreshToken: string,
     options: Partial<RequestConfig> = {},
-  ): Promise<TTokens> {
+  ): Promise<TToken> {
     try {
-      const response = await this.http.request<TTokens>(
-        {
-          method: "POST",
-          url: `${this.pathname}/refresh-token`,
-          data: { refreshToken },
-        },
-        options,
-      );
+      const response = await this.http.request<TToken>({
+        method: "POST",
+        url: `${this.pathname}/refresh-token`,
+        data: { refreshToken },
+        ...options
+      });
 
-      return this.tokenSchema ? this.tokenSchema.parse(response) : response;
+      return response;
     } catch (error) {
       console.error("Token refresh error", error);
       throw error;
@@ -153,13 +106,11 @@ export abstract class Auth<TUser, TCredentials, TRegisterData, TTokens>
     options: Partial<RequestConfig> = {},
   ): Promise<TUser> {
     try {
-      const response = await this.http.request<TUser>(
-        {
-          method: "GET",
-          url: `${this.pathname}/me`,
-        },
-        options,
-      );
+      const response = await this.http.request<TUser>({
+        method: "GET",
+        url: `${this.pathname}/me`,
+        ...options
+      });
 
       return this.userSchema.parse(response);
     } catch (error) {

@@ -14,8 +14,6 @@ export default function Leaves() {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    isError,
-    error,
     users,
     isFetching,
   } = useUsers();
@@ -30,10 +28,6 @@ export default function Leaves() {
   const handleSortChange = (column: keyof User, direction: "asc" | "desc") => {
     console.log(`Sorting by ${String(column)} in ${direction} order`);
   };
-
-  if (isError) {
-    return <p>{error.message}</p>;
-  }
 
   return (
     <div className="flex flex-col gap-3">

@@ -1,13 +1,18 @@
+
 import { ApiResponse } from "@/app/leaves/typesTest";
 
 import { User } from "../types";
 
 import { Query } from "./Query";
 
+
 export class UserService extends Query<User> {
 
    constructor () {
-      super("/users");
+      super({
+         pathname: "/users",
+         instanceName: "api"
+      });
    }
 
    public async getUsers(pageParam: number): Promise<ApiResponse> {
@@ -15,3 +20,7 @@ export class UserService extends Query<User> {
    }
 
 }
+
+export const userService = new UserService();
+
+

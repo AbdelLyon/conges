@@ -3,23 +3,25 @@ import { ApiResponseWithMeta, PostSearchRequest } from "@/services/types";
 
 import { HttpClient } from "../http/HttpClient";
 import { HttpRequest } from "../http/Request/HttpRequest";
-import { RequestConfig } from "../http/types";
+
+import { apiConfig } from "./apiConfig";
+
+interface HttpInin {
+   pathname: string,
+   instanceName: string;
+}
 
 export abstract class Query<T> {
    protected http: HttpRequest;
    protected pathname: string;
 
-   constructor (
-      pathname: string,
-      httpInstanceName?: string,
-   ) {
-      this.http = HttpClient.getInstance(httpInstanceName);
+   constructor ({ pathname, instanceName }: HttpInin) {
+      this.http = HttpClient.init({ httpConfig: apiConfig, instanceName });
       this.pathname = pathname;
    }
 
    private searchRequest(
       search: PostSearchRequest,
-      options: Partial<RequestConfig> = {},
    ): Promise<ApiResponseWithMeta<T>> {
       return this.http.request<ApiResponseWithMeta<T>>(
          {
@@ -27,15 +29,13 @@ export abstract class Query<T> {
             url: `${this.pathname}/search`,
             data: { search },
          },
-         options,
       );
    }
 
    public async search(
       search: PostSearchRequest,
-      options: Partial<RequestConfig> = {},
    ): Promise<ApiResponseWithMeta<T>> {
-      const response = await this.searchRequest(search, options);
+      const response = await this.searchRequest(search);
 
       return {
          ...response,
