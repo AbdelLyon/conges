@@ -8,11 +8,12 @@ import { IconChevronDown, IconFolder } from "x-react/icons";
 import { Modal } from "x-react/modal";
 import { CircularProgress } from "x-react/progress";
 
-import { Leave, User } from "@/data/leaves";
+import { Leave } from "@/data/leaves";
+import { User } from "@/services/types";
 
 interface PlanningDetailsProps {
   leave: Leave;
-  user: User | undefined;
+  user?: User;
   trigger: ReactNode;
 }
 

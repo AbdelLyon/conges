@@ -1,21 +1,35 @@
 import dayjs from 'dayjs';
 import { create } from 'zustand';
 
+import { Filter, LeaveType, User } from '@/services/types';
+
 export type ViewMode = "month" | "week" | "day" | "twomonths";
+
 type PublicHoliday = {
    date: string;
    name: string;
    clients_exists: boolean;
 };
 
+type UserGroup = {
+   name: string;
+   users: User[];
+};
+
 type PlanningStore = {
+   // Onglets et navigation
    selectedTab: "sites" | "équipes";
    setSelectedTab: (tab: "sites" | "équipes") => void;
 
+   page: number;
+   setPage: (page: number) => void;
+
+   // Sites et expansion
    expandedSites: Record<string, boolean>;
    setExpandedSites: (sites: Record<string, boolean>) => void;
    toggleSiteExpanded: (siteName: string) => void;
 
+   // Vue et mode d'affichage
    viewMode: ViewMode;
    setViewMode: (mode: ViewMode) => void;
 
@@ -26,24 +40,64 @@ type PlanningStore = {
    setShowFilters: (show: boolean) => void;
    toggleFilters: () => void;
 
+   // Dates et navigation temporelle
    currentDate: dayjs.Dayjs;
    setCurrentDate: (date: dayjs.Dayjs) => void;
 
+   // États de survol
    hoveredDay: string | null;
    setHoveredDay: (day: string | null) => void;
 
    hoveredUser: number | null;
    setHoveredUser: (userId: number | null) => void;
 
+   // Jours fériés
    publicHolidays: PublicHoliday[];
    setPublicHolidays: (holidays: PublicHoliday[]) => void;
 
+   // Configuration d'affichage
    reversePrimary: boolean;
    setReversePrimary: (reverse: boolean) => void;
    toggleReversePrimary: () => void;
+
+   // ===== NOUVEAUX ÉTATS DU COMPOSANT PLANNING =====
+
+   // Types de congés
+   leaveTypes: LeaveType[];
+   setLeaveTypes: (types: LeaveType[]) => void;
+
+   leaveTypesN1: LeaveType[];
+   setLeaveTypesN1: (types: LeaveType[]) => void;
+
+   // Utilisateurs
+   users: User[];
+   setUsers: (users: User[]) => void;
+   addUsers: (newUsers: User[]) => void; // Pour la pagination
+   resetUsers: () => void;
+
+   usersGroupedBySite: UserGroup[];
+   setUsersGroupedBySite: (groups: UserGroup[]) => void;
+
+   allUserLength: number;
+   setAllUserLength: (length: number) => void;
+
+   // Filtres et affichage
+   filters: Filter[];
+   setFilters: (filters: Filter[]) => void;
+   addFilter: (filter: Filter) => void;
+   removeFilter: (fieldName: string) => void;
+
+   isTagsDisplay: boolean;
+   setIsTagsDisplay: (display: boolean) => void;
+   toggleTagsDisplay: () => void;
+
+   // État de chargement
+   isLoading: boolean;
+   setIsLoading: (loading: boolean) => void;
 };
 
 export const usePlanningStore = create<PlanningStore>((set) => ({
+   // États existants
    selectedTab: "sites",
    setSelectedTab: (tab) => set({ selectedTab: tab }),
 
@@ -84,5 +138,49 @@ export const usePlanningStore = create<PlanningStore>((set) => ({
 
    reversePrimary: false,
    setReversePrimary: (reverse) => set({ reversePrimary: reverse }),
-   toggleReversePrimary: () => set((state) => ({ reversePrimary: !state.reversePrimary }))
+   toggleReversePrimary: () => set((state) => ({ reversePrimary: !state.reversePrimary })),
+
+   page: 1,
+   setPage: (page) => set({ page }),
+
+   // ===== NOUVEAUX ÉTATS =====
+
+   // Types de congés
+   leaveTypes: [],
+   setLeaveTypes: (types) => set({ leaveTypes: types }),
+
+   leaveTypesN1: [],
+   setLeaveTypesN1: (types) => set({ leaveTypesN1: types }),
+
+   // Utilisateurs
+   users: [],
+   setUsers: (users) => set({ users }),
+   addUsers: (newUsers) => set((state) => ({
+      users: [...state.users, ...newUsers]
+   })),
+   resetUsers: () => set({ users: [] }),
+
+   usersGroupedBySite: [],
+   setUsersGroupedBySite: (groups) => set({ usersGroupedBySite: groups }),
+
+   allUserLength: 0,
+   setAllUserLength: (length) => set({ allUserLength: length }),
+
+   // Filtres
+   filters: [],
+   setFilters: (filters) => set({ filters }),
+   addFilter: (filter) => set((state) => ({
+      filters: [...state.filters.filter(f => f.field !== filter.field), filter]
+   })),
+   removeFilter: (fieldName) => set((state) => ({
+      filters: state.filters.filter(f => f.field !== fieldName)
+   })),
+
+   isTagsDisplay: false,
+   setIsTagsDisplay: (display) => set({ isTagsDisplay: display }),
+   toggleTagsDisplay: () => set((state) => ({ isTagsDisplay: !state.isTagsDisplay })),
+
+   // Chargement
+   isLoading: false,
+   setIsLoading: (loading) => set({ isLoading: loading }),
 }));

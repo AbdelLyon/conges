@@ -3,8 +3,9 @@ import dayjs from "dayjs";
 import React, { JSX } from "react";
 import { mergeTailwindClasses } from "x-react/utils";
 
-import { Leave, PublicHoliday, Site, User } from "@/data/leaves";
-import { leaves, sites } from "@/data/leaves";
+import { Leave, PublicHoliday } from "@/data/leaves";
+import { leaves } from "@/data/leaves";
+import { User } from "@/services/types";
 
 import { usePlanningStore } from "../../../store/usePlanningStore";
 
@@ -26,6 +27,8 @@ export const PlanningBody = () => {
     reversePrimary,
     setHoveredUser,
     searchQuery,
+    usersGroupedBySite,
+    users, // Utilisateurs complets du store
   } = usePlanningStore();
 
   // Fonction pour obtenir les jours de la période en cours
@@ -57,16 +60,21 @@ export const PlanningBody = () => {
 
   const periodDays = getPeriodDays();
 
-  // Filtrer les sites en fonction de la recherche
-  const filteredSites: Site[] = sites.map((site) => ({
-    ...site,
-    users: site.users.filter(
-      (user) =>
-        searchQuery === "" ||
-        user.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchQuery.toLowerCase()),
-    ),
-  }));
+  // Filtrer les groupes d'utilisateurs en fonction de la recherche
+  const filteredGroups = usersGroupedBySite
+    .map((group) => ({
+      ...group,
+      users: group.users.filter((user) => {
+        if (searchQuery === "") return true;
+
+        const fullName = `${user.firstname} ${user.lastname}`.toLowerCase();
+        const email = user.email?.toLowerCase() || "";
+        const query = searchQuery.toLowerCase();
+
+        return fullName.includes(query) || email.includes(query);
+      }),
+    }))
+    .filter((group) => group.users.length > 0);
 
   // Obtenir les congés pour un utilisateur et une date donnés
   const getLeaveForDateAndUser = (
@@ -133,10 +141,19 @@ export const PlanningBody = () => {
 
   const cellSize = getCellSize();
 
-  // Composant pour le séparateur entre sites
-  const SiteSeparator = ({ siteId }: { siteId: string }): JSX.Element => (
-    <div key={`separator-${siteId}`} className="mb-1 h-[30px]" />
+  // Composant pour le séparateur entre groupes
+  const GroupSeparator = ({
+    groupName,
+  }: {
+    groupName: string;
+  }): JSX.Element => (
+    <div key={`separator-${groupName}`} className="mb-1 h-[30px]" />
   );
+
+  // Obtenir l'utilisateur complet avec toutes ses données
+  const getFullUser = (userId: number): User | undefined => {
+    return users.find((u) => u.id === userId);
+  };
 
   // Rendu de la cellule
   const renderCell = (
@@ -219,9 +236,7 @@ export const PlanningBody = () => {
               </div>
             }
             leave={leave}
-            user={sites
-              .flatMap((s) => s.users)
-              .find((u) => u.id === leave.userId)}
+            user={getFullUser(leave.userId)}
           />
         )}
       </div>
@@ -251,49 +266,87 @@ export const PlanningBody = () => {
       </div>
     );
   };
-  // Rendu du contenu d'un site
-  const renderSiteContent = (site: Site): JSX.Element => {
+
+  // Rendu du contenu d'un groupe
+  const renderGroupContent = (group: {
+    name: string;
+    users: User[];
+  }): JSX.Element => {
+    const displayName = group.name.startsWith("site_")
+      ? group.name.replace(/^site_(.+)_\d+$/, "$1")
+      : group.name.startsWith("tag_")
+        ? group.name.replace(/^tag_(.+)_\d+$/, "$1")
+        : group.name;
+
     return (
       <div
         className="relative"
         role="grid"
-        aria-label={`Planning pour ${site.name}`}
+        aria-label={`Planning pour ${displayName}`}
       >
-        {site.users.map((user) => renderUserRow(user))}
+        {group.users.map((user) => renderUserRow(user))}
       </div>
     );
   };
 
+  // Si pas de données, afficher un message de chargement
+  if (usersGroupedBySite.length === 0) {
+    return (
+      <div
+        className="flex items-center justify-center py-16 text-foreground-500"
+        role="status"
+        aria-live="polite"
+      >
+        Chargement du planning...
+      </div>
+    );
+  }
+
   return (
     <div role="region" aria-label="Planning des congés">
-      {filteredSites.map((site, i) => {
-        // Traitement spécial pour le premier site
+      {filteredGroups.map((group, i) => {
+        const isExpanded = expandedSites[group.name] ?? true;
+
+        // Traitement spécial pour le premier groupe
         if (i === 0) {
-          if (expandedSites[site.id]) {
+          if (isExpanded) {
             return (
-              <div key={site.id} className="w-full">
-                {renderSiteContent(site)}
+              <div key={group.name} className="w-full">
+                {renderGroupContent(group)}
               </div>
             );
           }
           return null;
         }
 
-        // Pour tous les autres sites (non-premiers)
-        if (!expandedSites[site.id]) {
+        // Pour tous les autres groupes (non-premiers)
+        if (!isExpanded) {
           return (
-            <SiteSeparator key={`separator-${site.id}`} siteId={site.id} />
+            <GroupSeparator
+              key={`separator-${group.name}`}
+              groupName={group.name}
+            />
           );
         }
 
-        // Si le site est étendu, on rend le séparateur + contenu
+        // Si le groupe est étendu, on rend le séparateur + contenu
         return (
-          <React.Fragment key={site.id}>
-            <SiteSeparator siteId={site.id} />
-            <div className="w-full">{renderSiteContent(site)}</div>
+          <React.Fragment key={group.name}>
+            <GroupSeparator groupName={group.name} />
+            <div className="w-full">{renderGroupContent(group)}</div>
           </React.Fragment>
         );
       })}
+
+      {/* Message si pas de résultats après filtrage */}
+      {filteredGroups.length === 0 && searchQuery && (
+        <div
+          className="flex items-center justify-center py-16 text-foreground-500"
+          role="status"
+        >
+          Aucun collaborateur trouvé pour searchQuery
+        </div>
+      )}
     </div>
   );
 };

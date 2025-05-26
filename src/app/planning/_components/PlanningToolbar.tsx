@@ -17,6 +17,7 @@ import {
 } from "x-react/icons";
 
 import { sites } from "@/data/leaves";
+import { LeaveType } from "@/services/types";
 import { usePlanningStore } from "@/store/usePlanningStore";
 
 const teams = [
@@ -125,7 +126,11 @@ const MultiSelect = ({ placeholder, options, className }: MultiSelectProps) => {
   );
 };
 
-export const PlanningToolbar = () => {
+type Props = {
+  leaveTypes: LeaveType[];
+};
+
+export const PlanningToolbar = ({ leaveTypes }: Props) => {
   const { viewMode, setViewMode, reversePrimary, setReversePrimary } =
     usePlanningStore();
 
