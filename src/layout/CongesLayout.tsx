@@ -168,7 +168,9 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Providers>
-      <Layout {...layoutConfig}>{children}</Layout>
+      <Layout {...layoutConfig} className="min-h-[90vh]">
+        {children}
+      </Layout>
     </Providers>
   );
 };

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Card } from "x-react/card";
 import { Checkbox } from "x-react/form";
 import { mergeTailwindClasses } from "x-react/utils";
 
@@ -38,11 +37,7 @@ export const WorkingDaysContent = () => {
   };
 
   return (
-    <Card
-      radius="lg"
-      shadow="none"
-      className="border border-border dark:bg-background "
-    >
+    <>
       <div className="mb-4 flex items-center justify-between">
         <p className="font-medium opacity-50">
           Sélectionnez les jours de la semaine considérés comme ouvrés
@@ -89,6 +84,6 @@ export const WorkingDaysContent = () => {
           </div>
         ))}
       </div>
-    </Card>
+    </>
   );
 };

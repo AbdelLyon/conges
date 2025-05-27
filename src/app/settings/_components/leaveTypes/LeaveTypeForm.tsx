@@ -33,9 +33,9 @@ const LeaveTypeForm = () => {
     <Card
       radius="sm"
       shadow="none"
-      className="border border-border/60"
       classNames={{
-        body: "p-5 space-y-6",
+        body: "space-y-6",
+        base: "border p-2 border-border/60 dark:bg-content1-50/50 space-y-6",
       }}
     >
       <BasicInfoSection
@@ -191,21 +191,11 @@ const AdvancedSettingsSection = ({
   formValues,
   onChange,
 }: AdvancedSettingsSectionProps) => (
-  <Card
-    radius="lg"
-    shadow="none"
-    className="overflow-hidden"
-    classNames={{
-      body: "p-1.5",
-      header: "p-0 ",
-    }}
-    header={
-      <div className="flex items-center gap-2">
-        <IconSettings className="text-foreground/70" size={18} />
-        <h4 className="text-base font-medium">Paramètres avancés</h4>
-      </div>
-    }
-  >
+  <div>
+    <div className="flex items-center gap-2">
+      <IconSettings className="text-foreground/70" size={18} />
+      <h4 className="text-base font-medium">Paramètres avancés</h4>
+    </div>
     <ActivationToggle />
 
     <Divider className="my-3 opacity-50" />
@@ -266,7 +256,7 @@ const AdvancedSettingsSection = ({
         tooltip="Limite la disponibilité du congé à une période spécifique"
       />
     </div>
-  </Card>
+  </div>
 );
 
 const ActivationToggle = () => (

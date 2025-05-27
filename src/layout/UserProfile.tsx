@@ -29,9 +29,9 @@ const dropdownSections: DropdownSectionConfig[] = [
         startContent: <IconLayoutGrid className="text-large" />,
       },
       {
-        href: "/users",
-        key: "users",
-        label: "Utilisateurs",
+        href: "/account",
+        key: "account",
+        label: "Compte",
         startContent: <IconUsers className="text-large" />,
       },
     ],
@@ -50,7 +50,7 @@ export const UserProfile = () => {
             src: "https://avatars.githubusercontent.com/u/30373425?v=4",
           }}
           name="Majax abdel"
-          className="cursor-pointer border border-border bg-content1-100 px-3 py-1 transition-all duration-200 hover:bg-content1-100"
+          className="cursor-pointer border border-border bg-content1-50/50 px-3 py-1 transition-all duration-200 hover:bg-content1-100"
         />
       }
       onItemPress={(item) => {

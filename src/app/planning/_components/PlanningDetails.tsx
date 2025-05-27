@@ -249,7 +249,7 @@ export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
               Justificatif
             </h3>
 
-            <div className="mb-8 flex h-32 items-center justify-center rounded-md border border-border bg-content1-100 p-4">
+            <div className="mb-8 flex h-32 items-center justify-center rounded-md border border-border bg-content1-50/50 p-4">
               <div className="flex flex-col items-center">
                 <IconFolder size={40} className="mb-2" />
                 <div>Pas de justificatif</div>
