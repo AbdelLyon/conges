@@ -12,6 +12,7 @@ interface Props extends PropsWithChildren {
 export const PageContainer = ({ title, classNames, children }: Props) => {
   return (
     <div
+      data-testid="page-container"
       className={mergeTailwindClasses("mx-auto xl:w-[88%]", classNames?.base)}
     >
       {title && (

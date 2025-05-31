@@ -1,25 +1,24 @@
-import { FetchResult, HandlerConfig, RequestConfig, RetryOptions } from "../types";
-
+import { IHttpFetchResult, IHttpHandlerConfig, IHttpRetryOptions, IRequestConfig } from "../types";
 
 export class HttpHandler {
-  private readonly idempotentMethods = [
-    "GET",
-    "HEAD",
-    "OPTIONS",
-    "PUT",
-    "DELETE",
-  ];
+  private readonly idempotentMethods = new Set([
+    "GET", "HEAD", "OPTIONS", "PUT", "DELETE"
+  ]);
+
   private maxRetries = 3;
   private defaultTimeout = 10000;
   private withCredentials = true;
 
-  configure(config: HandlerConfig): void {
+  private readonly controllerPool: AbortController[] = [];
+  private readonly MAX_CONTROLLER_POOL = 10;
+
+  configure(config: IHttpHandlerConfig): void {
     this.maxRetries = config.maxRetries;
     this.defaultTimeout = config.defaultTimeout;
     this.withCredentials = config.withCredentials;
   }
 
-  async executeRequest(url: string, config: RequestConfig): Promise<Response> {
+  async executeRequest(url: string, config: IRequestConfig): Promise<Response> {
     return this.fetchWithRetry(url, config, {
       maxRetries: this.maxRetries,
       defaultTimeout: this.defaultTimeout,
@@ -32,19 +31,18 @@ export class HttpHandler {
     const contentType = response.headers.get("content-type");
 
     if (contentType?.includes("application/json")) {
-      return (await response.json()) as T;
+      return response.json() as Promise<T>;
     }
 
-    return (await response.text()) as unknown as T;
+    return response.text() as Promise<unknown> as Promise<T>;
   }
 
   private async fetchWithRetry(
     url: string,
-    config: RequestConfig,
-    retryOptions: RetryOptions,
+    config: IRequestConfig,
+    retryOptions: IHttpRetryOptions,
   ): Promise<Response> {
-    const { maxRetries, attempt, defaultTimeout, withCredentials } =
-      retryOptions;
+    const { maxRetries, attempt, defaultTimeout, withCredentials } = retryOptions;
 
     try {
       const { response, timeoutId } = await this.performFetch(
@@ -91,45 +89,48 @@ export class HttpHandler {
 
   private async performFetch(
     url: string,
-    config: RequestConfig,
+    config: IRequestConfig,
     defaultTimeout: number,
     withCredentials: boolean,
-  ): Promise<FetchResult> {
+  ): Promise<IHttpFetchResult> {
     const { timeout = defaultTimeout, params, data, ...fetchOptions } = config;
 
     const fullUrl = this.appendQueryParams(url, params);
-    const controller = new AbortController();
-    const timeoutId = setTimeout(
-      () => controller.abort("Request timeout"),
-      timeout,
-    );
+    const controller = this.getController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
     const body = this.prepareRequestBody(data);
 
-    const response = await fetch(fullUrl, {
-      ...fetchOptions,
-      body,
-      signal: controller.signal,
-      credentials: withCredentials ? "include" : "same-origin",
-    });
+    try {
+      const response = await fetch(fullUrl, {
+        ...fetchOptions,
+        body,
+        signal: controller.signal,
+        credentials: withCredentials ? "include" : "same-origin",
+      });
 
-    return { response, timeoutId };
+      return { response, timeoutId };
+    } finally {
+      this.releaseController(controller);
+    }
+  }
+
+  private getController(): AbortController {
+    return this.controllerPool.pop() || new AbortController();
+  }
+
+  private releaseController(controller: AbortController): void {
+    if (this.controllerPool.length < this.MAX_CONTROLLER_POOL && !controller.signal.aborted) {
+      this.controllerPool.push(controller);
+    }
   }
 
   private prepareRequestBody(data: unknown): string | undefined {
-    if (data === undefined) {
-      return undefined;
-    }
-
+    if (data === undefined) return undefined;
     return typeof data === "string" ? data : JSON.stringify(data);
   }
 
-  private appendQueryParams(
-    url: string,
-    params?: Record<string, string>,
-  ): string {
-    if (!params || Object.keys(params).length === 0) {
-      return url;
-    }
+  private appendQueryParams(url: string, params?: Record<string, string>): string {
+    if (!params || Object.keys(params).length === 0) return url;
 
     const queryParams = new URLSearchParams();
     for (const [key, value] of Object.entries(params)) {
@@ -140,13 +141,8 @@ export class HttpHandler {
   }
 
   private isRetryableError(status: number, method?: string): boolean {
-    const isIdempotent =
-      !method || this.idempotentMethods.includes(method.toUpperCase());
-
-    return (
-      isIdempotent &&
-      (status === 0 || status === 429 || (status >= 500 && status < 600))
-    );
+    const isIdempotent = !method || this.idempotentMethods.has(method.toUpperCase());
+    return isIdempotent && (status === 0 || status === 429 || (status >= 500 && status < 600));
   }
 
   private shouldRetry(
@@ -165,13 +161,12 @@ export class HttpHandler {
 
   private async retryWithBackoff(
     url: string,
-    config: RequestConfig,
-    retryOptions: RetryOptions,
+    config: IRequestConfig,
+    retryOptions: IHttpRetryOptions,
   ): Promise<Response> {
-    const { maxRetries, attempt, defaultTimeout, withCredentials } =
-      retryOptions;
+    const { maxRetries, attempt, defaultTimeout, withCredentials } = retryOptions;
 
-    const delay = Math.pow(2, attempt) * 100;
+    const delay = Math.min(Math.pow(2, attempt) * 100, 5000);
     await new Promise((resolve) => setTimeout(resolve, delay));
 
     return this.fetchWithRetry(url, config, {
