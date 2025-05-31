@@ -1,41 +1,61 @@
+// HttpClientService.ts
+import { HttpConfig } from "./Request/HttpConfig";
+import { HttpInterceptor } from "./Request/HttpInterceptor";
 import { HttpRequest } from "./Request/HttpRequest";
 
-import type { HttpConfig } from "./types";
+import type { IHttpConfig } from "./types";
+
+interface IHttpClientConfig {
+  httpConfig: IHttpConfig;
+  instanceName: string;
+}
 
 export class HttpClient {
-  private static instances: Map<string, HttpRequest> = new Map();
-  private static defaultInstanceName: string;
+  private static instances = new Map<string, HttpRequest>();
+  private static defaultInstanceName = "";
+  private static configHashes = new Map<string, string>();
 
-  static init(config: {
-    httpConfig: HttpConfig;
-    instanceName: string;
-  }): HttpRequest {
+  static init(config: IHttpClientConfig): HttpRequest {
     const { httpConfig, instanceName } = config;
 
-    // Si l'instance existe déjà, on la retourne simplement sans la reconfigurer
-    if (this.instances.has(instanceName)) {
+    const configHash = this.generateConfigHash(httpConfig);
+    const existingHash = this.configHashes.get(instanceName);
+
+    if (this.instances.has(instanceName) && existingHash === configHash) {
       return this.instances.get(instanceName)!;
     }
 
-    // Sinon, on crée et configure une nouvelle instance
-    const instance = new HttpRequest();
+    let instance = this.instances.get(instanceName);
+    if (!instance) {
+      instance = new HttpRequest();
+      this.instances.set(instanceName, instance);
+    }
+
     instance.configure(httpConfig);
-    this.instances.set(instanceName, instance);
+    this.configHashes.set(instanceName, configHash);
 
-    if (this.instances.size === 1) this.defaultInstanceName = instanceName;
+    if (this.instances.size === 1 || !this.defaultInstanceName) {
+      this.defaultInstanceName = instanceName;
+    }
 
-    return this.instances.get(instanceName)!;
+    return instance;
   }
 
   static getInstance(instanceName?: string): HttpRequest {
     const name = instanceName || this.defaultInstanceName;
 
-    if (!this.instances.has(name)) {
+    if (!name) {
+      throw new Error("No default instance name set. Initialize an instance first.");
+    }
+
+    const instance = this.instances.get(name);
+    if (!instance) {
       throw new Error(
-        `Http instance '${name}' not initialized. Call Http.init() first.`,
+        `Http instance '${name}' not initialized. Call HttpClientService.init() first.`,
       );
     }
-    return this.instances.get(name)!;
+
+    return instance;
   }
 
   static setDefaultInstance(instanceName: string): void {
@@ -47,24 +67,61 @@ export class HttpClient {
     this.defaultInstanceName = instanceName;
   }
 
-  static getAvailableInstances(): Array<string> {
+  static getAvailableInstances(): string[] {
     return Array.from(this.instances.keys());
   }
 
   static resetInstance(instanceName?: string): void {
     if (instanceName) {
       this.instances.delete(instanceName);
+      this.configHashes.delete(instanceName);
 
-      if (
-        instanceName === this.defaultInstanceName &&
-        this.instances.size > 0
-      ) {
-        this.defaultInstanceName =
-          this.instances.keys().next().value ?? "default";
+      if (instanceName === this.defaultInstanceName) {
+        const remainingInstances = Array.from(this.instances.keys());
+        this.defaultInstanceName = remainingInstances[0] || "";
       }
     } else {
       this.instances.clear();
-      this.defaultInstanceName = "default";
+      this.configHashes.clear();
+      this.defaultInstanceName = "";
     }
+  }
+
+  static resetAll(): void {
+    this.resetInstance();
+    HttpConfig.clearCaches();
+    HttpInterceptor.resetInterceptors();
+  }
+
+  private static generateConfigHash(config: IHttpConfig): string {
+    const key = JSON.stringify({
+      baseURL: config.baseURL,
+      timeout: config.timeout,
+      headers: config.headers,
+      withCredentials: config.withCredentials,
+      maxRetries: config.maxRetries,
+      apiPrefix: config.apiPrefix,
+      apiVersion: config.apiVersion,
+    });
+
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) {
+      const char = key.charCodeAt(i);
+      hash = ((hash << 5) - hash) + char;
+      hash = hash & hash;
+    }
+    return hash.toString();
+  }
+
+  static getInstanceStats(): Record<string, { configured: boolean; requestCount?: number; }> {
+    const stats: Record<string, { configured: boolean; requestCount?: number; }> = {};
+
+    for (const [name] of this.instances) {
+      stats[name] = {
+        configured: this.configHashes.has(name),
+      };
+    }
+
+    return stats;
   }
 }

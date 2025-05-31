@@ -1,61 +1,111 @@
-import { HttpConfig, RequestConfig, RequestInterceptor, ResponseErrorInterceptor, ResponseSuccessInterceptor } from "../types";
+// HttpInterceptor.ts
+import {
+  HttpRequestInterceptor,
+  HttpResponseErrorInterceptor,
+  HttpResponseSuccessInterceptor,
+  IHttpConfig,
+  IRequestConfig
+} from "../types";
 
 export class HttpInterceptor {
-  private static requestInterceptors: Array<RequestInterceptor> = [];
-  private static responseSuccessInterceptors: Array<ResponseSuccessInterceptor> =
-    [];
-  private static responseErrorInterceptors: Array<ResponseErrorInterceptor> =
-    [];
+  private static requestInterceptors: Set<HttpRequestInterceptor> = new Set();
+  private static responseSuccessInterceptors: Set<HttpResponseSuccessInterceptor> = new Set();
+  private static responseErrorInterceptors: Set<HttpResponseErrorInterceptor> = new Set();
 
-  static addInterceptors(httpConfig: HttpConfig): void {
-    this.requestInterceptors = [
-      ...this.requestInterceptors,
-      ...(httpConfig.interceptors?.request ?? []),
-    ];
+  private static requestInterceptorsArray: HttpRequestInterceptor[] = [];
+  private static responseSuccessInterceptorsArray: HttpResponseSuccessInterceptor[] = [];
+  private static responseErrorInterceptorsArray: HttpResponseErrorInterceptor[] = [];
+  private static cacheValid = false;
 
-    if (httpConfig.interceptors?.response) {
-      this.responseSuccessInterceptors = [
-        ...this.responseSuccessInterceptors,
-        ...(httpConfig.interceptors.response.success ?? []),
-      ];
+  static addInterceptors(httpConfig: IHttpConfig): void {
+    const hasNewInterceptors =
+      httpConfig.interceptors?.request?.length ||
+      httpConfig.interceptors?.response?.success?.length ||
+      httpConfig.interceptors?.response?.error?.length;
 
-      this.responseErrorInterceptors = [
-        ...this.responseErrorInterceptors,
-        ...(httpConfig.interceptors.response.error ?? []),
-      ];
-    }
+    if (!hasNewInterceptors) return;
+
+    httpConfig.interceptors?.request?.forEach(interceptor => {
+      this.requestInterceptors.add(interceptor);
+    });
+
+    httpConfig.interceptors?.response?.success?.forEach(interceptor => {
+      this.responseSuccessInterceptors.add(interceptor);
+    });
+
+    httpConfig.interceptors?.response?.error?.forEach(interceptor => {
+      this.responseErrorInterceptors.add(interceptor);
+    });
+
+    this.cacheValid = false;
   }
 
-  static async applyRequestInterceptors(
-    config: RequestConfig,
-  ): Promise<RequestConfig> {
+  static resetInterceptors(): void {
+    this.requestInterceptors.clear();
+    this.responseSuccessInterceptors.clear();
+    this.responseErrorInterceptors.clear();
+    this.cacheValid = false;
+  }
+
+  private static updateArrayCache(): void {
+    if (this.cacheValid) return;
+
+    this.requestInterceptorsArray = Array.from(this.requestInterceptors);
+    this.responseSuccessInterceptorsArray = Array.from(this.responseSuccessInterceptors);
+    this.responseErrorInterceptorsArray = Array.from(this.responseErrorInterceptors);
+    this.cacheValid = true;
+  }
+
+  static async applyRequestInterceptors(config: IRequestConfig): Promise<IRequestConfig> {
+    this.updateArrayCache();
+
+    if (this.requestInterceptorsArray.length === 0) {
+      return config;
+    }
+
     let interceptedConfig = { ...config };
 
-    for (const interceptor of this.requestInterceptors) {
-      interceptedConfig = await Promise.resolve(interceptor(interceptedConfig));
+    for (const interceptor of this.requestInterceptorsArray) {
+      try {
+        interceptedConfig = await Promise.resolve(interceptor(interceptedConfig));
+      } catch (error) {
+        console.warn('Request interceptor failed:', error);
+      }
     }
 
     return interceptedConfig;
   }
 
-  static async applyResponseSuccessInterceptors(
-    response: Response,
-  ): Promise<Response> {
+  static async applyResponseSuccessInterceptors(response: Response): Promise<Response> {
+    this.updateArrayCache();
+
+    if (this.responseSuccessInterceptorsArray.length === 0) {
+      return response;
+    }
+
     let interceptedResponse = response;
 
-    for (const interceptor of this.responseSuccessInterceptors) {
-      interceptedResponse = await Promise.resolve(
-        interceptor(interceptedResponse.clone()),
-      );
+    for (const interceptor of this.responseSuccessInterceptorsArray) {
+      try {
+        interceptedResponse = await Promise.resolve(interceptor(interceptedResponse.clone()));
+      } catch (error) {
+        console.warn('Response interceptor failed:', error);
+      }
     }
 
     return interceptedResponse;
   }
 
   static async applyResponseErrorInterceptors(error: Error): Promise<Error> {
+    this.updateArrayCache();
+
+    if (this.responseErrorInterceptorsArray.length === 0) {
+      return Promise.reject(error);
+    }
+
     let interceptedError = error;
 
-    for (const interceptor of this.responseErrorInterceptors) {
+    for (const interceptor of this.responseErrorInterceptorsArray) {
       try {
         interceptedError = await Promise.resolve(interceptor(interceptedError));
 
@@ -63,22 +113,32 @@ export class HttpInterceptor {
           return interceptedError;
         }
       } catch (e) {
-        interceptedError =
-          e instanceof Error ? e : new Error("Unknown error occurred");
+        interceptedError = e instanceof Error ? e : new Error("Unknown error occurred");
       }
     }
 
     return Promise.reject(interceptedError);
   }
 
-  static setupDefaultErrorInterceptor(
-    logCallback: (error: Error) => void,
-  ): void {
-    if (this.responseErrorInterceptors.length === 0) {
-      this.responseErrorInterceptors.push((error) => {
+  static setupDefaultErrorInterceptor(logCallback: (error: Error) => void): void {
+    if (this.responseErrorInterceptors.size === 0) {
+      this.responseErrorInterceptors.add((error) => {
         logCallback(error);
         return Promise.reject(error);
       });
+      this.cacheValid = false;
     }
+  }
+
+  static getInterceptorsCount(): {
+    request: number;
+    responseSuccess: number;
+    responseError: number;
+  } {
+    return {
+      request: this.requestInterceptors.size,
+      responseSuccess: this.responseSuccessInterceptors.size,
+      responseError: this.responseErrorInterceptors.size,
+    };
   }
 }

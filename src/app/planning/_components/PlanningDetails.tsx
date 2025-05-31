@@ -1,306 +1,266 @@
 "use client";
 
-import dayjs from "dayjs";
-import { ReactNode } from "react";
-import { Accordion } from "x-react/accordion";
-import { Chip } from "x-react/chip";
-import { IconChevronDown, IconFolder } from "x-react/icons";
+import { ButtonFirstAction, ButtonSecondAction } from "@components/UI/Buttons";
+import FileUploader from "@components/UI/FileUploader";
+import congesService from "@data/congesService";
+import React, { ReactNode, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { Select } from "x-react/form";
 import { Modal } from "x-react/modal";
-import { CircularProgress } from "x-react/progress";
+import { addToast } from "x-react/toast";
 
-import { Leave, User } from "@/data/leaves";
+import { useUserStore } from "@/store/useUserStore";
 
-interface PlanningDetailsProps {
-  leave: Leave;
-  user: User | undefined;
+interface Site {
+  id: number;
+  name: string;
+}
+
+interface FormValues {
+  ids: Site[];
+  id: string;
+  name: string;
+  documentation: File[];
+}
+
+interface LoadOptionsAdditional {
+  page?: number;
+}
+
+interface LoadOptionsResponse {
+  options: Site[];
+  hasMore: boolean;
+  additional?: LoadOptionsAdditional;
+  selected?: boolean;
+}
+
+interface DocumentationModalProps {
+  isModalOpen: boolean;
+  setIsModalOpen: (isOpen: boolean) => void;
+  fetchDocuments: () => void;
   trigger: ReactNode;
 }
 
-export const PlanningDetails: React.FC<PlanningDetailsProps> = ({
-  leave,
-  user,
+const DocumentationModal: React.FC<DocumentationModalProps> = ({
+  isModalOpen,
+  setIsModalOpen,
+  fetchDocuments,
   trigger,
 }) => {
-  // Générer les dates pour le petit calendrier
-  // const generateCalendarDays = () => {
-  //   const month = dayjs(leave.startDate).month();
-  //   const year = dayjs(leave.startDate).year();
-  //   const daysInMonth = dayjs(leave.startDate).daysInMonth();
+  const { t } = useTranslation();
 
-  //   return Array.from({ length: daysInMonth }, (_, i) => {
-  //     const day = i + 1;
-  //     const date = dayjs(`${year}-${month + 1}-${day}`);
-  //     const isLeaveDay = dayjs(date).isBetween(
-  //       dayjs(leave.startDate),
-  //       dayjs(leave.endDate),
-  //       "day",
-  //       "[]",
-  //     );
+  const [sites, setSites] = useState<Site[]>([]);
+  const [selectAll, setSelectAll] = useState<boolean>(false);
+  const { currentUser } = useUserStore();
 
-  //     return {
-  //       day,
-  //       isLeaveDay,
-  //     };
-  //   });
-  // };
-
-  // const calendarDays = generateCalendarDays();
-  // const startDayString = dayjs(leave.startDate).format("DD/MM/YYYY");
-  // const endDayString = dayjs(leave.endDate).format("DD/MM/YYYY");
-
-  // Calculer nombre de jours ouvrés
-  const workingDaysCount = 2; // Normalement calculé entre startDate et endDate
-
-  // Configuration des données de l'accordéon
-  const accordionData = [
-    {
-      key: "counters",
-      title: "Afficher les compteurs",
-
-      content: (
-        <div className="grid grid-cols-1 gap-4 py-4 md:grid-cols-2">
-          <div className="rounded-md border border-border bg-background p-4">
-            <div className="mb-2 font-medium">Congés payés</div>
-            <div className="flex flex-col items-center justify-center">
-              <CircularProgress
-                value={20} // 2 sur 10 = 20%
-                size="lg"
-                color="success"
-                showValueLabel={true}
-                classNames={{
-                  svg: "w-32 h-32",
-                  indicator: "stroke-success",
-                  track: "stroke-success/20",
-                }}
-                aria-label="Congés payés"
-              />
-              <div className="mt-2 flex items-center text-center">
-                <div className="text-xl font-bold">2</div>
-                <div className="text-sm text-foreground-400">/10</div>
-              </div>
-              <div className="mt-2 text-center">
-                <div>
-                  Pris estimé : <span className="font-bold">8</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-md border border-border bg-background p-4">
-            <div className="mb-2 font-medium">Congés payés N-1</div>
-            <div className="flex flex-col items-center justify-center">
-              <CircularProgress
-                value={0}
-                size="lg"
-                color="default"
-                showValueLabel={false}
-                classNames={{
-                  svg: "w-32 h-32",
-                  indicator: "stroke-foreground-300",
-                  track: "stroke-foreground-200",
-                }}
-                aria-label="Congés payés N-1"
-              />
-              <div className="mt-2 flex items-center text-center">
-                <div className="text-xl font-bold">0</div>
-                <div className="text-sm text-foreground-400">/0</div>
-              </div>
-              <div className="mt-2 text-center">
-                <div>
-                  Pris estimé : <span className="font-bold">0</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      ),
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<FormValues>({
+    defaultValues: {
+      ids: [],
+      id: "",
+      name: "",
+      documentation: [],
     },
-    {
-      key: "team-planning",
-      title: "Planning de l'équipe",
-      content: (
-        <div className="py-4">
-          <div className="mb-4 flex items-center justify-between">
-            <button className="flex size-8 items-center justify-center rounded-full bg-content1-100">
-              <IconChevronDown className="-rotate-90" size={16} />
-            </button>
-            <div className="font-medium">Avril 2025</div>
-            <button className="flex size-8 items-center justify-center rounded-full bg-content1-100">
-              <IconChevronDown className="rotate-90" size={16} />
-            </button>
-          </div>
+    mode: "onSubmit",
+  });
 
-          <div className="mb-4 flex flex-wrap">
-            {Array.from({ length: 30 }, (_, i) => i + 1).map((day) => {
-              const isCurrentLeaveDay =
-                (day === 15 || day === 16) &&
-                dayjs(leave.startDate).month() === 3; // Avril
+  const watchedDocumentation = watch("documentation");
 
-              return (
-                <div
-                  key={day}
-                  className={`m-1 flex size-8 items-center justify-center text-sm ${
-                    isCurrentLeaveDay
-                      ? "bg-primary text-white"
-                      : "bg-content1-100"
-                  }`}
-                >
-                  {day}
-                </div>
-              );
-            })}
-          </div>
+  const toggleModal = (): void => {
+    setIsModalOpen(!isModalOpen);
+    reset(); // Reset form when modal closes
+  };
 
-          <div className="mb-4">
-            <h4 className="mb-2 font-medium">Demande en cours de validation</h4>
-            <div className="text-sm text-foreground-500">
-              Aucune absence pour cette période
-            </div>
-          </div>
+  const onModalClose = (): void => {
+    toggleModal();
+  };
 
-          <div className="mb-4">
-            <h4 className="mb-2 font-medium">Absences du 15/04 au 16/04</h4>
-            <div className="text-sm text-foreground-500">
-              Aucune absence pour cette période
-            </div>
-          </div>
+  const onSubmit: SubmitHandler<FormValues> = async (values) => {
+    try {
+      const resultSite: number[] = [];
+      values.ids.forEach((elem) => resultSite.push(elem.id));
 
-          <div className="mb-4">
-            <h4 className="mb-2 font-medium">Autres absences Avril</h4>
-            <div className="text-sm text-foreground-500">
-              Aucune absence pour cette période
-            </div>
-          </div>
-        </div>
-      ),
-    },
-  ];
+      const sitesTab = values.ids.map((item) => item.id);
+
+      const formData = new FormData();
+      formData.append("name", values.name);
+      formData.append("creator_id", currentUser?.id?.toString() || "");
+      formData.append("media[0][file]", values.documentation[0]);
+      formData.append("media[0][collection]", "support_document");
+      sitesTab.forEach((site, index) => {
+        formData.append(`sites[${index}]`, site.toString());
+      });
+
+      await congesService.post(
+        `/v1/support-documents${selectAll ? "?allSites" : ""}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+
+      addToast({
+        description: values.id ? "successStore" : "successUpdate",
+        color: "success",
+      });
+
+      fetchDocuments();
+      toggleModal();
+    } catch (err) {
+      addToast({
+        description: "Error",
+        color: "danger",
+      });
+      console.error(err);
+    }
+  };
+
+  const loadOptions = async (
+    searchQuery: string,
+    loadedOptions: Site[],
+    additional?: LoadOptionsAdditional,
+  ): Promise<LoadOptionsResponse> => {
+    const currentPage = additional?.page || 1;
+
+    try {
+      const response = await congesService.post(
+        `/v1/sites/search?&page=${currentPage}`,
+        {
+          search: {
+            value: searchQuery,
+          },
+        },
+      );
+
+      const { data, meta } = response.data;
+
+      const options: Site[] = data.map((site: any) => ({
+        id: site.id,
+        name: site.name,
+      }));
+
+      setSites((prev) => [...prev, ...options]);
+
+      return {
+        options,
+        hasMore: meta.current_page < meta.last_page,
+        additional: {
+          page: currentPage + 1,
+        },
+        selected: selectAll,
+      };
+    } catch (err) {
+      console.error("Erreur lors du chargement des sites :", err);
+
+      return {
+        options: [],
+        hasMore: false,
+      };
+    }
+  };
+
+  const handleRemoveFile = (): void => {
+    setValue("documentation", []);
+  };
+
+  const handleSetFiles = (files: File[]): void => {
+    setValue("documentation", files);
+  };
 
   return (
     <Modal
-      className="mx-4 max-h-[86vh] overflow-auto rounded-lg bg-background shadow-xl"
-      aria-labelledby="planning-details"
+      className="mx-4 max-h-[86vh] w-1/2 overflow-auto rounded-lg bg-background shadow-xl md:w-[900px]"
+      aria-labelledby="documentation-modal"
       trigger={trigger}
+      title={t("addDocument")}
       size="4xl"
-      title={
-        <Chip
-          variant="faded"
-          className="border-1 border-border/60"
-          style={{
-            backgroundColor: `${leave.status.color}20`,
-            color: leave.status.color,
-          }}
-        >
-          {leave.status.tag}
-        </Chip>
-      }
     >
-      <div className="p-4">
-        <div className="flex flex-wrap justify-between gap-8">
-          {/* Section Demande */}
-          <div>
-            <h3 className="mb-3 text-base font-bold text-primary">Demande</h3>
-
-            {user && (
-              <div className="mb-4">
-                <div className="mb-4 text-lg font-medium">
-                  {user.firstname} {user.lastname}
-                </div>
-
-                <div className="mb-2 grid grid-cols-3">
-                  <div className="col-span-1 text-foreground-500">
-                    Type de congé
-                  </div>
-                  <div className="col-span-2 font-medium">
-                    {leave.leaveType.name}
-                  </div>
-                </div>
-
-                <div className="mb-2 grid grid-cols-3">
-                  <div className="col-span-1 text-foreground-500">Date</div>
-                  <div className="col-span-2">
-                    Du {dayjs(leave.startDate).format("DD/MM/YYYY")} matin
-                    <br />
-                    au {dayjs(leave.endDate).format("DD/MM/YYYY")} après-midi
-                  </div>
-                </div>
-
-                <div className="mb-2 grid grid-cols-3">
-                  <div className="col-span-1 text-foreground-500">
-                    Jour(s) ouvré(s)
-                  </div>
-                  <div className="col-span-2">{workingDaysCount}</div>
-                </div>
-
-                {leave.comment && (
-                  <div className="mb-2 grid grid-cols-3">
-                    <div className="col-span-1 text-foreground-500">
-                      Commentaire
-                    </div>
-                    <div className="col-span-2">{leave.comment}</div>
-                  </div>
-                )}
-              </div>
+      <div className="mt-4 w-full p-4">
+        <form onSubmit={handleSubmit(onSubmit)} id="documentation-form">
+          <Controller
+            name="name"
+            control={control}
+            rules={{
+              required: t("requiredFields"),
+            }}
+            render={({ field }) => (
+              <InputCustom
+                {...field}
+                type="text"
+                label={t("titleDocument") + " *"}
+                error={errors.name?.message}
+              />
             )}
+          />
 
-            {/* Section Justificatif */}
-            <h3 className="mb-3 mt-8 text-base font-bold text-primary">
-              Justificatif
-            </h3>
+          <Controller
+            name="ids"
+            control={control}
+            rules={{
+              required: t("requiredFields"),
+              validate: (value) => value.length > 0 || t("requiredFields"),
+            }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label={t("concernedSite")}
+                placeholder="Rechercher des sites : "
+                options={sites.map((site) => ({
+                  label: site.name,
+                  key: site.id.toString(),
+                  id: site.id,
+                }))}
+              />
+            )}
+          />
 
-            <div className="mb-8 flex h-32 items-center justify-center rounded-md border border-border bg-content1-100 p-4">
-              <div className="flex flex-col items-center">
-                <IconFolder size={40} className="mb-2" />
-                <div>Pas de justificatif</div>
-              </div>
-            </div>
+          <div className="">
+            <span className="mb-1 block text-xs font-medium text-gray-700">
+              {t("file")} *
+            </span>
+            <Controller
+              name="documentation"
+              control={control}
+              rules={{
+                required: t("requiredFields"),
+                validate: (value) => value.length > 0 || t("requiredFields"),
+              }}
+              render={({ field }) => (
+                <FileUploader
+                  type="fileUploader"
+                  containerClass="mb-3 pb-4"
+                  handleRemoveFile={handleRemoveFile}
+                  files={watchedDocumentation}
+                  setFiles={handleSetFiles}
+                  name="documentation"
+                  isMultiple={false}
+                  error={errors.documentation?.message}
+                />
+              )}
+            />
           </div>
 
-          {/* Section Historique */}
-          <div>
-            <h3 className="mb-3 text-base font-bold text-primary">
-              Historique
-            </h3>
-
-            <div className="space-y-4">
-              <div className="flex">
-                <div className="mr-2 flex size-6 items-center justify-center rounded-full bg-warning text-white">
-                  <span className="text-xs">!</span>
-                </div>
-                <div>
-                  <div className="text-sm">il y a 4 mois (20/12/2024)</div>
-                  <div className="font-medium">
-                    Soumis par <br />
-                    {user?.firstname} {user?.lastname}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex">
-                <div className="mr-2 flex size-6 items-center justify-center rounded-full bg-warning text-white">
-                  <span className="text-xs">!</span>
-                </div>
-                <div>
-                  <div className="text-sm">il y a 4 mois (20/12/2024)</div>
-                  <div className="font-medium">
-                    En attente de validation par <br />
-                    XEFI Admin
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="flex items-center justify-end gap-x-3">
+            <ButtonSecondAction onClick={toggleModal} type="button">
+              {t("cancel")}
+            </ButtonSecondAction>
+            <ButtonFirstAction type="submit" disabled={isSubmitting}>
+              {isSubmitting ? t("loading") : t("continue")}
+            </ButtonFirstAction>
           </div>
-        </div>
-
-        {/* Accordéon pour les compteurs et planning */}
-        <Accordion
-          items={accordionData}
-          variant="light"
-          itemClasses={{
-            title: "text-base font-bold text-primary",
-          }}
-        />
+        </form>
       </div>
     </Modal>
   );
 };
+
+export default DocumentationModal;

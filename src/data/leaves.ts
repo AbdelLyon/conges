@@ -785,3 +785,5 @@ export const sites: Site[] = [
       ]
    }
 ];
+
+export const users = sites.flatMap((site) => site.users);

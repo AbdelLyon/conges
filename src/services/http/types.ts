@@ -1,21 +1,22 @@
+// types.ts
 // ==================== Types de configuration HTTP ====================
 
-export type RequestInterceptor = (
-  config: RequestConfig,
-) => Promise<RequestConfig> | RequestConfig;
+export type HttpRequestInterceptor = (
+  config: IRequestConfig,
+) => Promise<IRequestConfig> | IRequestConfig;
 
-export type ResponseSuccessInterceptor = (
+export type HttpResponseSuccessInterceptor = (
   response: Response,
 ) => Promise<Response> | Response;
 
-export type ResponseErrorInterceptor = (error: Error) => Promise<Error>;
+export type HttpResponseErrorInterceptor = (error: Error) => Promise<Error>;
 
-export interface PaginationParams {
+export interface IPaginationParams {
   page?: number;
   limit?: number;
 }
 
-export interface ConfigOptions {
+export interface IHttpConfigOptions {
   baseURL: string;
   timeout?: number;
   headers?: Record<string, string>;
@@ -25,7 +26,7 @@ export interface ConfigOptions {
   apiVersion?: string | number;
 }
 
-export interface Permission {
+export interface IPermission {
   authorized_to_view: boolean;
   authorized_to_create: boolean;
   authorized_to_update: boolean;
@@ -34,7 +35,7 @@ export interface Permission {
   authorized_to_force_delete: boolean;
 }
 
-export interface HandlerConfig {
+export interface IHttpHandlerConfig {
   baseURL: string;
   defaultTimeout: number;
   defaultHeaders: Record<string, string>;
@@ -42,19 +43,19 @@ export interface HandlerConfig {
   withCredentials: boolean;
 }
 
-export interface RetryOptions {
+export interface IHttpRetryOptions {
   maxRetries: number;
   attempt: number;
   defaultTimeout: number;
   withCredentials: boolean;
 }
 
-export interface FetchResult {
+export interface IHttpFetchResult {
   response: Response;
   timeoutId: ReturnType<typeof setTimeout>;
 }
 
-export interface RequestConfig extends RequestInit {
+export interface IRequestConfig extends RequestInit {
   url: string;
   params?: Record<string, string>;
   data?: unknown;
@@ -64,7 +65,7 @@ export interface RequestConfig extends RequestInit {
   responseType?: "json" | "text" | "blob" | "arraybuffer";
 }
 
-export interface ApiErrorSource {
+export interface IApiErrorSource {
   [key: string]: unknown;
   status?: number;
   statusText?: string;
@@ -72,23 +73,36 @@ export interface ApiErrorSource {
   response?: Response;
 }
 
-export interface HttpConfig extends ConfigOptions {
+export interface IHttpConfig extends IHttpConfigOptions {
   interceptors?: {
-    request?: Array<RequestInterceptor>;
+    request?: Array<HttpRequestInterceptor>;
     response?: {
-      success?: Array<ResponseSuccessInterceptor>;
-      error?: Array<ResponseErrorInterceptor>;
+      success?: Array<HttpResponseSuccessInterceptor>;
+      error?: Array<HttpResponseErrorInterceptor>;
     };
   };
 }
 
-// ==================== Interfaces ====================
+export interface IHttpConfigHash {
+  hash: string;
+  config: IHttpConfig;
+}
+
+// ==================== Interfaces principales ====================
 
 export interface IHttpRequest {
-  configure: (options: ConfigOptions) => void;
-
+  configure: (options: IHttpConfig) => void;
   request: <TResponse>(
-    config: RequestConfig,
-    options?: Partial<RequestConfig>,
+    config: IRequestConfig,
+    options?: Partial<IRequestConfig>,
   ) => Promise<TResponse>;
+}
+
+export interface IHttpApiError extends Error {
+  config?: {
+    url?: string;
+    method?: string;
+  };
+  status?: number;
+  data?: unknown;
 }

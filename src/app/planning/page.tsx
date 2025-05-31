@@ -2,12 +2,18 @@
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 
-import { PlanningToolbar } from "./_components/PlanningToolbar";
+import { PageContainer } from "@/components/PageContainer";
+
+import { Planning } from "./_components/Planning";
 
 dayjs.extend(isBetween);
 
-const PlanningComponent = () => {
-  return <PlanningToolbar />;
+const PlanningPage = () => {
+  return (
+    <PageContainer title="Planning">
+      <Planning />
+    </PageContainer>
+  );
 };
 
-export default PlanningComponent;
+export default PlanningPage;

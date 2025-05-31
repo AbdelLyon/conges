@@ -1,7 +1,6 @@
 "use client";
 
 import { Card } from "x-react/card";
-import { Chip } from "x-react/chip";
 import { Input } from "x-react/form";
 import { IconSearch } from "x-react/icons";
 
@@ -44,12 +43,12 @@ export const LeaveTypesList = () => {
   };
 
   const cardClassNames = {
-    header: "pb-0 mb-1.5",
     body: "p-0 max-h-[250px] md:max-h-[500px] overflow-y-auto",
+    base: "border-none dark:bg-background p-0",
   };
 
   const inputClassNames = {
-    base: "w-full mb-3",
+    base: "w-full mb-1",
     inputWrapper: "border border-border/60",
   };
 
@@ -61,13 +60,7 @@ export const LeaveTypesList = () => {
         classNames={inputClassNames}
       />
 
-      <Card
-        radius="lg"
-        shadow="none"
-        className="border border-border dark:bg-background"
-        classNames={cardClassNames}
-        header={<ListHeader count={filteredLeaveTypes.length} />}
-      >
+      <Card radius="lg" shadow="none" classNames={cardClassNames}>
         <LeaveTypeItemsList
           items={filteredLeaveTypes}
           activeItemId={activeLeaveType?.id?.toString()}
@@ -97,17 +90,6 @@ const SearchInput = ({
     variant="bordered"
     classNames={classNames}
   />
-);
-
-const ListHeader = ({ count }: { count: number }) => (
-  <div className="w-full rounded-t-lg border border-border bg-content1-100 p-3 sm:p-4">
-    <div className="flex items-center gap-3">
-      <h3 className="text-sm font-medium">Types de congés</h3>
-      <Chip size="sm" variant="flat" radius="full">
-        {count}
-      </Chip>
-    </div>
-  </div>
 );
 
 const LeaveTypeItemsList = ({
@@ -141,15 +123,15 @@ const LeaveTypeItem = ({
   onSelect: () => void;
 }) => {
   const itemClassName = `
-  group mb-2 mx-3 flex py-2 cursor-pointer items-center 
+  group mb-2 flex py-2 cursor-pointer items-center 
   rounded-md px-4 h-11
   transition-transform duration-100 ease-out
   hover:text-primary 
   active:translate-x-0 active:scale-[0.98] active:shadow-inner
   focus:outline-none focus:ring-1 focus:ring-primary/30
-  hover:bg-content1-100 dark:hover:bg-content1-100
+  hover:bg-content1-50/50 dark:hover:bg-content1-100
   border border-border/40
-  ${isActive ? "bg-content1-100 text-primary text-primary" : ""}
+  ${isActive ? "bg-content1-50/50 text-primary text-primary" : ""}
 `;
 
   return (

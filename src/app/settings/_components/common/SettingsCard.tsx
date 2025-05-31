@@ -26,11 +26,11 @@ export const SettingsCard = ({ children }: PropsWithChildren) => {
   };
 
   const cardClassName =
-    "overflow-hidden border border-border bg-white dark:bg-background";
+    "overflow-hidden border border-border bg-white dark:bg-background rounded-t-lg";
 
   return (
     <Card
-      radius="lg"
+      radius="none"
       shadow="none"
       className={cardClassName}
       classNames={cardClassNames}

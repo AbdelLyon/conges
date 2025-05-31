@@ -20,7 +20,7 @@ export interface ExportHistoryEntry {
 }
 
 export type SortDirection = 'asc' | 'desc';
-export type SortOption = { direction: SortDirection; };
+export type SortOption = { field: string, direction: SortDirection; };
 
 // Types pour les validations
 export type ValidationAction = 'VALIDATED' | 'REFUSED';
@@ -125,7 +125,7 @@ export type ExportLeavesCountsParams = {
 
 
 export type ApiResponseWithMeta<T> = Promise<{
-   data: T;
+   data: T[];
    link: {
       first: string;
       last: string;
@@ -549,7 +549,11 @@ export type TeamsUserTagPivot = {
 
 
 export type User = {
+   user_leave_counts: UserLeaveCount[];
    id: number;
+   tag_id: number | null;
+   tag_label: string | null;
+   tag_color: string | null;
    profile_id: number;
    site_id: number;
    manager_id: number;
@@ -575,6 +579,7 @@ export type User = {
    is_level_one_manager: number;
    validators: Manager[];
    site?: UserSite;
+   profile: Profile;
 };
 
 
@@ -655,9 +660,9 @@ interface Scope {
 }
 
 export interface Filter {
-   field?: string;
-   operator?: '=' | '!=' | '>' | '>=' | '<' | '<=' | 'in' | 'not in' | 'like' | 'not like';
-   value?: string | number | boolean | Array<string | number>;
+   field: string;
+   operator: '=' | '!=' | '>' | '>=' | '<' | '<=' | 'in' | 'not in' | 'like' | 'not like';
+   value: string | number | boolean | Array<string | number>;
    type?: 'and' | 'or';
 }
 
@@ -676,7 +681,7 @@ export type LeaveAttachment = {
 
 interface Aggregate {
    relation: string;
-   type: 'count' | 'sum' | 'avg' | 'min' | 'max';
+   type: 'count' | 'sum' | 'avg' | 'min' | 'max' | "exists";
    filters?: Filter[];
 }
 

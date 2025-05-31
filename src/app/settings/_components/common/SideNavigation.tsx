@@ -48,13 +48,13 @@ export const SideNavigation = () => {
   const { mobileMenuOpen } = useSettingsStore();
 
   const containerClasses = mergeTailwindClasses(
-    "border border-border dark:bg-background",
+    "border border-border dark:bg-background rounded-t-lg",
     `${mobileMenuOpen ? "block" : "hidden"} lg:col-span-3 lg:block`,
   );
 
   return (
     <Card
-      radius="lg"
+      radius="none"
       shadow="none"
       className={containerClasses}
       classNames={{
@@ -81,9 +81,9 @@ const NavItem = ({ route }: NavItemProps) => {
   hover:text-primary 
   active:translate-x-0 active:scale-[0.98] active:shadow-inner
   focus:outline-none focus:ring-1 focus:ring-primary/30
-  hover:bg-content1-100 dark:hover:bg-content1-100
+  hover:bg-content1-50/50 dark:hover:bg-content1-100
   border border-border/40
-  ${route.isActive ? "bg-content1-100 text-primary" : ""}
+  ${route.isActive ? "bg-content1-50/50 text-primary" : ""}
 `;
 
   const iconClasses = route.isActive ? "text-primary" : "";
