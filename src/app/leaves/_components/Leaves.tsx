@@ -50,7 +50,7 @@ export default function Leaves() {
         shadow="none"
         variant="bordered"
         classNames={{
-          base: "h-[71vh]",
+          base: "max-h-[60vh]",
         }}
       />
     </div>

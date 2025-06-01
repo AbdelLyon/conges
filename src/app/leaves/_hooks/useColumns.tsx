@@ -32,7 +32,7 @@ export const useLeaveColumns = () => {
       field: "email",
       header: "Email",
       sortable: true,
-      className: "max-w-[200px] truncate",
+      className: "w-[200px] truncate",
     },
     {
       field: "gender",
