@@ -9,7 +9,7 @@ import { User } from "@/services/types";
 
 import { usePlanningStore } from "../../../store/usePlanningStore";
 
-import { PlanningDetails } from "./PlanningDetails";
+// import { PlanningDetails } from "./PlanningDetails";
 
 type CellSize = {
   height: string;
@@ -203,7 +203,7 @@ export const PlanningBody = () => {
             aria-hidden="true"
           />
         )}
-
+        {/* 
         {leave && (
           <PlanningDetails
             trigger={
@@ -238,7 +238,7 @@ export const PlanningBody = () => {
             leave={leave}
             user={getFullUser(leave.userId)}
           />
-        )}
+        )} */}
       </div>
     );
   };

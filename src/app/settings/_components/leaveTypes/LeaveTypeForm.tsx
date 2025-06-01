@@ -30,14 +30,7 @@ const LeaveTypeForm = () => {
   };
 
   return (
-    <Card
-      radius="sm"
-      shadow="none"
-      classNames={{
-        body: "space-y-6",
-        base: "border p-2 border-border/60 dark:bg-content1-50/50 space-y-6",
-      }}
-    >
+    <Card radius="sm" shadow="none">
       <BasicInfoSection
         label={leaveForm.label}
         code={leaveForm.code}

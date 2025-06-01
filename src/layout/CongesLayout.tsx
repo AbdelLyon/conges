@@ -125,7 +125,7 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
       },
 
       actionLabel: "Nouvelle demande",
-      classNames: { action: "rounded-none" },
+      classNames: { action: "rounded-sm" },
       actionClick: () => {
         console.log("mlk");
       },

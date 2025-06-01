@@ -41,22 +41,11 @@ const AppStoreQRCode: React.FC<QRCodeProps> = ({
   altText,
   color = "#E20917",
 }) => (
-  <div className="flex flex-col items-center gap-4">
-    <Image
-      src={logoSrc}
-      alt={altText}
-      className="h-auto w-[100px]"
-      width={100}
-      height={100}
-    />
+  <div className="flex flex-col items-center gap-3">
+    <Image src={logoSrc} alt={altText} width={100} height={100} />
 
     <QRCodeSVG
-      style={{
-        height: "auto",
-        maxWidth: "100%",
-        width: "72%",
-        borderRadius: "10px",
-      }}
+      className="rounded-md border border-border/40 bg-white p-4 shadow-sm"
       value={value}
       fgColor={color}
     />
@@ -73,9 +62,11 @@ const MobileDownload: React.FC<MobileDownloadProps> = ({
   className = "",
 }) => {
   return (
-    <section className={`min-h-screen py-6 pl-16 pr-2 ${className}`}>
-      <div className="flex flex-col items-center gap-4 lg:flex-row lg:gap-[10vw]">
-        {/* Phone Image with Decorative Arrows */}
+    <section
+      className={`relative min-h-screen px-4 py-8 sm:py-12 sm:pl-16 sm:pr-2 ${className}`}
+    >
+      <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-[8vw]">
+        {/* Phone Image with Decorative Arrows - ORIGINAL VERSION */}
         <div className="relative w-64">
           <Image
             src={xefiArrowRight}
@@ -102,35 +93,52 @@ const MobileDownload: React.FC<MobileDownloadProps> = ({
           />
         </div>
 
-        {/* Download Information Card */}
-        <Card className="w-full max-w-[700px] border border-border p-6">
-          <div className="flex flex-col gap-[.7rem]">
-            <h2 className="text-center text-2xl font-bold ">
-              Télécharger notre application
-            </h2>
-            <p className="text-center text-xl ">
-              Facilitez la prise de congés et le paiement des collaborateurs
-              avec notre fonctionnalité d&apos;export dans les logiciels RH.
-            </p>
-            <p className="text-center text-sm text-[#8D8D8D]">
-              Pour télécharger l&apos;application, scanner ce QR code avec votre
-              téléphone
-            </p>
-          </div>
+        {/* Enhanced Download Information Card */}
+        <Card>
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 opacity-50" />
 
-          {/* QR Codes */}
-          <div className="mt-10 flex justify-center">
-            <div className="flex items-start gap-8">
-              <AppStoreQRCode
-                value={links.android}
-                logoSrc={androidQrCode.src}
-                altText="Google Play Store"
-              />
-              <AppStoreQRCode
-                value={links.apple}
-                logoSrc={appleQrCode.src}
-                altText="Apple App Store"
-              />
+          <div className="relative z-10 flex flex-col gap-6">
+            <div className="space-y-4">
+              <h2 className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-center text-2xl font-bold sm:text-3xl">
+                Télécharger notre application
+              </h2>
+
+              <div className="mx-auto h-1 w-16 rounded-full bg-gradient-to-r from-primary to-secondary" />
+
+              <p className="text-center text-lg leading-relaxed sm:text-xl">
+                Facilitez la prise de congés et le paiement des collaborateurs
+                avec notre fonctionnalité d&apos;export dans les logiciels RH.
+              </p>
+
+              <p className="text-center text-sm opacity-70">
+                Pour télécharger l&apos;application, scanner ce QR code avec
+                votre téléphone
+              </p>
+            </div>
+
+            {/* Enhanced QR Codes Section */}
+            <div className="mt-3 flex justify-center">
+              <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start sm:gap-12">
+                <AppStoreQRCode
+                  value={links.android}
+                  logoSrc={androidQrCode.src}
+                  altText="Google Play Store"
+                />
+                <div className="hidden h-full w-px bg-gradient-to-b from-transparent via-border to-transparent sm:block" />
+                <AppStoreQRCode
+                  value={links.apple}
+                  logoSrc={appleQrCode.src}
+                  altText="Apple App Store"
+                />
+              </div>
+            </div>
+
+            {/* Call to action hint */}
+            <div className="mt-4 text-center">
+              <p className="text-xs opacity-70">
+                ✨ Pointez votre appareil photo vers le QR code
+              </p>
             </div>
           </div>
         </Card>
