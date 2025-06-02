@@ -1,10 +1,17 @@
 "use client";
 import { useState } from "react";
 import { DateRangePicker } from "x-react/datepicker";
-import { Input, Select } from "x-react/form";
-import { IconFilterCancel } from "x-react/icons";
+import {
+  InfiniteAutocomplete,
+  InfiniteSelect,
+  Input,
+  Select,
+} from "x-react/form";
+import { IconFilterCancel, IconUsers } from "x-react/icons";
 
 import { leave_type } from "@/data/leaves";
+
+import { useUsers } from "../_hooks/useUsers";
 
 // Interface pour les options
 interface Option {
@@ -93,6 +100,10 @@ export const FilterToolbar = () => {
   const [selectedStatuses, setSelectedStatuses] = useState<Set<string>>(
     new Set([]),
   );
+  const [selectedUsers, setSelectedUsers] = useState<Set<string>>(new Set([]));
+
+  const { users, isFetching, fetchNextPage, hasNextPage, isLoading } =
+    useUsers();
 
   const leaveTypeOptions: Option[] = leave_type
     .filter((type) => type.is_active)
@@ -101,6 +112,11 @@ export const FilterToolbar = () => {
       label: type.name,
       color: type.color,
     }));
+
+  const usersOption = users.map((user) => ({
+    id: user.id,
+    name: `${user.firstName} ${user.lastName}`,
+  }));
 
   return (
     <div className="flex items-center gap-2">
@@ -137,15 +153,40 @@ export const FilterToolbar = () => {
       />
 
       {/* Statut */}
-      <MultiSelect
+      {/* <MultiSelect
         placeholder="Statut"
         className="w-[300px]"
         selectedKeys={selectedStatuses}
         onSelectionChange={setSelectedStatuses}
         options={statusOptions}
         maxDisplay={3}
+      /> */}
+      <InfiniteAutocomplete
+        items={usersOption}
+        selectedKeys={selectedUsers}
+        getItemKey={(user) => user.name}
+        renderItem={(user) => user.name}
+        selectionIcon={<IconUsers size={16} />}
+        isFetching={isFetching}
+        fetchNextPage={fetchNextPage}
+        className="w-60"
+        radius="sm"
+        placeholder="Search..."
+        hasNextPage={hasNextPage}
+        isLoading={isLoading}
+        variant="bordered"
+        onSearchChange={(v) => console.log(v)}
+        onSelectionChange={(keys) => {
+          const keySet = keys instanceof Set ? keys : new Set([keys]);
+          setSelectedUsers(new Set(Array.from(keySet).map(String)));
+          const selectedObjects = usersOption.filter((user) =>
+            keySet.has(user.id),
+          );
+        }}
+        maxVisibleInBadge={2}
+        multiple
+        selectionMode="multiple"
       />
-
       <IconFilterCancel
         className="cursor-pointer opacity-50 hover:opacity-80"
         size={23}

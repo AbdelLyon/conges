@@ -39,11 +39,11 @@
     "knip:prod": "knip --production"
   },
   "dependencies": {
-    "@heroui/theme": "^2.4.15",
+    "@heroui/theme": "^2.4.16",
     "@internationalized/date": "^3.8.1",
     "@react-stately/data": "^3.13.0",
-    "@tanstack/react-query": "^5.79.0",
-    "@tanstack/react-query-devtools": "^5.79.0",
+    "@tanstack/react-query": "^5.79.2",
+    "@tanstack/react-query-devtools": "^5.79.2",
     "@types/js-cookie": "^3.0.6",
     "dayjs": "^1.11.13",
     "i18next": "^25.2.1",
@@ -54,11 +54,11 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-dropzone": "^14.3.8",
-    "react-hook-form": "^7.56.4",
+    "react-hook-form": "^7.57.0",
     "react-i18next": "^15.5.2",
     "tailwind-scrollbar": "^4.0.2",
     "x-react": "github:AbdelLyon/x-react",
-    "zod": "^3.25.46",
+    "zod": "^3.25.48",
     "zustand": "^5.0.5"
   },
   "devDependencies": {
@@ -72,7 +72,7 @@
     "@types/react-dom": "^19.1.5",
     "@vitejs/plugin-react": "^4.5.0",
     "@vitest/coverage-v8": "^2.1.9",
-    "@vitest/ui": "^3.1.4",
+    "@vitest/ui": "^3.2.0",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.28.0",
     "eslint-config-next": "15.3.1",
@@ -89,8 +89,8 @@
     "rimraf": "^6.0.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.33.0",
+    "typescript-eslint": "^8.33.1",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.1.4"
+    "vitest": "^3.2.0"
   }
 }
