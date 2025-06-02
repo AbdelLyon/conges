@@ -58,7 +58,7 @@
     "react-i18next": "^15.5.2",
     "tailwind-scrollbar": "^4.0.2",
     "x-react": "github:AbdelLyon/x-react",
-    "zod": "^3.25.48",
+    "zod": "^3.25.49",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

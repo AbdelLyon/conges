@@ -172,7 +172,7 @@ export const FilterToolbar = () => {
         className="w-60"
         radius="sm"
         placeholder="Search..."
-        hasNextPage={hasNextPage}
+        // hasNextPage={hasNextPage}
         isLoading={isLoading}
         variant="bordered"
         onSearchChange={(v) => console.log(v)}
