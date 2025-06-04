@@ -113,10 +113,12 @@ export const FilterToolbar = () => {
       color: type.color,
     }));
 
-  const usersOption = users.map((user) => ({
+  const usersData = users.map((user) => ({
     id: user.id,
     name: `${user.firstName} ${user.lastName}`,
   }));
+
+  const [usersOption, setUsersOption] = useState(usersData);
 
   return (
     <div className="flex items-center gap-2">
@@ -175,7 +177,10 @@ export const FilterToolbar = () => {
         // hasNextPage={hasNextPage}
         isLoading={isLoading}
         variant="bordered"
-        onSearchChange={(v) => console.log(v)}
+        onSearchChange={(v) => {
+          const res = usersOption.filter((vl) => vl.name.includes(v));
+          setUsersOption(res);
+        }}
         onSelectionChange={(keys) => {
           const keySet = keys instanceof Set ? keys : new Set([keys]);
           setSelectedUsers(new Set(Array.from(keySet).map(String)));
@@ -183,6 +188,7 @@ export const FilterToolbar = () => {
             keySet.has(user.id),
           );
         }}
+        hasNextPage={true}
         maxVisibleInBadge={2}
         multiple
         selectionMode="multiple"
