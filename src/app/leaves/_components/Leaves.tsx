@@ -4,7 +4,6 @@ import { DataGrid } from "x-react/datagrid";
 
 import { useLeaveColumns } from "../_hooks/useColumns";
 import { useUsers } from "../_hooks/useUsers";
-import { User } from "../typesTest";
 
 import { FilterToolbar } from "./Filters";
 
@@ -16,6 +15,7 @@ export default function Leaves() {
     isLoading,
     users,
     isFetching,
+    handleSortChange,
   } = useUsers();
 
   const { columns } = useLeaveColumns();
@@ -23,10 +23,6 @@ export default function Leaves() {
   const handleLoadMore = () => {
     console.log("LoadMore triggered, fetching next page...");
     fetchNextPage();
-  };
-
-  const handleSortChange = (column: keyof User, direction: "asc" | "desc") => {
-    console.log(`Sorting by ${String(column)} in ${direction} order`);
   };
 
   return (
@@ -49,6 +45,12 @@ export default function Leaves() {
         radius="none"
         shadow="none"
         variant="bordered"
+        checkboxesProps={{
+          classNames: {
+            wrapper:
+              "after:bg-foreground after:text-background text-background befor:border befor:border-primary",
+          },
+        }}
         classNames={{
           base: "max-h-[60vh]",
         }}

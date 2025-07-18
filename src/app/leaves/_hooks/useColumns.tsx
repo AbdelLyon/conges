@@ -1,23 +1,19 @@
 import { Avatar } from "x-react/avatar";
 import { Chip } from "x-react/chip";
 import { ColumnDefinition } from "x-react/datagrid";
+import { TruncatedText } from "x-react/utils";
 
 import { User } from "../typesTest";
 
 export const useLeaveColumns = () => {
   const columns: ColumnDefinition<User>[] = [
     {
-      field: "id",
-      header: "ID",
-      sortable: true,
-    },
-    {
       field: "firstName",
       header: "Utilisateur",
-      className: "max-w-[200px] truncate",
       sortable: true,
+      className: "w-[200px]",
       cell: (user: User) => (
-        <div className="flex items-center gap-2">
+        <div className="flex w-full items-center gap-2">
           <Avatar
             src={user.image}
             alt={`${user.firstName} ${user.lastName}`}
@@ -32,13 +28,13 @@ export const useLeaveColumns = () => {
       field: "email",
       header: "Email",
       sortable: true,
-      className: "w-[200px] truncate",
+      className: "w-[150px]",
     },
     {
       field: "gender",
       header: "Genre",
       sortable: true,
-      className: "max-w-24 truncate",
+
       cell: (user) => {
         const genderColors: Record<
           string,
@@ -56,9 +52,12 @@ export const useLeaveColumns = () => {
     },
     {
       field: "bloodGroup",
-      header: "Groupe sanguin",
-      className: "w-[40px] truncate",
-
+      header: (
+        <TruncatedText className="max-w-[100px] truncate text-sm font-semibold text-foreground transition-all duration-200">
+          Groupe sanguin smlkdmkdmksdk
+        </TruncatedText>
+      ),
+      className: "w-[100px]",
       cell: (user) => (
         <Chip
           variant="flat"
@@ -71,24 +70,18 @@ export const useLeaveColumns = () => {
     {
       field: "company",
       header: "Entreprise",
-      className: "max-w-[200px] truncate",
 
-      cell: (user) => (
-        <p className="max-w-[100px] truncate">{user.company.name}</p>
-      ),
+      cell: (user) => user.company.name,
     },
     {
       field: "address",
       header: "Ville",
 
-      cell: (user) => (
-        <p className="max-w-[100px] truncate">{`${user.address.city}, ${user.address.state}`}</p>
-      ),
+      cell: (user) => `${user.address.city}, ${user.address.state}`,
     },
     {
       field: "university",
       header: "Université",
-      className: "max-w-[400px] truncate",
       sortable: true,
     },
     {

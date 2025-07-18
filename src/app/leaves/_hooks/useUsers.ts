@@ -1,8 +1,9 @@
+import { useMemo, useState } from "react";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
 
 import { userService } from "@/services/api/UserService";
 
-import { ApiResponse } from "../typesTest";
+import { ApiResponse, User } from "../typesTest";
 
 interface UseUsersOptions {
    searchTerm?: string;
@@ -10,6 +11,8 @@ interface UseUsersOptions {
 
 export const useUsers = (options: UseUsersOptions = {}) => {
    const { searchTerm = "" } = options;
+   const [sortColumn, setSortColumn] = useState<keyof User | null>(null);
+   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
    const users = useSuspenseInfiniteQuery<
       ApiResponse,
@@ -27,16 +30,49 @@ export const useUsers = (options: UseUsersOptions = {}) => {
       initialPageParam: 0,
    });
 
-   // Filter users client-side if searchTerm is provided
-   const filteredUsers = searchTerm
-      ? (users.data?.pages.flatMap((page) => page.users) || []).filter(user =>
-         `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-         user.email.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      : users.data?.pages.flatMap((page) => page.users) || [];
+   // Filter and sort users client-side
+   const filteredAndSortedUsers = useMemo(() => {
+      let result = users.data?.pages.flatMap((page) => page.users) || [];
+      
+      // Filter by search term
+      if (searchTerm) {
+         result = result.filter(user =>
+            `${user.firstName} ${user.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            user.email.toLowerCase().includes(searchTerm.toLowerCase())
+         );
+      }
+      
+      // Sort if column is specified
+      if (sortColumn) {
+         result = [...result].sort((a, b) => {
+            const aVal = a[sortColumn];
+            const bVal = b[sortColumn];
+            
+            // Handle different data types
+            let comparison = 0;
+            if (typeof aVal === 'string' && typeof bVal === 'string') {
+               comparison = aVal.toLowerCase().localeCompare(bVal.toLowerCase());
+            } else if (typeof aVal === 'number' && typeof bVal === 'number') {
+               comparison = aVal - bVal;
+            } else {
+               comparison = String(aVal).toLowerCase().localeCompare(String(bVal).toLowerCase());
+            }
+            
+            return sortDirection === "asc" ? comparison : -comparison;
+         });
+      }
+      
+      return result;
+   }, [users.data, searchTerm, sortColumn, sortDirection]);
+
+   const handleSortChange = (column: keyof User, direction: "asc" | "desc") => {
+      setSortColumn(column);
+      setSortDirection(direction);
+   };
 
    return {
       ...users,
-      users: filteredUsers
+      users: filteredAndSortedUsers,
+      handleSortChange
    };
 };
