@@ -1,18 +1,18 @@
 // import congesService from "@data/congesService";
 "use client";
-import { t } from "i18next";
-import Lottie from "lottie-react";
-import Image from "next/image";
-import Link from "next/link";
-import React, { useState } from "react";
 import {
   IconArrowDownToArc,
   IconArrowRight,
   IconPlus,
   IconTrack,
-} from "x-react/icons";
-import { Spinner } from "x-react/spiner";
-// import { addToast } from "x-react/toast";
+} from "@xefi/x-react/icons";
+import { Spinner } from "@xefi/x-react/spiner";
+import { t } from "i18next";
+import Lottie from "lottie-react";
+import Image from "next/image";
+import Link from "next/link";
+import React, { useState } from "react";
+// import { addToast } from "@xefi/x-react/toast";
 
 import empty from "@/assets/lottie/empty.json";
 import { PageContainer } from "@/components/PageContainer";

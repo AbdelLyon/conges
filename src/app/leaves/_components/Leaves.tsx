@@ -1,6 +1,6 @@
 // UsersGridWithReactQuery.tsx
 "use client";
-import { DataGrid } from "x-react/datagrid";
+import { DataGrid } from "@xefi/x-react/datagrid";
 
 import { useLeaveColumns } from "../_hooks/useColumns";
 import { useUsers } from "../_hooks/useUsers";

@@ -1,8 +1,8 @@
 // components/shared/TooltipText.tsx
+import { IconInfoCircle } from "@xefi/x-react/icons";
+import { Tooltip } from "@xefi/x-react/tooltip";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 import { JSX, ReactNode } from "react";
-import { IconInfoCircle } from "x-react/icons";
-import { Tooltip } from "x-react/tooltip";
-import { mergeTailwindClasses } from "x-react/utils";
 
 export interface TooltipTextProps {
   content: string;

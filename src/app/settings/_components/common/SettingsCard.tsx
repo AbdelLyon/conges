@@ -1,9 +1,9 @@
 "use client";
 
+import { Card } from "@xefi/x-react/card";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { PropsWithChildren } from "react";
-import { Card } from "x-react/card";
 
 import { CardHeader } from "./CardHeader";
 import { getRouteByKey } from "./routes";

@@ -1,7 +1,7 @@
-import { Avatar } from "x-react/avatar";
-import { Chip } from "x-react/chip";
-import { ColumnDefinition } from "x-react/datagrid";
-import { TruncatedText } from "x-react/utils";
+import { Avatar } from "@xefi/x-react/avatar";
+import { Chip } from "@xefi/x-react/chip";
+import { ColumnDefinition } from "@xefi/x-react/datagrid";
+import { TruncatedText } from "@xefi/x-react/utils";
 
 import { User } from "../typesTest";
 

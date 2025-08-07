@@ -1,9 +1,9 @@
 "use client";
+import { Chip } from "@xefi/x-react/chip";
+import { IconChevronLeft, IconChevronRight } from "@xefi/x-react/icons";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
-import { Chip } from "x-react/chip";
-import { IconChevronLeft, IconChevronRight } from "x-react/icons";
-import { mergeTailwindClasses } from "x-react/utils";
 
 import { usePlanningStore } from "@/store/usePlanningStore";
 

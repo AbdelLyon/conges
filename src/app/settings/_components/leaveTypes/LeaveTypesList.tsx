@@ -1,8 +1,8 @@
 "use client";
 
-import { Card } from "x-react/card";
-import { Input } from "x-react/form";
-import { IconSearch } from "x-react/icons";
+import { Card } from "@xefi/x-react/card";
+import { Input } from "@xefi/x-react/form";
+import { IconSearch } from "@xefi/x-react/icons";
 
 import { useSettingsStore } from "@/store/useSettingsStore";
 

@@ -1,13 +1,11 @@
 "use client";
 
-import dayjs from "dayjs";
-import React, { useEffect, useMemo, useState } from "react";
 import "dayjs/locale/fr";
-import { Button } from "x-react/button";
-import { Card } from "x-react/card";
-import { Chart } from "x-react/chart";
-import { Chip } from "x-react/chip";
-import { Divider } from "x-react/divider";
+import { Button } from "@xefi/x-react/button";
+import { Card } from "@xefi/x-react/card";
+import { Chart } from "@xefi/x-react/chart";
+import { Chip } from "@xefi/x-react/chip";
+import { Divider } from "@xefi/x-react/divider";
 import {
   IconChevronRight as IconArrowRight,
   IconCalendar,
@@ -17,10 +15,12 @@ import {
   IconClock,
   IconInfoCircle,
   IconX,
-} from "x-react/icons";
-import { Tabs } from "x-react/tabs";
-import { addToast } from "x-react/toast";
-import { mergeTailwindClasses } from "x-react/utils";
+} from "@xefi/x-react/icons";
+import { Tabs } from "@xefi/x-react/tabs";
+import { addToast } from "@xefi/x-react/toast";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
+import dayjs from "dayjs";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { PageContainer } from "@/components/PageContainer";
 
@@ -310,7 +310,7 @@ const Btn = ({
         variant="light"
         isIconOnly
         radius="full"
-        onPress={() => onDateChange("prev")}
+        onClick={() => onDateChange("prev")}
         aria-label="Période précédente"
       >
         <IconChevronLeft size={20} />
@@ -335,7 +335,7 @@ const Btn = ({
         variant="light"
         isIconOnly
         radius="full"
-        onPress={() => onDateChange("next")}
+        onClick={() => onDateChange("next")}
         aria-label="Période suivante"
       >
         <IconChevronRight size={20} />
@@ -512,7 +512,7 @@ const Dashboard: React.FC = () => {
             variant="light"
             color="primary"
             size="sm"
-            endContent={<IconChevronRight size={16} />}
+            rightIcon={<IconChevronRight size={16} />}
           >
             Voir plus
           </Button>
@@ -1188,7 +1188,7 @@ const LeaveDetailsModal: React.FC<LeaveDetailsModalProps> = ({
             variant="light"
             radius="full"
             size="sm"
-            onPress={onClose}
+            onClick={onClose}
           >
             <IconX size={20} />
           </Button>
@@ -1290,7 +1290,7 @@ const LeaveDetailsModal: React.FC<LeaveDetailsModalProps> = ({
               radius="md"
               color="default"
               className="flex-1"
-              onPress={onClose}
+              onClick={onClose}
             >
               Fermer
             </Button>

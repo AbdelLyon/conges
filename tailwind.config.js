@@ -1,5 +1,5 @@
 import tailwindScrollbar from "tailwind-scrollbar";
-import baseConfig from "x-react/tailwind.config";
+import baseConfig from "@xefi/x-react/tailwind.config";
 
 const config = {
   ...baseConfig,

@@ -1,19 +1,13 @@
 "use client";
 
+import { IconChevronDown, IconEye, IconEyeClosed } from "@xefi/x-react/icons";
+import { TabItem, Tabs } from "@xefi/x-react/tabs";
+import { Tooltip } from "@xefi/x-react/tooltip";
 import { useState } from "react";
-import { IconChevronDown, IconEye, IconEyeClosed } from "x-react/icons";
-import { TabItem, Tabs } from "x-react/tabs";
-import { Tooltip } from "x-react/tooltip";
 
-import { LeaveType } from "@/services/types";
 import { usePlanningStore } from "@/store/usePlanningStore";
 
-type Props = {
-  isAdmin: boolean;
-  leaveTypesN1: LeaveType[];
-};
-
-export const PlanningSidebar = ({ isAdmin, leaveTypesN1 }: Props) => {
+export const PlanningSidebar = () => {
   const {
     expandedSites,
     setExpandedSites,

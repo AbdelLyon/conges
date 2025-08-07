@@ -1,9 +1,9 @@
 "use client";
 
+import { Card } from "@xefi/x-react/card";
+import { Checkbox } from "@xefi/x-react/form";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 import { useState } from "react";
-import { Card } from "x-react/card";
-import { Checkbox } from "x-react/form";
-import { mergeTailwindClasses } from "x-react/utils";
 
 const HOLIDAYS = [
   { name: "Jour de l'an", date: "(Mercredi 01 janvier)", value: "new-year" },

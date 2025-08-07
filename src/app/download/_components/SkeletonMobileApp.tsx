@@ -1,5 +1,5 @@
-import { Card } from "x-react/card";
-import { Skeleton } from "x-react/skeleton";
+import { Card } from "@xefi/x-react/card";
+import { Skeleton } from "@xefi/x-react/skeleton";
 
 export const SkeletonMobileApp = () => {
   return (

@@ -1,8 +1,8 @@
 "use client";
 
+import { Checkbox } from "@xefi/x-react/form";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 import { useState } from "react";
-import { Checkbox } from "x-react/form";
-import { mergeTailwindClasses } from "x-react/utils";
 
 const WORKING_DAYS = [
   { name: "Lundi", value: "monday" },

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Select } from "x-react/form";
+import { Select } from "@xefi/x-react/form";
 
 import { SiteMultiSelectProps } from "../_types";
 

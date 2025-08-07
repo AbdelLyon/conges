@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
-import { DateRangePicker } from "x-react/datepicker";
+import { DateRangePicker } from "@xefi/x-react/datepicker";
 import {
   InfiniteAutocomplete,
   InfiniteSelect,
   Input,
   Select,
-} from "x-react/form";
-import { IconFilterCancel, IconUsers } from "x-react/icons";
+} from "@xefi/x-react/form";
+import { IconFilterCancel, IconUsers } from "@xefi/x-react/icons";
 
 import { leave_type } from "@/data/leaves";
 

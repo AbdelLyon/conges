@@ -1,8 +1,5 @@
 "use client";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
-import { Chip } from "x-react/chip";
+import { Chip } from "@xefi/x-react/chip";
 import {
   IconCalendar,
   IconCalendarTime,
@@ -11,9 +8,12 @@ import {
   IconInfoCircle,
   IconSend,
   IconSettings,
-} from "x-react/icons";
-import { Layout, useLayoutConfig } from "x-react/layout";
-import { ToggleTheme } from "x-react/theme";
+} from "@xefi/x-react/icons";
+import { Layout, useLayoutConfig } from "@xefi/x-react/layout";
+import { ToggleTheme } from "@xefi/x-react/theme";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 
 import logoB from "@/assets/logoB.png";
 import logoL from "@/assets/logoL.png";
@@ -22,8 +22,8 @@ import { Providers } from "@/providers/providers";
 
 import { UserProfile } from "./UserProfile";
 
-import type { Item, NavbarProps } from "x-react/navbar";
-import type { SidebarProps } from "x-react/sidebar";
+import type { Item, NavbarProps } from "@xefi/x-react/navbar";
+import type { SidebarProps } from "@xefi/x-react/sidebar";
 
 type LayoutComponentProps = NavbarProps & SidebarProps;
 
@@ -89,12 +89,7 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
   const layoutConfig = useLayoutConfig<LayoutComponentProps>({
     navbar: {
       appName: <p className="text-lg font-bold">Congés</p>,
-      appLogo: (
-        <p className="w-[200px] text-center text-2xl font-bold tracking-widest text-foreground">
-          <span className="text-primary">D</span>
-          AILYAPPS
-        </p>
-      ),
+
       onItemClick: (item) => {
         if (item.href) router.push(item.href);
       },
@@ -123,7 +118,13 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
       onItemClick(item) {
         if (item.href) router.push(item.href);
       },
-
+      appLogo: (
+        <p className="w-[200px] text-center text-2xl font-bold tracking-widest text-foreground">
+          <span className="text-primary">D</span>
+          AILYAPPS
+        </p>
+      ),
+      // showBurgerButton: true,
       actionLabel: "Nouvelle demande",
       classNames: { action: "rounded-sm" },
       actionClick: () => {

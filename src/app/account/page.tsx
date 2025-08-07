@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Card } from "x-react/card";
-import { Divider } from "x-react/divider";
-import { Checkbox, Switch } from "x-react/form";
+import { Card } from "@xefi/x-react/card";
+import { Divider } from "@xefi/x-react/divider";
+import { Checkbox, Switch } from "@xefi/x-react/form";
 import {
   IconArrowLeft,
   IconBell,
@@ -12,8 +12,8 @@ import {
   IconMail,
   IconMailFilled,
   IconUsers,
-} from "x-react/icons";
-import { mergeTailwindClasses } from "x-react/utils";
+} from "@xefi/x-react/icons";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 
 import { PageContainer } from "@/components/PageContainer";
 

@@ -1,5 +1,5 @@
+import { IconLoader2 } from "@xefi/x-react/icons";
 import { useEffect } from "react";
-import { IconLoader2 } from "x-react/icons";
 
 import { leaveService } from "@/services/api/leave/LeaveTypeService";
 import { userService } from "@/services/api/UserService";
@@ -27,7 +27,6 @@ export const Planning = () => {
     // Nouveaux états du store
     leaveTypes,
     setLeaveTypes,
-    leaveTypesN1,
     setLeaveTypesN1,
     users,
     addUsers,
@@ -191,7 +190,7 @@ export const Planning = () => {
       <PlanningToolbar leaveTypes={leaveTypes} />
 
       <div className="flex gap-2">
-        <PlanningSidebar isAdmin={isAdmin} leaveTypesN1={leaveTypesN1} />
+        <PlanningSidebar />
 
         <div className="flex-1 overflow-x-auto rounded-t-lg border border-border/60">
           <PlanningHeader />

@@ -1,11 +1,10 @@
 "use client";
-import { CalendarDate } from "@internationalized/date";
-import { useState } from "react";
-import { Button } from "x-react/button";
-import { Buttons } from "x-react/buttons";
-import { DateRangePicker, DateValue } from "x-react/datepicker";
-import { Dropdown, DropdownSectionConfig } from "x-react/dropdown";
-import { Select } from "x-react/form";
+import { CalendarDate, DateValue } from "@internationalized/date";
+import { Button } from "@xefi/x-react/button";
+import { Buttons } from "@xefi/x-react/buttons";
+import { DateRangePicker } from "@xefi/x-react/datepicker";
+import { Dropdown, DropdownSectionConfig } from "@xefi/x-react/dropdown";
+import { Select } from "@xefi/x-react/form";
 import {
   IconDotsVertical,
   IconFilterOff,
@@ -14,10 +13,10 @@ import {
   IconPlus,
   IconSwitchHorizontal,
   IconUsers,
-} from "x-react/icons";
+} from "@xefi/x-react/icons";
+import { useState } from "react";
 
 import { sites } from "@/data/leaves";
-import { LeaveType } from "@/services/types";
 import { usePlanningStore } from "@/store/usePlanningStore";
 
 const teams = [
@@ -37,24 +36,37 @@ const dropdownSections: DropdownSectionConfig[] = [
         key: "home",
         label: "Accueil",
         startContent: <IconHome className="text-large" />,
+        onClick() {
+          console.log("Accueil");
+        },
       },
       {
         href: "/form",
         key: "form",
         label: "Formulaire",
         startContent: <IconPlus className="text-large" />,
+        onClick() {
+          console.log("Formulaire");
+        },
       },
+
       {
         href: "/dashboard",
         key: "dashboard",
         label: "Tableau de bord",
         startContent: <IconLayoutGrid className="text-large" />,
+        onClick() {
+          console.log("Tableau de bord");
+        },
       },
       {
         href: "/users",
         key: "users",
         label: "Utilisateurs",
         startContent: <IconUsers className="text-large" />,
+        onClick() {
+          console.log("Utilisateurs");
+        },
       },
     ],
   },
@@ -126,11 +138,7 @@ const MultiSelect = ({ placeholder, options, className }: MultiSelectProps) => {
   );
 };
 
-type Props = {
-  leaveTypes: LeaveType[];
-};
-
-export const PlanningToolbar = ({ leaveTypes }: Props) => {
+export const PlanningToolbar = () => {
   const { viewMode, setViewMode, reversePrimary, setReversePrimary } =
     usePlanningStore();
 

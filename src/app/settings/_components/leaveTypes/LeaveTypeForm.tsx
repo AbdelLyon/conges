@@ -1,9 +1,9 @@
 "use client";
 
-import { Card } from "x-react/card";
-import { Divider } from "x-react/divider";
-import { Input, RadioGroup, Switch } from "x-react/form";
-import { IconSettings } from "x-react/icons";
+import { Card } from "@xefi/x-react/card";
+import { Divider } from "@xefi/x-react/divider";
+import { Input, RadioGroup, Switch } from "@xefi/x-react/form";
+import { IconSettings } from "@xefi/x-react/icons";
 
 import { FormSection } from "@/shared/FormSection";
 import { TooltipText } from "@/shared/TooltipText";

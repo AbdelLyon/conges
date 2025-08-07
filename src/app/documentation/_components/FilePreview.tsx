@@ -1,8 +1,8 @@
 "use client";
 
+import { IconFile, IconPdf } from "@xefi/x-react/icons";
 import Image from "next/image";
 import React, { useState } from "react";
-import { IconFile, IconPdf } from "x-react/icons";
 
 import { FilePreviewProps } from "../_types";
 

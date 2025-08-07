@@ -1,8 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { UserAvatar } from "x-react/avatar";
-import { Dropdown, DropdownSectionConfig } from "x-react/dropdown";
-import { IconHome, IconLayoutGrid, IconPlus, IconUsers } from "x-react/icons";
+import { UserAvatar } from "@xefi/x-react/avatar";
+import { Dropdown, DropdownSectionConfig } from "@xefi/x-react/dropdown";
+import { IconHome, IconLayoutGrid, IconPlus, IconUsers } from "@xefi/x-react/icons";
 
 const dropdownSections: DropdownSectionConfig[] = [
   {

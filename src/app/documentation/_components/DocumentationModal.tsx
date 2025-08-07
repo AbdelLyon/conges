@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Checkbox, Input, SelectOption } from "x-react/form";
-import { Modal } from "x-react/modal";
+import { Checkbox, Input, SelectOption } from "@xefi/x-react/form";
+import { Modal } from "@xefi/x-react/modal";
 
 import { sites } from "@/data/leaves";
 import { Site } from "@/services/types";

@@ -1,11 +1,11 @@
 "use client";
 
-import { PropsWithChildren } from "react";
 import {
-  NextUIProvider,
+  UIProvider as NextUIProvider,
   ThemeProvider,
   ToastProvider,
-} from "x-react/providers";
+} from "@xefi/x-react/providers";
+import { PropsWithChildren } from "react";
 
 import { QueryProvider } from "./QueryProvider";
 

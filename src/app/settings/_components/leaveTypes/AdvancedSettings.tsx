@@ -1,9 +1,9 @@
 // components/leaves/AdvancedSettingsCheckbox.tsx
+import { Checkbox } from "@xefi/x-react/form";
+import { IconInfoCircle } from "@xefi/x-react/icons";
+import { Tooltip } from "@xefi/x-react/tooltip";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 import { ReactNode } from "react";
-import { Checkbox } from "x-react/form";
-import { IconInfoCircle } from "x-react/icons";
-import { Tooltip } from "x-react/tooltip";
-import { mergeTailwindClasses } from "x-react/utils";
 
 export interface Props {
   isSelected: boolean;

@@ -1,8 +1,8 @@
 // // app/leaves/page.tsx
 "use client";
 
-import { Button } from "x-react/button";
-import { IconMenu } from "x-react/icons";
+import { Button } from "@xefi/x-react/button";
+import { IconMenu } from "@xefi/x-react/icons";
 
 import { useSettingsStore } from "@/store/useSettingsStore";
 
@@ -13,8 +13,8 @@ export default function SettingsPage() {
       <Button
         variant="light"
         size="sm"
-        startContent={<IconMenu />}
-        onPress={() => setMobileMenuOpen(!mobileMenuOpen)}
+        leftIcon={<IconMenu />}
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       >
         Menu
       </Button>

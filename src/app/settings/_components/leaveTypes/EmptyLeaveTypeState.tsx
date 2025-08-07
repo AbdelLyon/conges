@@ -1,6 +1,6 @@
+import { Card } from "@xefi/x-react/card";
+import { IconBriefcase } from "@xefi/x-react/icons";
 import { FC } from "react";
-import { Card } from "x-react/card";
-import { IconBriefcase } from "x-react/icons";
 
 export const EmptyLeaveTypeState: FC = () => {
   return (

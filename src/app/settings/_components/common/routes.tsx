@@ -1,4 +1,4 @@
-import { IconBriefcase, IconCalendar, IconClock } from "x-react/icons";
+import { IconBriefcase, IconCalendar, IconClock } from "@xefi/x-react/icons";
 
 export interface SettingsRoute {
   key: string;

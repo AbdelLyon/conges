@@ -1,10 +1,10 @@
 "use client";
 
+import { Card } from "@xefi/x-react/card";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { Card } from "x-react/card";
-import { mergeTailwindClasses } from "x-react/utils";
 
 import { useSettingsStore } from "@/store/useSettingsStore";
 

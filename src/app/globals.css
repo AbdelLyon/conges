@@ -1,4 +1,4 @@
-@import "x-react/style.css";
+@import "@xefi/x-react/style.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

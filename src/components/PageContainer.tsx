@@ -1,5 +1,5 @@
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 import { PropsWithChildren, ReactNode } from "react";
-import { mergeTailwindClasses } from "x-react/utils";
 
 interface Props extends PropsWithChildren {
   title?: string | ReactNode;

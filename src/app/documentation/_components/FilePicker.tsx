@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useRef, useState } from "react";
-import { IconUpload } from "x-react/icons";
+import { IconUpload } from "@xefi/x-react/icons";
 
 import { FilePickerProps } from "../_types";
 

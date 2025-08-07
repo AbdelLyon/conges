@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 import React from "react";
-import { Card } from "x-react/card";
+import { Card } from "@xefi/x-react/card";
 
 import androidQrCode from "@/assets/android.inline.png";
 import appleQrCode from "@/assets/apple.inline.png";

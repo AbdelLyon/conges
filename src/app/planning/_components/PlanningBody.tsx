@@ -1,7 +1,7 @@
 "use client";
+import { mergeTailwindClasses } from "@xefi/x-react/utils";
 import dayjs from "dayjs";
 import React, { JSX } from "react";
-import { mergeTailwindClasses } from "x-react/utils";
 
 import { Leave, PublicHoliday } from "@/data/leaves";
 import { leaves } from "@/data/leaves";
@@ -24,11 +24,9 @@ export const PlanningBody = () => {
     hoveredUser,
     viewMode,
     publicHolidays,
-    reversePrimary,
     setHoveredUser,
     searchQuery,
     usersGroupedBySite,
-    users, // Utilisateurs complets du store
   } = usePlanningStore();
 
   // Fonction pour obtenir les jours de la période en cours
@@ -150,11 +148,6 @@ export const PlanningBody = () => {
     <div key={`separator-${groupName}`} className="mb-1 h-[30px]" />
   );
 
-  // Obtenir l'utilisateur complet avec toutes ses données
-  const getFullUser = (userId: number): User | undefined => {
-    return users.find((u) => u.id === userId);
-  };
-
   // Rendu de la cellule
   const renderCell = (
     user: User,
@@ -162,8 +155,6 @@ export const PlanningBody = () => {
     dayIndex: number,
   ): JSX.Element => {
     const leave = getLeaveForDateAndUser(user.id, day);
-    const isStartDate = leave && dayjs(leave.startDate).isSame(day, "day");
-    const isEndDate = leave && dayjs(leave.endDate).isSame(day, "day");
     const isHighlighted = hoveredDay === day.format("YYYY-MM-DD");
     const isPublicHolidayDay = isPublicHoliday(day);
     const isTodayDay = isToday(day);

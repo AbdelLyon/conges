@@ -1,4 +1,4 @@
-import { Button } from "x-react/button";
+import { Button } from "@xefi/x-react/button";
 
 interface CardHeaderProps {
   title: string;

@@ -1,14 +1,11 @@
 "use client";
 
-import { ButtonFirstAction, ButtonSecondAction } from "@components/UI/Buttons";
-import FileUploader from "@components/UI/FileUploader";
-import congesService from "@data/congesService";
+import { Select } from "@xefi/x-react/form";
+import { Modal } from "@xefi/x-react/modal";
+import { addToast } from "@xefi/x-react/toast";
 import React, { ReactNode, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Select } from "x-react/form";
-import { Modal } from "x-react/modal";
-import { addToast } from "x-react/toast";
 
 import { useUserStore } from "@/store/useUserStore";
 
@@ -51,7 +48,6 @@ const DocumentationModal: React.FC<DocumentationModalProps> = ({
   const { t } = useTranslation();
 
   const [sites, setSites] = useState<Site[]>([]);
-  const [selectAll, setSelectAll] = useState<boolean>(false);
   const { currentUser } = useUserStore();
 
   const {
@@ -78,10 +74,6 @@ const DocumentationModal: React.FC<DocumentationModalProps> = ({
     reset(); // Reset form when modal closes
   };
 
-  const onModalClose = (): void => {
-    toggleModal();
-  };
-
   const onSubmit: SubmitHandler<FormValues> = async (values) => {
     try {
       const resultSite: number[] = [];
@@ -98,15 +90,15 @@ const DocumentationModal: React.FC<DocumentationModalProps> = ({
         formData.append(`sites[${index}]`, site.toString());
       });
 
-      await congesService.post(
-        `/v1/support-documents${selectAll ? "?allSites" : ""}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+      // await congesService.post(
+      //   `/v1/support-documents${selectAll ? "?allSites" : ""}`,
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   },
+      // );
 
       addToast({
         description: values.id ? "successStore" : "successUpdate",

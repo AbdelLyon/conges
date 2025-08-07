@@ -1,6 +1,6 @@
 "use client";
 
-import { Tabs } from "x-react/tabs";
+import { Tabs } from "@xefi/x-react/tabs";
 
 import { PageContainer } from "@/components/PageContainer";
 
