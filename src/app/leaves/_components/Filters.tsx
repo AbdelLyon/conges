@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 import { DateRangePicker } from "@xefi/x-react/datepicker";
 import {
   InfiniteAutocomplete,
@@ -8,6 +7,7 @@ import {
   Select,
 } from "@xefi/x-react/form";
 import { IconFilterCancel, IconUsers } from "@xefi/x-react/icons";
+import { useState } from "react";
 
 import { leave_type } from "@/data/leaves";
 
@@ -54,6 +54,9 @@ const MultiSelect = ({
     selectedKeys={selectedKeys}
     className={className}
     selectionMode="multiple"
+    classNames={{
+      selectorIcon: "text-success",
+    }}
     onSelectionChange={(keys) =>
       onSelectionChange(new Set(Array.from(keys).map(String)))
     }

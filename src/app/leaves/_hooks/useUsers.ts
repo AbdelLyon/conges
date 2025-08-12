@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 
 import { userService } from "@/services/api/UserService";
 
@@ -33,7 +33,7 @@ export const useUsers = (options: UseUsersOptions = {}) => {
    // Filter and sort users client-side
    const filteredAndSortedUsers = useMemo(() => {
       let result = users.data?.pages.flatMap((page) => page.users) || [];
-      
+
       // Filter by search term
       if (searchTerm) {
          result = result.filter(user =>
@@ -41,13 +41,13 @@ export const useUsers = (options: UseUsersOptions = {}) => {
             user.email.toLowerCase().includes(searchTerm.toLowerCase())
          );
       }
-      
+
       // Sort if column is specified
       if (sortColumn) {
          result = [...result].sort((a, b) => {
             const aVal = a[sortColumn];
             const bVal = b[sortColumn];
-            
+
             // Handle different data types
             let comparison = 0;
             if (typeof aVal === 'string' && typeof bVal === 'string') {
@@ -57,11 +57,11 @@ export const useUsers = (options: UseUsersOptions = {}) => {
             } else {
                comparison = String(aVal).toLowerCase().localeCompare(String(bVal).toLowerCase());
             }
-            
+
             return sortDirection === "asc" ? comparison : -comparison;
          });
       }
-      
+
       return result;
    }, [users.data, searchTerm, sortColumn, sortDirection]);
 

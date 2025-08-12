@@ -59,7 +59,7 @@ export class UserService extends Query<User> {
    // Garder la méthode originale si nécessaire ailleurs
    public async getUsers(pageParam: number): Promise<ApiResponse> {
       return await this.http.request({
-         url: `${this.pathname}?limit=14&skip=${pageParam}`,
+         url: `${this.pathname}?limit=100&skip=${pageParam}`,
          method: "GET"
       });
    }

@@ -20,6 +20,7 @@ import logoL from "@/assets/logoL.png";
 import logoR from "@/assets/logoR.png";
 import { Providers } from "@/providers/providers";
 
+import { ActionHeader } from "./ActionHeader";
 import { UserProfile } from "./UserProfile";
 
 import type { Item, NavbarProps } from "@xefi/x-react/navbar";
@@ -93,13 +94,14 @@ export const CongesLayout = ({ children }: { children: React.ReactNode }) => {
       onItemClick: (item) => {
         if (item.href) router.push(item.href);
       },
-      profile: <UserProfile />,
+      profile: <ActionHeader />,
       className:
         "border-b-none dark:border-b dark:border-border shadow-lg bg-gradient-to-b from-background via-background/70 via-background/50 to-content1/30 dark:shadow-none",
       isMenuOpen,
       onMenuOpenChange(isOpen) {
         setIsMenuOpen(isOpen);
       },
+
       navigationItems: [
         {
           key: "theme",

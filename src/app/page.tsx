@@ -3,7 +3,7 @@
 import "dayjs/locale/fr";
 import { Button } from "@xefi/x-react/button";
 import { Card } from "@xefi/x-react/card";
-import { Chart } from "@xefi/x-react/chart";
+// import { Chart } from "@xefi/x-react/chart";
 import { Chip } from "@xefi/x-react/chip";
 import { Divider } from "@xefi/x-react/divider";
 import {
@@ -947,14 +947,14 @@ const CounterCard: React.FC<CounterCardProps> = ({ counter }) => {
         )}
       </div>
 
-      <Chart
+      {/* <Chart
         type="doughnut"
         data={data}
         options={options}
         classNames={{
           root: "border-none shadow-none px-4 h-40 bg-transparent dark:bg-transparent",
         }}
-      />
+      /> */}
       <div className="absolute inset-0 flex items-center justify-center gap-1">
         <span className="text-2xl font-bold ">{balance}</span>
         <span className="mt-2 text-xl font-bold">/</span>
